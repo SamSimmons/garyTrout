@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "status": null, "bldg_use": null, "name_ascii": null, "macronated": "N", "name": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 176.571412877411888, -38.053960941621035 ], [ 176.570997357600504, -38.053772050062598 ], [ 176.571144493661109, -38.053569018992071 ], [ 176.571561152724485, -38.053757874063926 ], [ 176.571412877411888, -38.053960941621035 ] ] ] } }
+]
+}
