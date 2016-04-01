@@ -7,3 +7,17 @@ path {
 svg {
 	background-color: bisque;
 }
+
+.marker {
+	fill: rgba(255, 159, 171, 0.9);
+}
+
+.marker-out {
+	fill: rgba(255, 159, 171, 0.3);
+}
+
+#vis {
+	width: 65vw;
+	background-color: seagreen;
+	border-radius: 5px;
+}
