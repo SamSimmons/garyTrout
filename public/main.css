@@ -1,0 +1,21 @@
+.container {
+	width: 100%;
+	min-height: 90vh;
+	background: bisque;
+	display: flex;
+}
+
+/*.main {
+	width: 65%;
+	min-height: 90vh;
+	background: steelblue;
+	color: white;
+	text-align: center;
+}
+
+.list {
+	background: tomato;
+	color: white;
+	flex-grow: 1;
+	text-align: center;
+}*/
