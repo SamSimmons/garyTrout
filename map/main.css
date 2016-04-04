@@ -1,5 +1,5 @@
 path {
-  stroke: teal;
+  stroke: deepblue;
   stroke-width: 2px;
   fill: steelblue;
 }
@@ -9,11 +9,11 @@ svg {
 }
 
 .marker {
-	fill: rgba(255, 159, 171, 0.9);
+	fill: rgba(255, 105, 71, 0.9);
 }
 
 .marker-out {
-	fill: rgba(255, 159, 171, 0.3);
+	fill: rgba(255, 105, 71, 0.3);
 }
 
 #vis {

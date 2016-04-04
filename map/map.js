@@ -38,6 +38,11 @@ var addTrout = (coords) => {
   return newTrout
 }
 
+var removeAllTrout = () => {
+  var map = d3.select('#rotoma')
+    .selectAll('circle').remove()
+}
+
 //will need a function for fetching information on a selected trout 
 var fetchTrout = () => {}
 
@@ -50,6 +55,7 @@ var drawAllTrout = (arr) => {}
 
 //appends the map to the page
 var map = d3.select("body").append("svg")
+  .attr('id', 'rotoma')
   .attr("width", width)
   .attr("height", height)
 
@@ -66,9 +72,22 @@ var map = d3.select("body").append("svg")
 
   map.on('click', function() {
     var coords = d3.mouse(this)
+    //trout is added to array here
     var trout = addTrout(coords)
     drawMarker(trout, map)
+    console.log('arr from map-click', arr)   
   })
 
+  document.querySelector('.add-all').addEventListener('click', function () {
+    console.log('arr from button',arr)
+    arr.forEach((trout) => {
+      drawMarker(trout, map)
+    })
+  })
+
+  document.querySelector('.remove-all').addEventListener('click', function () {
+    removeAllTrout()
+    console.log('click')
+  })
 
 })
