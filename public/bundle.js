@@ -67,11 +67,11 @@
 
 	var _Add2 = _interopRequireDefault(_Add);
 
-	var _vueRouter = __webpack_require__(11);
+	var _vueRouter = __webpack_require__(15);
 
 	var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-	var _vueResource = __webpack_require__(12);
+	var _vueResource = __webpack_require__(16);
 
 	var _vueResource2 = _interopRequireDefault(_vueResource);
 
@@ -10053,7 +10053,7 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<nav>\n\t<a v-link=\"'home'\">Home</a>\n\t<a v-link=\"'add'\">Add</a>\t\t\n</nav>\n<div class=\"container\" id=\"troutMap\">\n\t<router-view></router-view>\n</div>\n";
+	module.exports = "\n<div id=\"app\">\n\t<nav>\n\t\t<a v-link=\"'home'\">Home</a>\n\t\t<a v-link=\"'add'\">Add</a>\t\t\n\t</nav>\n\t<div class=\"container\" id=\"troutMap\">\n\t\t<router-view></router-view>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 5 */
@@ -10095,7 +10095,6 @@
 	// <template>
 	// 	<div class="home-wrapper">
 	// 		<h2>{{text}}</h2>
-	// 		<h2>Above?</h2>
 	// 	</div>
 	// </template>
 	//
@@ -10104,7 +10103,7 @@
 		name: 'Home',
 		data: function data() {
 			return {
-				text: 'Please be right?'
+				text: 'watch me text'
 			};
 		}
 	};
@@ -10114,19 +10113,20 @@
 /* 7 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n\t<h2>{{text}}</h2>\n\t<h2>Above?</h2>\n</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n\t<h2>{{text}}</h2>\n</div>\n";
 
 /***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(9)
+	__webpack_require__(9)
+	__vue_script__ = __webpack_require__(13)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src/components/Add.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(10)
+	__vue_template__ = __webpack_require__(14)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -10146,37 +10146,440 @@
 
 /***/ },
 /* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(10);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(12)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./Add.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./Add.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(11)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, .5);\n  display: table;\n  -webkit-transition: opacity .9s ease;\n  transition: opacity .9s ease;\n}\n.add-modal {\n  width: 300px;\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #fff;\n  border-radius: 2px;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n  font-family: Helvetica, Arial, sans-serif;\t\n}\n\n.exit {\n\tfont-size: 18px;\n\tpadding: 5px;\n\tborder: 3px  seagreen solid;\n\tborder-radius: 3px;\n\tdisplay: inline-block;\n\tfont-weight: bolder;\n\tcursor: pointer;\n}\n\n.modal-enter, .modal-leave {\n  opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transform: scale(1.1);\n  transform: scale(1.1);\n}\n\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 11 */
 /***/ function(module, exports) {
 
-	'use strict';
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if (media) {
+			styleElement.setAttribute("media", media);
+		}
+
+		if (sourceMap) {
+			// https://developer.chrome.com/devtools/docs/javascript-debugging
+			// this makes source maps inside style tags work properly in Chrome
+			css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */';
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
+
+	var _defineProperty2 = __webpack_require__(42);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	// <template>
-	// 	<h1>ADD A</h1>
-	// 	<h2>{{what}}</h2>
+	// <div class="modal-wrapper">
+	// 	<button v-on:click="setShow">show?</button>
+	// 	<div class="modal-mask" v-show="showModal">
+	// 		<div class="add-modal">
+	// 			<h1>Add Trout</h1>
+	// 			<h3>Size: </h3>
+	// 			<p>{{ size }}</p>
+	// 			<input v-model="size">
+	// 			<h3>Date:</h3>
+	// 			<p>{{ date }}</p>
+	// 			<input v-model="date">
+	// 			<h3>Lure: </h3>
+	// 			<p>{{ lure }}</p>
+	// 			<input v-model="lure">
+	// 			<h3>Comment: </h3>
+	// 			<textarea v-model="comment"></textarea>
+	//
+	// 			<div class="exit" v-on:click="setShow">X</div>
+	// 		</div>
+	// 	</div>
 	// </template>
 	//
+	// <style>
+	// .modal-mask {
+	//   position: fixed;
+	//   z-index: 9998;
+	//   top: 0;
+	//   left: 0;
+	//   width: 100%;
+	//   height: 100%;
+	//   background-color: rgba(0, 0, 0, .5);
+	//   display: table;
+	//   transition: opacity .9s ease;
+	// }
+	// .add-modal {
+	//   width: 300px;
+	//   margin: 0px auto;
+	//   padding: 20px 30px;
+	//   background-color: #fff;
+	//   border-radius: 2px;
+	//   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+	//   transition: all .3s ease;
+	//   font-family: Helvetica, Arial, sans-serif;	
+	// }
+	//
+	// .exit {
+	// 	font-size: 18px;
+	// 	padding: 5px;
+	// 	border: 3px  seagreen solid;
+	// 	border-radius: 3px;
+	// 	display: inline-block;
+	// 	font-weight: bolder;
+	// 	cursor: pointer;
+	// }
+	//
+	// .modal-enter, .modal-leave {
+	//   opacity: 0;
+	// }
+	//
+	// .modal-enter .modal-container,
+	// .modal-leave .modal-container {
+	//   -webkit-transform: scale(1.1);
+	//   transform: scale(1.1);
+	// }
+	//
+	// </style>
+	//
 	// <script>
-	exports.default = {
+	exports.default = (0, _defineProperty3.default)({
 		name: 'Add',
-		data: function data() {
-			return {
-				what: 'A BIG FAT OLD TROUT'
-			};
+		data: {
+			show: false
+		},
+		methods: {
+			logThis: function logThis() {
+				console.log(this);
+			},
+			setShow: function setShow() {
+				this.showModal = !this.showModal;
+				console.log(this);
+			}
 		}
-	};
+	}, "data", function data() {
+		return {
+			size: "",
+			date: "dd/mm/yy",
+			lure: "",
+			comment: "",
+			showModal: false
+		};
+	});
 	// </script>
 
 /***/ },
-/* 10 */
+/* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<h1>ADD A</h1>\n<h2>{{what}}</h2>\n";
+	module.exports = "\n<div class=\"modal-wrapper\">\n\t<button v-on:click=\"setShow\">show?</button>\n\t<div class=\"modal-mask\" v-show=\"showModal\">\n\t\t<div class=\"add-modal\">\n\t\t\t<h1>Add Trout</h1>\n\t\t\t<h3>Size: </h3>\n\t\t\t<p>{{ size }}</p>\n\t\t\t<input v-model=\"size\">\n\t\t\t<h3>Date:</h3>\n\t\t\t<p>{{ date }}</p>\n\t\t\t<input v-model=\"date\">\n\t\t\t<h3>Lure: </h3>\n\t\t\t<p>{{ lure }}</p>\n\t\t\t<input v-model=\"lure\">\n\t\t\t<h3>Comment: </h3>\n\t\t\t<textarea v-model=\"comment\"></textarea>\n\n\t\t\t<div class=\"exit\" v-on:click=\"setShow\">X</div>\n\t\t</div>\n\t</div>\n</template>";
 
 /***/ },
-/* 11 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -12830,7 +13233,7 @@
 	}));
 
 /***/ },
-/* 12 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12839,16 +13242,16 @@
 
 	function install(Vue) {
 
-	    var _ = __webpack_require__(13);
+	    var _ = __webpack_require__(17);
 
 	    _.config = Vue.config;
 	    _.warning = Vue.util.warn;
 	    _.nextTick = Vue.util.nextTick;
 
-	    Vue.url = __webpack_require__(14);
-	    Vue.http = __webpack_require__(20);
-	    Vue.resource = __webpack_require__(35);
-	    Vue.Promise = __webpack_require__(22);
+	    Vue.url = __webpack_require__(18);
+	    Vue.http = __webpack_require__(24);
+	    Vue.resource = __webpack_require__(39);
+	    Vue.Promise = __webpack_require__(26);
 
 	    Object.defineProperties(Vue.prototype, {
 
@@ -12889,7 +13292,7 @@
 
 
 /***/ },
-/* 13 */
+/* 17 */
 /***/ function(module, exports) {
 
 	/**
@@ -13017,14 +13420,14 @@
 
 
 /***/ },
-/* 14 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for URL templating.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 	var ie = document.documentMode;
 	var el = document.createElement('a');
 
@@ -13060,10 +13463,10 @@
 	 */
 
 	Url.transforms = [
-	    __webpack_require__(15),
-	    __webpack_require__(17),
-	    __webpack_require__(18),
-	    __webpack_require__(19)
+	    __webpack_require__(19),
+	    __webpack_require__(21),
+	    __webpack_require__(22),
+	    __webpack_require__(23)
 	];
 
 	/**
@@ -13153,14 +13556,14 @@
 
 
 /***/ },
-/* 15 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * URL Template (RFC 6570) Transform.
 	 */
 
-	var UrlTemplate = __webpack_require__(16);
+	var UrlTemplate = __webpack_require__(20);
 
 	module.exports = function (options) {
 
@@ -13175,7 +13578,7 @@
 
 
 /***/ },
-/* 16 */
+/* 20 */
 /***/ function(module, exports) {
 
 	/**
@@ -13331,14 +13734,14 @@
 
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Legacy Transform.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	module.exports = function (options, next) {
 
@@ -13383,14 +13786,14 @@
 
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Query Parameter Transform.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	module.exports = function (options, next) {
 
@@ -13413,14 +13816,14 @@
 
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Root Prefix Transform.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	module.exports = function (options, next) {
 
@@ -13435,17 +13838,17 @@
 
 
 /***/ },
-/* 20 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for sending network requests.
 	 */
 
-	var _ = __webpack_require__(13);
-	var Client = __webpack_require__(21);
-	var Promise = __webpack_require__(22);
-	var interceptor = __webpack_require__(25);
+	var _ = __webpack_require__(17);
+	var Client = __webpack_require__(25);
+	var Promise = __webpack_require__(26);
+	var interceptor = __webpack_require__(29);
 	var jsonType = {'Content-Type': 'application/json'};
 
 	function Http(url, options) {
@@ -13498,13 +13901,13 @@
 	};
 
 	Http.interceptors = [
-	    __webpack_require__(26),
-	    __webpack_require__(27),
-	    __webpack_require__(28),
 	    __webpack_require__(30),
 	    __webpack_require__(31),
 	    __webpack_require__(32),
-	    __webpack_require__(33)
+	    __webpack_require__(34),
+	    __webpack_require__(35),
+	    __webpack_require__(36),
+	    __webpack_require__(37)
 	];
 
 	Http.headers = {
@@ -13539,16 +13942,16 @@
 
 
 /***/ },
-/* 21 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Base client.
 	 */
 
-	var _ = __webpack_require__(13);
-	var Promise = __webpack_require__(22);
-	var xhrClient = __webpack_require__(24);
+	var _ = __webpack_require__(17);
+	var Promise = __webpack_require__(26);
+	var xhrClient = __webpack_require__(28);
 
 	module.exports = function (request) {
 
@@ -13610,15 +14013,15 @@
 
 
 /***/ },
-/* 22 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Promise adapter.
 	 */
 
-	var _ = __webpack_require__(13);
-	var PromiseObj = window.Promise || __webpack_require__(23);
+	var _ = __webpack_require__(17);
+	var PromiseObj = window.Promise || __webpack_require__(27);
 
 	function Promise(executor, context) {
 
@@ -13725,14 +14128,14 @@
 
 
 /***/ },
-/* 23 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	var RESOLVED = 0;
 	var REJECTED = 1;
@@ -13910,15 +14313,15 @@
 
 
 /***/ },
-/* 24 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * XMLHttp client.
 	 */
 
-	var _ = __webpack_require__(13);
-	var Promise = __webpack_require__(22);
+	var _ = __webpack_require__(17);
+	var Promise = __webpack_require__(26);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -13966,15 +14369,15 @@
 
 
 /***/ },
-/* 25 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Interceptor factory.
 	 */
 
-	var _ = __webpack_require__(13);
-	var Promise = __webpack_require__(22);
+	var _ = __webpack_require__(17);
+	var Promise = __webpack_require__(26);
 
 	module.exports = function (handler, vm) {
 
@@ -14017,14 +14420,14 @@
 
 
 /***/ },
-/* 26 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Before Interceptor.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	module.exports = {
 
@@ -14041,7 +14444,7 @@
 
 
 /***/ },
-/* 27 */
+/* 31 */
 /***/ function(module, exports) {
 
 	/**
@@ -14077,14 +14480,14 @@
 
 
 /***/ },
-/* 28 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * JSONP Interceptor.
 	 */
 
-	var jsonpClient = __webpack_require__(29);
+	var jsonpClient = __webpack_require__(33);
 
 	module.exports = {
 
@@ -14101,15 +14504,15 @@
 
 
 /***/ },
-/* 29 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * JSONP client.
 	 */
 
-	var _ = __webpack_require__(13);
-	var Promise = __webpack_require__(22);
+	var _ = __webpack_require__(17);
+	var Promise = __webpack_require__(26);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -14155,7 +14558,7 @@
 
 
 /***/ },
-/* 30 */
+/* 34 */
 /***/ function(module, exports) {
 
 	/**
@@ -14178,14 +14581,14 @@
 
 
 /***/ },
-/* 31 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Mime Interceptor.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	module.exports = {
 
@@ -14220,14 +14623,14 @@
 
 
 /***/ },
-/* 32 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Header Interceptor.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	module.exports = {
 
@@ -14252,15 +14655,15 @@
 
 
 /***/ },
-/* 33 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * CORS Interceptor.
 	 */
 
-	var _ = __webpack_require__(13);
-	var xdrClient = __webpack_require__(34);
+	var _ = __webpack_require__(17);
+	var xdrClient = __webpack_require__(38);
 	var xhrCors = 'withCredentials' in new XMLHttpRequest();
 	var originUrl = _.url.parse(location.href);
 
@@ -14295,15 +14698,15 @@
 
 
 /***/ },
-/* 34 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * XDomain client (Internet Explorer).
 	 */
 
-	var _ = __webpack_require__(13);
-	var Promise = __webpack_require__(22);
+	var _ = __webpack_require__(17);
+	var Promise = __webpack_require__(26);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -14338,14 +14741,14 @@
 
 
 /***/ },
-/* 35 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for interacting with RESTful services.
 	 */
 
-	var _ = __webpack_require__(13);
+	var _ = __webpack_require__(17);
 
 	function Resource(url, params, actions, options) {
 
@@ -14452,6 +14855,300 @@
 
 	module.exports = _.resource = Resource;
 
+
+/***/ },
+/* 40 */,
+/* 41 */,
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(43);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(44), __esModule: true };
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(45);
+	var $Object = __webpack_require__(48).Object;
+	module.exports = function defineProperty(it, key, desc){
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(46);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(56), 'Object', {defineProperty: __webpack_require__(52).f});
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(47)
+	  , core      = __webpack_require__(48)
+	  , ctx       = __webpack_require__(49)
+	  , hide      = __webpack_require__(51)
+	  , PROTOTYPE = 'prototype';
+
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , expProto  = exports[PROTOTYPE]
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !IS_FORCED && target && target[key] !== undefined;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(a, b, c){
+	        if(this instanceof C){
+	          switch(arguments.length){
+	            case 0: return new C;
+	            case 1: return new C(a);
+	            case 2: return new C(a, b);
+	          } return new C(a, b, c);
+	        } return C.apply(this, arguments);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+	    if(IS_PROTO){
+	      (exports.virtual || (exports.virtual = {}))[key] = out;
+	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+	    }
+	  }
+	};
+	// type bitmap
+	$export.F = 1;   // forced
+	$export.G = 2;   // global
+	$export.S = 4;   // static
+	$export.P = 8;   // proto
+	$export.B = 16;  // bind
+	$export.W = 32;  // wrap
+	$export.U = 64;  // safe
+	$export.R = 128; // real proto method for `library` 
+	module.exports = $export;
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '2.2.1'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(50);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var dP         = __webpack_require__(52)
+	  , createDesc = __webpack_require__(60);
+	module.exports = __webpack_require__(56) ? function(object, key, value){
+	  return dP.f(object, key, createDesc(1, value));
+	} : function(object, key, value){
+	  object[key] = value;
+	  return object;
+	};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject       = __webpack_require__(53)
+	  , IE8_DOM_DEFINE = __webpack_require__(55)
+	  , toPrimitive    = __webpack_require__(59)
+	  , dP             = Object.defineProperty;
+
+	exports.f = __webpack_require__(56) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	  anObject(O);
+	  P = toPrimitive(P, true);
+	  anObject(Attributes);
+	  if(IE8_DOM_DEFINE)try {
+	    return dP(O, P, Attributes);
+	  } catch(e){ /* empty */ }
+	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+	  if('value' in Attributes)O[P] = Attributes.value;
+	  return O;
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(54);
+	module.exports = function(it){
+	  if(!isObject(it))throw TypeError(it + ' is not an object!');
+	  return it;
+	};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = !__webpack_require__(56) && !__webpack_require__(57)(function(){
+	  return Object.defineProperty(__webpack_require__(58)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(57)(function(){
+	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 57 */
+/***/ function(module, exports) {
+
+	module.exports = function(exec){
+	  try {
+	    return !!exec();
+	  } catch(e){
+	    return true;
+	  }
+	};
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(54)
+	  , document = __webpack_require__(47).document
+	  // in old IE typeof document.createElement is 'object'
+	  , is = isObject(document) && isObject(document.createElement);
+	module.exports = function(it){
+	  return is ? document.createElement(it) : {};
+	};
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.1 ToPrimitive(input [, PreferredType])
+	var isObject = __webpack_require__(54);
+	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+	// and the second argument - flag - preferred type is a string
+	module.exports = function(it, S){
+	  if(!isObject(it))return it;
+	  var fn, val;
+	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  throw TypeError("Can't convert object to primitive value");
+	};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports) {
+
+	module.exports = function(bitmap, value){
+	  return {
+	    enumerable  : !(bitmap & 1),
+	    configurable: !(bitmap & 2),
+	    writable    : !(bitmap & 4),
+	    value       : value
+	  };
+	};
 
 /***/ }
 /******/ ]);
