@@ -1,3 +1,7 @@
+//need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
+var scale = 0;
+
+
 var width = 600,
     height = 600;
 
@@ -59,9 +63,12 @@ var map = d3.select("body").append("svg")
   d3.json("lake.json", function(err, lake) {
     if (err) return console.error(error);
 
+    var offset = [width/2, height/2]
+
     var projection = d3.geo.mercator()
-      .center([176.60, -38.038])
-        .scale(540000)
+      .center(d3.geo.centroid(lake))
+      .translate(offset)
+        .scale(500000)
     
     map.append("path")
       .datum(lake)
@@ -75,10 +82,11 @@ var map = d3.select("body").append("svg")
   })
 
 
-
+//remove one trout -- TODO markers need to have an id when they're created so they can be removed, and they need to be removed from the db
   document.querySelector('.edit-mode').addEventListener('click', function () {
     map.on('click', null)
      document.querySelector('.marker').addEventListener('click', (e) => {
+      //need
       e.target.remove()
      })
   })
