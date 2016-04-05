@@ -40,8 +40,9 @@ var addTrout = (coords) => {
     comment: "" 
   }
   arr.push(newTrout)
-  xhr.post('http://localhost:3001/add', (err, data) => {
-    
+  xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
+    console.log('err', err)
+    console.log('data', data)
   })
   return newTrout
 }
