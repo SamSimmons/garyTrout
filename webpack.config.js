@@ -2,7 +2,7 @@
 
 module.exports = {
   // the main entry of our app
-  entry: './src/app.js',
+  entry: './public/map.js',
   // output configuration
   output: {
     path: __dirname + '/public',

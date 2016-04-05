@@ -1,3 +1,6 @@
+var xhr = require('xhr')
+
+var arr = []
 //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
 var scale = 0;
 
@@ -5,19 +8,18 @@ var scale = 0;
 var width = 600,
     height = 600,
     scale0 = (width - 1) / 2 / Math.PI;
-var arr  = []
 
-var drawMarker = (trout, el) => {
-  el.append("circle")
+var drawMarker = (trout) => {
+  var map = d3.select('#rotoma')
+
+  map.append("circle")
     .attr('class', 'marker-out ' + trout.id)
-
       .attr("cx", trout.x)
         .attr("cy", trout.y)
           .attr("r", 40)
 
-  el.append("circle")
+  map.append("circle")
     .attr('class', 'marker ' + trout.id)
-
       .attr("cx", trout.x)
         .attr("cy", trout.y)
           .attr("r", 5);
@@ -38,6 +40,9 @@ var addTrout = (coords) => {
     comment: "" 
   }
   arr.push(newTrout)
+  xhr.post('http://localhost:3001/add', (err, data) => {
+    
+  })
   return newTrout
 }
 
@@ -48,27 +53,31 @@ var clearMap = () => {
 
 var removeSingleTrout = (id) => {
   arr = arr.filter(x => {
-    //console.log(typeof x.id.toString(),typeof id)
     return x.id.toString() !== id
   })
-  console.log(arr)
   clearMap()
-  drawAllTrout(arr)
+  drawAllTrout()
 }
 
 //will need a function for fetching information on a selected trout 
-var fetchTrout = () => {}
+var fetchTrout = () => {
+  xhr.get('http://localhost:3001/', (err, data) => {
+    console.log(JSON.parse(data.body))  
+  })
+}
 
-//will need a function for drawing a new trout to map
+//will need a function for drawing a single trout to map
 var drawTrout = () => {}
 
 //will need a function for drawing all selected trout to the map
 var drawAllTrout = () => {
-  arr.forEach( (trout) => {
-    drawMarker(trout, map)
+  xhr.get('http://localhost:3001/', (err, data) => {
+    if (err) { console.error(err)}
+    var allTrout = JSON.parse(data.body)
+    allTrout.forEach( trout => drawMarker(trout))
   })
-}
 
+}
 
 //appends the map to the page
 var map = d3.select("body").append("svg")
@@ -114,9 +123,9 @@ document.querySelector('.remove-all').addEventListener('click', function () {
 document.querySelector('.add-single').addEventListener('click', function() {
   map.on('click', function() {
     var coords = d3.mouse(this)
-    //trout is added to array here
+    //trout is added to db here
     var trout = addTrout(coords)
-    drawMarker(trout, map)
+    drawMarker(trout)
   })
 })
 
