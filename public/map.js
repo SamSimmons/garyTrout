@@ -5,13 +5,6 @@ var scale = 0;
 var width = 600,
     height = 600,
     scale0 = (width - 1) / 2 / Math.PI;
-
-// var zoom = d3.behavior.zoom()
-//     .translate([width / 2, height / 2])
-//     .scale(scale0)
-//     .scaleExtent([scale0, 8 * scale0])
-//     .on("zoom", zoomed);
-
 var arr  = []
 
 var drawMarker = (trout, el) => {
@@ -53,11 +46,14 @@ var clearMap = () => {
     .selectAll('circle').remove()
 }
 
-var removeSingleTrout = (domElt) => {
-  //arr = arr.filter()
+var removeSingleTrout = (id) => {
+  arr = arr.filter(x => {
+    //console.log(typeof x.id.toString(),typeof id)
+    return x.id.toString() !== id
+  })
+  console.log(arr)
   clearMap()
   drawAllTrout(arr)
-
 }
 
 //will need a function for fetching information on a selected trout 
@@ -95,21 +91,22 @@ var map = d3.select("body").append("svg")
       .attr("d", d3.geo.path().projection(projection))
   })
 
+var stripId = (classes) => {return classes.split(' ').splice(1).toString()}
 
-
-//remove one trout -- TODO markers need to have an id when they're created so they can be removed, and they need to be removed from the db
-document.querySelector('.edit-mode').addEventListener('click', function () {
+var turnOnDeleteMode = function () {
   map.on('click', null)
   d3.selectAll('circle')
     .on('click', function () {
-      var id = d3.select(this)
+      var circleClass = d3.select(this)
         .attr('class')
-//-----------------------------------------------------working here pass this id to remove function
-      id
+      var id = stripId(circleClass)
+      removeSingleTrout(id)
     })
+}
 
+//remove one trout -- TODO markers need to have an id when they're created so they can be removed, and they need to be removed from the db
+document.querySelector('.edit-mode').addEventListener('click', turnOnDeleteMode)
 
-})
 document.querySelector('.remove-all').addEventListener('click', function () {
   clearMap()    
 })
