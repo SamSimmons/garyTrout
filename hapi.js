@@ -11,23 +11,46 @@ server.connection({
 
 server.route({
 	method: 'POST',
-	path: '/add',
+	path: '/delete',
 	handler: function (req, reply) {
 		fs.readFile('./data.json', (err, data) => {
-			if (err) {console.error(err)}
+			if (err) {console.error('err from add', err)}
 
 			var arrayOfTrout = JSON.parse(data)
-			var newTrout = JSON.parse(req.payload)
-			console.log('payload', newTrout)
-			arrayOfTrout.push(newTrout)
-			console.log('arr', arrayOfTrout)
-			reply(arrayOfTrout)
-
+			var idToDelete = parseInt(JSON.parse(req.payload))
+			arrayOfTrout = arrayOfTrout.filter((trout) => {
+				return trout.id !== idToDelete
+			})
 			fs.writeFile('./data.json', JSON.stringify(arrayOfTrout), (err) => {
 				if (err) {
 					console.error(err)
 				}
-				// console.log('replying')
+				console.log('delete: write trout array to disk')
+				reply(arrayOfTrout)
+			})
+		})
+	
+	}
+});
+
+server.route({
+	method: 'POST',
+	path: '/add',
+	handler: function (req, reply) {
+		fs.readFile('./data.json', (err, data) => {
+			if (err) {console.error('err from add', err)}
+
+			var arrayOfTrout = JSON.parse(data)
+			var newTrout = JSON.parse(req.payload)
+
+			arrayOfTrout.push(newTrout)
+			// fs.writeFileSync(('./data.json', JSON.stringify(arrayOfTrout))
+			fs.writeFile('./data.json', JSON.stringify(arrayOfTrout), (err) => {
+				if (err) {
+					console.error(err)
+				}
+				console.log('add: write trout array to disk')
+				reply(arrayOfTrout)
 			})
 		})
 	}

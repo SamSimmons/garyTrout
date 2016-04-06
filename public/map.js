@@ -1,6 +1,5 @@
 var xhr = require('xhr')
 
-var arr = []
 //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
 var scale = 0;
 
@@ -8,6 +7,27 @@ var scale = 0;
 var width = 600,
     height = 600,
     scale0 = (width - 1) / 2 / Math.PI;
+
+//appends the map to the page
+var map = d3.select("body").append("svg")
+  .attr('id', 'rotoma')
+  .attr("width", width)
+  .attr("height", height)
+
+  d3.json("lake.json", function(err, lake) {
+    if (err) return console.error(error);
+
+    var offset = [width/2, height/2]
+
+    var projection = d3.geo.mercator()
+      .center(d3.geo.centroid(lake))
+      .translate(offset)
+        .scale(500000)
+    
+    map.append("path")
+      .datum(lake)
+      .attr("d", d3.geo.path().projection(projection))
+  })
 
 var drawMarker = (trout) => {
   var map = d3.select('#rotoma')
@@ -31,7 +51,7 @@ var addTrout = (coords) => {
     x: coords[0],
     y: coords[1],
     id: Date.now(),
-    angler: "",
+    angler: "delete",
     time: "",
     day: "",
     month: "",
@@ -39,10 +59,12 @@ var addTrout = (coords) => {
     lure: "",
     comment: "" 
   }
-  arr.push(newTrout)
+
   xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
-    console.log('err', err)
-    console.log('data', data)
+    if(err) {
+      console.error(err)
+    }
+
   })
   return newTrout
 }
@@ -53,11 +75,10 @@ var clearMap = () => {
 }
 
 var removeSingleTrout = (id) => {
-  arr = arr.filter(x => {
-    return x.id.toString() !== id
+  xhr.post('http://localhost:3001/delete', {json: JSON.stringify(id) }, function() {
+    clearMap()
+    //drawAllTrout()
   })
-  clearMap()
-  drawAllTrout()
 }
 
 //will need a function for fetching information on a selected trout 
@@ -71,35 +92,16 @@ var fetchTrout = () => {
 var drawTrout = () => {}
 
 //will need a function for drawing all selected trout to the map
-var drawAllTrout = () => {
+var getAllTrout = function () {  
+}
+
+var drawAllTrout = function (arr) {
   xhr.get('http://localhost:3001/', (err, data) => {
     if (err) { console.error(err)}
     var allTrout = JSON.parse(data.body)
     allTrout.forEach( trout => drawMarker(trout))
   })
-
 }
-
-//appends the map to the page
-var map = d3.select("body").append("svg")
-  .attr('id', 'rotoma')
-  .attr("width", width)
-  .attr("height", height)
-
-  d3.json("lake.json", function(err, lake) {
-    if (err) return console.error(error);
-
-    var offset = [width/2, height/2]
-
-    var projection = d3.geo.mercator()
-      .center(d3.geo.centroid(lake))
-      .translate(offset)
-        .scale(500000)
-    
-    map.append("path")
-      .datum(lake)
-      .attr("d", d3.geo.path().projection(projection))
-  })
 
 var stripId = (classes) => {return classes.split(' ').splice(1).toString()}
 
