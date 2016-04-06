@@ -28,8 +28,7 @@ server.route({
 				console.log('delete: write trout array to disk')
 				reply(arrayOfTrout)
 			})
-		})
-	
+		})	
 	}
 });
 
@@ -44,7 +43,6 @@ server.route({
 			var newTrout = JSON.parse(req.payload)
 
 			arrayOfTrout.push(newTrout)
-			// fs.writeFileSync(('./data.json', JSON.stringify(arrayOfTrout))
 			fs.writeFile('./data.json', JSON.stringify(arrayOfTrout), (err) => {
 				if (err) {
 					console.error(err)
@@ -71,8 +69,7 @@ server.route({
 server.route({
 	method: 'GET',
 	path: '/{name}',
-	handler: function (req, reply) {
-		
+	handler: function (req, reply) {		
 		reply('Hello, ' + encodeURIComponent(req.params.name) + '!');
 	}
 })

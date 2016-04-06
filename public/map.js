@@ -2,8 +2,6 @@ var xhr = require('xhr')
 
 //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
 var scale = 0;
-
-
 var width = 600,
     height = 600,
     scale0 = (width - 1) / 2 / Math.PI;
@@ -59,12 +57,10 @@ var addTrout = (coords) => {
     lure: "",
     comment: "" 
   }
-
   xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
     if(err) {
       console.error(err)
     }
-
   })
   return newTrout
 }
@@ -77,7 +73,7 @@ var clearMap = () => {
 var removeSingleTrout = (id) => {
   xhr.post('http://localhost:3001/delete', {json: JSON.stringify(id) }, function() {
     clearMap()
-    //drawAllTrout()
+    drawAllTrout()
   })
 }
 
@@ -95,11 +91,14 @@ var drawTrout = () => {}
 var getAllTrout = function () {  
 }
 
+//error here i think
 var drawAllTrout = function (arr) {
   xhr.get('http://localhost:3001/', (err, data) => {
     if (err) { console.error(err)}
-    var allTrout = JSON.parse(data.body)
-    allTrout.forEach( trout => drawMarker(trout))
+    else {
+      var allTrout = JSON.parse(data.body)
+      allTrout.forEach( trout => drawMarker(trout))
+    }
   })
 }
 
