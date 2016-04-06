@@ -1,21 +1,23 @@
-.container {
-	width: 100%;
-	min-height: 90vh;
-	background: bisque;
-	display: flex;
+path {
+  stroke: teal;
+  stroke-width: 2px;
+  fill: steelblue;
 }
 
-/*.main {
-	width: 65%;
-	min-height: 90vh;
-	background: steelblue;
-	color: white;
-	text-align: center;
+svg {
+	background-color: bisque;
 }
 
-.list {
-	background: tomato;
-	color: white;
-	flex-grow: 1;
-	text-align: center;
-}*/
+.marker {
+	fill: rgba(255, 159, 171, 0.9);
+}
+
+.marker-out {
+	fill: rgba(255, 159, 171, 0.3);
+}
+
+#vis {
+	width: 65vw;
+	background-color: seagreen;
+	border-radius: 5px;
+}
