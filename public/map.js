@@ -79,7 +79,7 @@ var removeSingleTrout = (id) => {
 
 //will need a function for fetching information on a selected trout 
 var fetchTrout = () => {
-  xhr.get('http://localhost:3001/', (err, data) => {
+  xhr.get('http://localhost:3001/data', (err, data) => {
     console.log(JSON.parse(data.body))  
   })
 }
@@ -93,7 +93,7 @@ var getAllTrout = function () {
 
 //error here i think
 var drawAllTrout = function (arr) {
-  xhr.get('http://localhost:3001/', (err, data) => {
+  xhr.get('http://localhost:3001/data', (err, data) => {
     if (err) { console.error(err)}
     else {
       var allTrout = JSON.parse(data.body)
