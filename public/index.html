@@ -7,11 +7,18 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-	<button class="btn add-single">Add a trout</button>
-	<button class="btn add-all">Add all trout</button>
-	<button class="btn remove-all">Remove All</button>
-	<button class="btn edit-mode">Delete</button>
-	<div id="vis"></div>
+	<nav class="navbar">
+		<div class="btn title">TROUT-TROUT</div>
+		<div class="btn add-single">Add a trout</div>
+		<div class="btn add-all">Add all trout</div>
+		<div class="btn remove-all">Remove All</div>
+		<div class="btn edit-mode">Delete</div>
+	</nav>
+	<div class='app-wrapper'>
+		<div id="vis" class="half"></div>
+		<div id="app" class="half"></div>		
+	</div>
+
 	<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="//d3js.org/topojson.v1.min.js"></script>
 	<script src="bundle.js"></script>

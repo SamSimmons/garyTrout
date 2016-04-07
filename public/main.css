@@ -21,3 +21,43 @@ svg {
 	background-color: seagreen;
 	border-radius: 5px;
 }
+
+body {
+	background-color: #407E81;
+}
+
+.navbar {
+	display:flex;
+	justify-content: flex-end;
+}
+
+.btn {
+	padding: 15px;
+	color: #FFCEA4;
+	cursor: pointer;
+	border: 1px solid #FFCEA4;
+	border-radius: 5px;
+	margin: 5px;
+	font-size: 1.25em;
+}
+
+.btn:hover {
+	color: #AA5839;
+	border: 1px solid #AA5839;
+}
+
+.title {
+	justify-self: flex-start;
+	margin-right: auto;
+	font-size: 1.5em;
+	font-weight: bold;
+	border: 2px solid #FFCEA4;
+}
+
+.app-wrapper {
+	display: flex;
+}
+
+.half {
+	width: 50%;
+}
