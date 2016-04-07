@@ -1,6 +1,7 @@
 'use strict';
 var fs = require('fs')
 
+
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
@@ -26,7 +27,7 @@ server.route({
 					console.error(err)
 				}
 				console.log('delete: write trout array to disk')
-				reply(arrayOfTrout)
+				reply('deleted')
 			})
 		})	
 	}
@@ -56,7 +57,7 @@ server.route({
 
 server.route({
 	method: 'GET',
-	path: '/',
+	path: '/data',
 	handler: function (req, reply) {
 		fs.readFile('./data.json', (err, data) => {
 			if(err) {console.err}
