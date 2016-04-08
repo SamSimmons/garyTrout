@@ -16,7 +16,23 @@
 	</nav>
 	<div class='app-wrapper'>
 		<div id="vis" class="half"></div>
-		<div id="app" class="half"></div>		
+		<div id="app" class="half">
+			
+			<div id="tasks">
+
+			<h1>Trout Caught</h1>
+
+			<div v-for="info in trout">
+				<h2>Angler: {{ info.name }}</h2>
+				<p>Date: {{info.date}}</p>
+				<p>Weight: {{info.weight}}</p>
+				<p>Length: {{info.length}}</p>
+			</div>
+
+			<input v-model="heading">	
+			</div>
+
+		</div>		
 	</div>
 
 	<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>

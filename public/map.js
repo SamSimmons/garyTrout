@@ -8,7 +8,7 @@ var mapper = function () {
       scale0 = (width - 1) / 2 / Math.PI;
 
   //appends the map to the page
-  var map = d3.select("body").append("svg")
+  var map = d3.select("#vis").append("svg")
     .attr('id', 'rotoma')
     .attr("width", width)
     .attr("height", height)
