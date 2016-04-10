@@ -23,7 +23,7 @@ server.route({
 			var arrayOfTrout = JSON.parse(data)
 			var idToDelete = parseInt(JSON.parse(req.payload))
 			arrayOfTrout = arrayOfTrout.filter((trout) => { 
-				
+
 				return trout.id !== idToDelete
 			})
 			fs.writeFile('./data.json', JSON.stringify(arrayOfTrout), (err) => {
@@ -81,6 +81,7 @@ server.route({
 
 			var arrayOfTrout = JSON.parse(data)
 			var trout = _.find(arrayOfTrout, ['id', troutID])
+			console.log('returning: ', trout)
 			reply(trout)
 		})
 

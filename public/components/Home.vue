@@ -1,6 +1,7 @@
 <template>
 	<div class="home-wrapper">
-		<h2>{{text}}</h2>
+	<h1>home</h1>
+		<h2>{{ $parent.trout | json }}</h2>
 	</div>
 </template>
 
@@ -9,9 +10,14 @@
 		name: 'Home',
 		data: function() {
 			return {
-				text: 'watch me text'
-			}
-		
+				trout: {
+					name: 'trouter',
+					sizer: '2.2kg'
+				}
+			}		
 		}
 	}
 </script>
+
+
+  	
