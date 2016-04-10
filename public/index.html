@@ -4,6 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 	<title>MAPMAPMAP</title>
+	<link rel="styleshee" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
@@ -15,23 +16,12 @@
 		<div class="btn edit-mode">Delete</div>
 	</nav>
 	<div class='app-wrapper'>
-		<div id="vis" class="half"></div>
+		<div id="vis" class="half" v-on:click="getTroutData"></div>
 		<div id="app" class="half">
-			
-			<div id="tasks">
-
-			<h1>Trout Caught</h1>
-
-			<div v-for="info in trout">
-				<h2>Angler: {{ info.name }}</h2>
-				<p>Date: {{info.date}}</p>
-				<p>Weight: {{info.weight}}</p>
-				<p>Length: {{info.length}}</p>
+			<div class="display-trout">
+				{{trout.id}}
 			</div>
-
-			<input v-model="heading">	
-			</div>
-
+			<button v-on:click="log">log</button>
 		</div>		
 	</div>
 

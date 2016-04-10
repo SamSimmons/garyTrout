@@ -1,5 +1,6 @@
 'use strict';
 var fs = require('fs')
+var _ = require('lodash')
 
 
 const Hapi = require('hapi');
@@ -60,12 +61,28 @@ server.route({
 	path: '/data',
 	handler: function (req, reply) {
 		fs.readFile('./data.json', (err, data) => {
-			if(err) {console.err}
+			if(err) {throw err}
 
 			reply(data)
 		})
 	}
 });
+
+server.route({
+	method:'GET',
+	path: '/data/{id}',
+	handler: function(req, reply) {
+		var troutID = parseInt(req.params.id)
+		fs.readFile('./data.json', (err, data) => {
+			if (err) { throw err}
+
+			var arrayOfTrout = JSON.parse(data)
+			var trout = _.find(arrayOfTrout, ['id', troutID])
+			reply(trout)
+		})
+
+	}
+})
 
 server.route({
 	method: 'GET',
