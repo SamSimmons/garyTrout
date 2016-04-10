@@ -16,11 +16,14 @@ server.route({
 	path: '/delete',
 	handler: function (req, reply) {
 		fs.readFile('./data.json', (err, data) => {
-			if (err) {console.error('err from add', err)}
+			if (err) {
+				console.error('err from add', err)
+			}
 
 			var arrayOfTrout = JSON.parse(data)
 			var idToDelete = parseInt(JSON.parse(req.payload))
-			arrayOfTrout = arrayOfTrout.filter((trout) => {
+			arrayOfTrout = arrayOfTrout.filter((trout) => { 
+				
 				return trout.id !== idToDelete
 			})
 			fs.writeFile('./data.json', JSON.stringify(arrayOfTrout), (err) => {
