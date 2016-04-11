@@ -29,9 +29,15 @@ var App = Vue.extend({
           console.log(this.trout)
         })
       }
-      else {
-        console.log(this)
-      }    
+    },
+    addTrout: function() {
+      d3.select('#rotoma').on('click', function() {
+        var coords = d3.mouse(this)
+        console.log(coords)
+        //trout is added to db here
+        // var trout = addTrout(coords)
+        // drawMarker(trout)
+      })
     }
   }
 })

@@ -19,7 +19,7 @@
 		<div id="vis" class="half" v-on:click="getTroutData"></div>
 		<div id="app" class="half">
 			<div v-link="{path: '/home'}" class="btn ">View a trout</div>
-			<div v-link="{path: '/add'}" class="btn add-single">Add a trout</div>
+			<div v-link="{path: '/add'}" class="btn add-single" v-on:click="addTrout">Add a trout</div>
 			<router-view v-bind:text="trout"></router-view>
 
 		</div>		

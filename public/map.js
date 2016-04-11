@@ -124,12 +124,12 @@ var mapper = function () {
   })
 
   document.querySelector('.add-single').addEventListener('click', function() {
-    map.on('click', function() {
-      var coords = d3.mouse(this)
-      //trout is added to db here
-      var trout = addTrout(coords)
-      drawMarker(trout)
-    })
+    // map.on('click', function() {
+    //   var coords = d3.mouse(this)
+    //   //trout is added to db here
+    //   var trout = addTrout(coords)
+    //   drawMarker(trout)
+    // })
   })
 
   document.querySelector('.add-all').addEventListener('click', function() {
