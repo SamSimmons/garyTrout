@@ -8,6 +8,7 @@
 <script>
 	export default {
 		name: 'Home',
+		props: ['text'],
 		data: function() {
 			return {
 				trout: {

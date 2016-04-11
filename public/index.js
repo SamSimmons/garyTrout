@@ -2,7 +2,7 @@ import mapper from './map'
 import Vue from 'vue'
 // import App from './components/App.vue'
 import Home from './components/Home.vue'
-// import Add from './components/Add.vue'
+import Add from './components/Add.vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import xhr from 'xhr'
@@ -10,40 +10,15 @@ import xhr from 'xhr'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
-// export var router = new VueRouter()
-
-// router.map({
-//   '/home' : {
-//     component: Home
-//   },
-//   '/add' : {
-//     component: Add
-//   }
-// })
-
-// router.redirect({
-//   '*': '/home'
-// })
-
-// router.start(Home, '#app')
+Vue.config.debug = true
 
 mapper()
 
-var Data = Vue.extend({
-  template: '<div>All the trout data {{name}}</div>',
-  props: ['name']
-})
-
-Vue.component('data-c', Data)
-Vue.component('home', Home)
-
-new Vue({
-  el: 'body',
-  data: {
-    trout: "trouty"
-  },
-  events: {
-
+var App = Vue.extend({
+  data: function () {
+    return {
+      trout: "hey buddy"
+    }
   },
   methods: {
     getTroutData: function (evt) {      
@@ -58,3 +33,14 @@ new Vue({
   }
 })
 
+var router = new VueRouter()
+router.map({
+    '/add': {
+        component: Add
+    },
+    '/home': {
+        component: Home
+    }
+})
+
+router.start(App, 'body')
