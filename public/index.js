@@ -28,7 +28,10 @@ var App = Vue.extend({
           this.trout = JSON.parse(data.body)
           console.log(this.trout)
         })
-      }     
+      }
+      else {
+        console.log(this)
+      }    
     }
   }
 })

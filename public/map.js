@@ -58,11 +58,11 @@ var mapper = function () {
       lure: "",
       comment: "" 
     }
-    xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
-      if(err) {
-        console.error(err)
-      }
-    })
+    // xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
+    //   if(err) {
+    //     console.error(err)
+    //   }
+    // })
     return newTrout
   }
 
