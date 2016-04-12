@@ -16,11 +16,11 @@
 		<div class="btn edit-mode">Delete</div>
 	</nav>
 	<div class='app-wrapper'>
-		<div id="vis" class="half" v-on:click="getTroutData"></div>
+		<div id="vis" class="half" v-on:click="log"></div>
 		<div id="app" class="half">
 			<div v-link="{path: '/home'}" class="btn ">View a trout</div>
-			<div v-link="{path: '/add'}" class="btn add-single" v-on:click="addTrout">Add a trout</div>
-			<router-view v-bind:text="trout"></router-view>
+			<div v-link="{path: '/add'}" class="btn add-single">Add a trout</div>
+			<router-view v-bind:text="trout" ></router-view>
 
 		</div>		
 	</div>

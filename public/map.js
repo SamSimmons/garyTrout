@@ -45,26 +45,26 @@ var mapper = function () {
   }
 
   //will need a function for adding individual trout to db
-  var addTrout = (coords) => {
-    var newTrout = {
-      x: coords[0],
-      y: coords[1],
-      id: Date.now(),
-      angler: "delete",
-      time: "",
-      day: "",
-      month: "",
-      year: "",
-      lure: "",
-      comment: "" 
-    }
-    // xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
-    //   if(err) {
-    //     console.error(err)
-    //   }
-    // })
-    return newTrout
-  }
+  // var addTrout = (coords) => {
+  //   var newTrout = {
+  //     x: coords[0],
+  //     y: coords[1],
+  //     id: Date.now(),
+  //     angler: "delete",
+  //     time: "",
+  //     day: "",
+  //     month: "",
+  //     year: "",
+  //     lure: "",
+  //     comment: "" 
+  //   }
+  //   xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
+  //     if(err) {
+  //       console.error(err)
+  //     }
+  //   })
+  //   return newTrout
+  // }
 
   var clearMap = () => {
     var map = d3.select('#rotoma')
@@ -123,14 +123,14 @@ var mapper = function () {
     clearMap()    
   })
 
-  document.querySelector('.add-single').addEventListener('click', function() {
-    // map.on('click', function() {
-    //   var coords = d3.mouse(this)
-    //   //trout is added to db here
-    //   var trout = addTrout(coords)
-    //   drawMarker(trout)
-    // })
-  })
+  // document.querySelector('.add-single').addEventListener('click', function() {
+  //   map.on('click', function() {
+  //     var coords = d3.mouse(this)
+  //     //trout is added to db here
+  //     var trout = addTrout(coords)
+  //     drawNewMarker(trout)
+  //   })
+  // })
 
   document.querySelector('.add-all').addEventListener('click', function() {
     drawAllTrout()
