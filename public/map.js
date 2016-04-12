@@ -8,7 +8,7 @@ var mapper = function () {
       scale0 = (width - 1) / 2 / Math.PI;
 
   //appends the map to the page
-  var map = d3.select("body").append("svg")
+  var map = d3.select("#vis").append("svg")
     .attr('id', 'rotoma')
     .attr("width", width)
     .attr("height", height)
@@ -58,11 +58,11 @@ var mapper = function () {
       lure: "",
       comment: "" 
     }
-    xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
-      if(err) {
-        console.error(err)
-      }
-    })
+    // xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
+    //   if(err) {
+    //     console.error(err)
+    //   }
+    // })
     return newTrout
   }
 
@@ -124,12 +124,12 @@ var mapper = function () {
   })
 
   document.querySelector('.add-single').addEventListener('click', function() {
-    map.on('click', function() {
-      var coords = d3.mouse(this)
-      //trout is added to db here
-      var trout = addTrout(coords)
-      drawMarker(trout)
-    })
+    // map.on('click', function() {
+    //   var coords = d3.mouse(this)
+    //   //trout is added to db here
+    //   var trout = addTrout(coords)
+    //   drawMarker(trout)
+    // })
   })
 
   document.querySelector('.add-all').addEventListener('click', function() {

@@ -1,5 +1,6 @@
 'use strict';
 var fs = require('fs')
+var _ = require('lodash')
 
 
 const Hapi = require('hapi');
@@ -15,11 +16,14 @@ server.route({
 	path: '/delete',
 	handler: function (req, reply) {
 		fs.readFile('./data.json', (err, data) => {
-			if (err) {console.error('err from add', err)}
+			if (err) {
+				console.error('err from add', err)
+			}
 
 			var arrayOfTrout = JSON.parse(data)
 			var idToDelete = parseInt(JSON.parse(req.payload))
-			arrayOfTrout = arrayOfTrout.filter((trout) => {
+			arrayOfTrout = arrayOfTrout.filter((trout) => { 
+
 				return trout.id !== idToDelete
 			})
 			fs.writeFile('./data.json', JSON.stringify(arrayOfTrout), (err) => {
@@ -60,12 +64,29 @@ server.route({
 	path: '/data',
 	handler: function (req, reply) {
 		fs.readFile('./data.json', (err, data) => {
-			if(err) {console.err}
+			if(err) {throw err}
 
 			reply(data)
 		})
 	}
 });
+
+server.route({
+	method:'GET',
+	path: '/data/{id}',
+	handler: function(req, reply) {
+		var troutID = parseInt(req.params.id)
+		fs.readFile('./data.json', (err, data) => {
+			if (err) { throw err}
+
+			var arrayOfTrout = JSON.parse(data)
+			var trout = _.find(arrayOfTrout, ['id', troutID])
+			console.log('returning: ', trout)
+			reply(trout)
+		})
+
+	}
+})
 
 server.route({
 	method: 'GET',
