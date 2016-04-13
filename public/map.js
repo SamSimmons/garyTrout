@@ -44,28 +44,6 @@ var mapper = function () {
             .attr("r", 5);
   }
 
-  //will need a function for adding individual trout to db
-  // var addTrout = (coords) => {
-  //   var newTrout = {
-  //     x: coords[0],
-  //     y: coords[1],
-  //     id: Date.now(),
-  //     angler: "delete",
-  //     time: "",
-  //     day: "",
-  //     month: "",
-  //     year: "",
-  //     lure: "",
-  //     comment: "" 
-  //   }
-  //   xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
-  //     if(err) {
-  //       console.error(err)
-  //     }
-  //   })
-  //   return newTrout
-  // }
-
   var clearMap = () => {
     var map = d3.select('#rotoma')
       .selectAll('circle').remove()
@@ -83,13 +61,6 @@ var mapper = function () {
     xhr.get('http://localhost:3001/data', (err, data) => {
       console.log(JSON.parse(data.body))  
     })
-  }
-
-  //will need a function for drawing a single trout to map
-  var drawTrout = () => {}
-
-  //will need a function for drawing all selected trout to the map
-  var getAllTrout = function () {  
   }
 
   //error here i think
@@ -122,15 +93,6 @@ var mapper = function () {
   document.querySelector('.remove-all').addEventListener('click', function () {
     clearMap()    
   })
-
-  // document.querySelector('.add-single').addEventListener('click', function() {
-  //   map.on('click', function() {
-  //     var coords = d3.mouse(this)
-  //     //trout is added to db here
-  //     var trout = addTrout(coords)
-  //     drawNewMarker(trout)
-  //   })
-  // })
 
   document.querySelector('.add-all').addEventListener('click', function() {
     drawAllTrout()

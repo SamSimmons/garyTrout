@@ -1,8 +1,8 @@
 import mapper from './map'
 import Vue from 'vue'
-// import App from './components/App.vue'
 import Home from './components/Home.vue'
 import Add from './components/Add.vue'
+import Delete from './components/Delete.vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import xhr from 'xhr'
@@ -14,12 +14,8 @@ Vue.config.debug = true
 
 mapper()
 
-
 //TODO fix this dirty dirty global
 var coords
-// d3.select('#rotoma').on('click', function () {
-//   coords = d3.mouse(this)
-// })
 
 var App = Vue.extend({
   data: function () {
@@ -30,6 +26,7 @@ var App = Vue.extend({
         id: "",
         angler: "",
         dateCaught: "",
+        timeCaught: "",
         lure: "",
         comment: "" 
       }
@@ -45,19 +42,16 @@ var App = Vue.extend({
         })
       }
     },
+    turnOffAddListener: function () {
+      console.log('turn off listener')
+      d3.select('#rotoma').on('click', null)
+    },
     handleClick: function () {
       var that = this
       d3.select('#rotoma').on('click', function () {
         coords = d3.mouse(this)
         that.setTroutData(coords)
       })
-    },
-    sendTrout: function (newTrout) {
-        xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
-          if(err) {
-            console.error(err)
-          }
-        })
     },
     setTroutData: function(xy) {
       this.trout.x = xy[0]
@@ -84,6 +78,9 @@ var App = Vue.extend({
 
 var router = new VueRouter()
 router.map({
+    '/delete': {
+      component: Delete
+    },
     '/add': {
         component: Add
     },
