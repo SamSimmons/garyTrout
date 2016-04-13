@@ -1,18 +1,25 @@
 <template>
 	<div class="add-wrapper">
-	<h1>Add</h1>
-		<div class="btn" v-on:click="autofill">--autofill time stuff--</div>
-		<p>Angler: {{ angler }}</p>
-		<input type="text" v-model="angler">
-		<p>Lure: {{ lure }}</p>
-		<input type="text" v-model="lure">
-		<p>Time</p>
-		<input type="text" value={{timeCaught}}>
-		<p>Date</p>
-		<input type="text" value={{dateCaught}}>
-		<p>Comment</p>
-		<textarea v-model="comment"></textarea>
-		<div class="btn submit" v-on:click="submit">Submit</div>
+		<div class="info-box">
+			<label for="angler">Angler:</label>
+			<input name="angler" type="text" v-model="angler">
+			<label for="lure">Lure:</label>
+			<input type="text" v-model="lure">
+			<label for="timeCaught">Time</label>
+			<input name="timeCaught" type="text" value={{timeCaught}}>
+			<label for="date">Date</label>
+			<input name="date" type="text" value={{dateCaught}}>
+			<label for="comment">Comment</label>
+			<textarea name="comment" v-model="comment"></textarea>
+			<div class="btn submit" v-on:click="submit">Submit</div>
+		</div>
+		<div class="trout-info">
+			<p>{{ angler }}</p>
+			<p>{{ lure }}</p>
+			<p>{{ dateCaught}}</p>
+			<p>{{ timeCaught}}</p>
+			<p>{{ comment }}</p>
+		</div>
 	</div>
 </template>
 
@@ -27,11 +34,11 @@
 		name: 'Add',
 		data: function() {
 			return {
-				angler: "",
-				lure: "",
+				angler: "name",
+				lure: "default",
 				dateCaught: "",
 				timeCaught: "",
-				comment: ""
+				comment: "default"
 			}		
 		},
 		methods: {
