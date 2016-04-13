@@ -20,7 +20,7 @@
 		<div id="app" class="half">
 			<div v-link="{path: '/home'}" class="btn" v-on:click="turnOffAddListener">View a trout</div>
 			<div v-link="{path: '/add'}" class="btn add-single" v-on:click="handleClick">Add a trout</div>
-			<div v-link="{path: '/delete'}" class="btn delete-mode">Delete a trout</div>
+			<div v-link="{path: '/delete'}" class="btn delete-mode" v-on:click="turnOffAddListener">Delete a trout</div>
 			<router-view></router-view>
 
 		</div>		
