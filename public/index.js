@@ -14,10 +14,12 @@ Vue.config.debug = true
 
 mapper()
 
+
+//TODO fix this dirty dirty global
 var coords
-d3.select('#rotoma').on('click', function () {
-  coords = d3.mouse(this)
-})
+// d3.select('#rotoma').on('click', function () {
+//   coords = d3.mouse(this)
+// })
 
 var App = Vue.extend({
   data: function () {
@@ -27,10 +29,7 @@ var App = Vue.extend({
         y: 0,
         id: "",
         angler: "",
-        time: "",
-        day: "",
-        month: "",
-        year: "",
+        dateCaught: "",
         lure: "",
         comment: "" 
       }
@@ -46,10 +45,24 @@ var App = Vue.extend({
         })
       }
     },
-    log: function () {
-      console.log(coords)
+    handleClick: function () {
+      var that = this
+      d3.select('#rotoma').on('click', function () {
+        coords = d3.mouse(this)
+        that.setTroutData(coords)
+      })
     },
-    getCoords: function(evt) {
+    sendTrout: function (newTrout) {
+        xhr.post('http://localhost:3001/add',{json: JSON.stringify(newTrout)}, (err, data) => {
+          if(err) {
+            console.error(err)
+          }
+        })
+    },
+    setTroutData: function(xy) {
+      this.trout.x = xy[0]
+      this.trout.y = xy[1]
+      this.drawMarker(this.trout)
     },
     drawMarker: function(trout) {
       var map = d3.select('#rotoma')
