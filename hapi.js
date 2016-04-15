@@ -81,7 +81,6 @@ server.route({
 
 			var arrayOfTrout = JSON.parse(data)
 			var trout = _.find(arrayOfTrout, ['id', troutID])
-			console.log('returning: ', trout)
 			reply(trout)
 		})
 
