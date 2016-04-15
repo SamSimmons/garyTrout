@@ -14,6 +14,8 @@ Vue.config.debug = true
 
 map.create()
 
+console.log('change')
+
 //TODO fix this dirty dirty global
 var coords = []
 
@@ -36,7 +38,7 @@ var App = Vue.extend({
     getTroutData: function (evt) {      
       if (evt.srcElement.localName === 'circle') {
         var id = evt.srcElement.classList[1]
-        xhr.get('http://localhost:3001/data/' + id, (err, data) => {
+        xhr.get('/data/' + id, (err, data) => {
           this.trout = JSON.parse(data.body)
           console.log(this.trout)
         })

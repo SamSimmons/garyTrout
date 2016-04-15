@@ -1,15 +1,28 @@
 'use strict';
 var fs = require('fs')
+var Path = require('path')
 var _ = require('lodash')
+var Inert = require('inert')
 
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server();
+var server = new Hapi.Server({
+    connections: {
+        routes: {
+            files: {
+                relativeTo: Path.join(__dirname, 'public')
+            }
+        }
+    }
+});
+
 server.connection({
 	port: 3001,
 	routes: { cors: true } 
 });
+
+server.register(Inert, function () {});
 
 server.route({
 	method: 'POST',
@@ -88,12 +101,16 @@ server.route({
 })
 
 server.route({
-	method: 'GET',
-	path: '/',
-	handler: function (req, reply) {		
-		reply('index.html');
-	}
-})
+    method: 'GET',
+    path: '/{param*}',
+    handler: {
+        directory: {
+            path: '.',
+            redirectToSlash: true,
+            index: true
+        }
+    }
+});
 
 server.start((err) => {
 	if (err) {

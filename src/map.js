@@ -1,5 +1,3 @@
-var xhr = require('xhr')
-
 module.exports = {
   //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
   create: function () {
@@ -7,7 +5,6 @@ module.exports = {
     var width = 600,
         height = 600,
         scale0 = (width - 1) / 2 / Math.PI;
-
     //appends the map to the page
     var map = d3.select("#vis").append("svg")
       .attr('id', 'rotoma')
