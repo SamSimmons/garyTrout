@@ -7,6 +7,7 @@
 
 <script>
 	import xhr from 'xhr'
+	import map from '../map'
 
 	export default {
 		ready: function () {
@@ -32,25 +33,8 @@
 				  }
 				})
 			},
-			clearMap: function () {
-				var map = d3.select('#rotoma')
-				  .selectAll('circle').remove()
-			},
-			drawMarker: function (trout) {
-			  var map = d3.select('#rotoma')
-
-			  map.append("circle")
-			    .attr('class', 'marker-out ' + trout.id)
-			      .attr("cx", trout.x)
-			        .attr("cy", trout.y)
-			          .attr("r", 40)
-
-			  map.append("circle")
-			    .attr('class', 'marker ' + trout.id)
-			      .attr("cx", trout.x)
-			        .attr("cy", trout.y)
-			          .attr("r", 5);
-			}
+			clearMap: map.clearMap,
+			drawMarker: map.drawMarker
 		}
 	}
 </script>

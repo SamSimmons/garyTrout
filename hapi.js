@@ -89,9 +89,9 @@ server.route({
 
 server.route({
 	method: 'GET',
-	path: '/{name}',
+	path: '/',
 	handler: function (req, reply) {		
-		reply('Hello, ' + encodeURIComponent(req.params.name) + '!');
+		reply('index.html');
 	}
 })
 

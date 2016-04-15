@@ -1,4 +1,4 @@
-import mapper from './map'
+import map from './map'
 import Vue from 'vue'
 import Home from './components/Home.vue'
 import Add from './components/Add.vue'
@@ -12,10 +12,10 @@ Vue.use(VueResource)
 
 Vue.config.debug = true
 
-mapper()
+map.create()
 
 //TODO fix this dirty dirty global
-var coords
+var coords = []
 
 var App = Vue.extend({
   data: function () {
@@ -58,21 +58,7 @@ var App = Vue.extend({
       this.trout.y = xy[1]
       this.drawMarker(this.trout)
     },
-    drawMarker: function(trout) {
-      var map = d3.select('#rotoma')
-
-      map.append("circle")
-        .attr('class', 'marker-out ' + trout.id)
-          .attr("cx", trout.x)
-            .attr("cy", trout.y)
-              .attr("r", 40)
-
-      map.append("circle")
-        .attr('class', 'marker ' + trout.id)
-          .attr("cx", trout.x)
-            .attr("cy", trout.y)
-              .attr("r", 5);
-    }
+    drawMarker: map.drawMarker
   }
 })
 
