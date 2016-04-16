@@ -2,7 +2,7 @@
 
 module.exports = {
   // the main entry of our app
-  entry: './public/index.js',
+  entry: './src/index.js',
   // output configuration
   output: {
     path: __dirname + '/public',

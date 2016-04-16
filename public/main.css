@@ -58,22 +58,21 @@ body {
 	display: flex;
 }
 
+.add-wrapper {
+	display: flex;
+	justify-content: space-around;
+}
+
 .half {
 	width: 50%;
 }
 
 .info-box {
-	background-color: #eee;
-	color: #666;
+	display: flex;
+	flex-direction: column;
+	max-width: 45%;
 }
 
-.info-title {
-	padding-top: 20px;
-	color: #105737;
-	margin: 0 auto;
-	text-align: center;
-}
-
-.inner-info {
-	padding: 2%;
+svg .new {
+	fill: olivedrab;
 }

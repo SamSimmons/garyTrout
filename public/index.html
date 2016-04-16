@@ -10,18 +10,14 @@
 <body>
 	<nav class="navbar">
 		<div class="btn title">TROUT-TROUT</div>
-		
-		<div class="btn add-all">View all trout</div>
-		<div class="btn remove-all">Clear Map</div>
-		<div class="btn edit-mode">Delete</div>
 	</nav>
 	<div class='app-wrapper'>
 		<div id="vis" class="half" v-on:click="getTroutData"></div>
 		<div id="app" class="half">
-			<div v-link="{path: '/home'}" class="btn ">View a trout</div>
-			<div v-link="{path: '/add'}" class="btn add-single" v-on:click="addTrout">Add a trout</div>
-			<router-view v-bind:text="trout"></router-view>
-
+			<div v-link="{path: '/home'}" class="btn" v-on:click="turnOffAddListener">View a trout</div>
+			<div v-link="{path: '/add'}" class="btn add-single" v-on:click="handleClick">Add a trout</div>
+			<div v-link="{path: '/delete'}" class="btn delete-mode" v-on:click="turnOffAddListener">Edit / Delete</div>
+			<router-view></router-view>
 		</div>		
 	</div>
 
