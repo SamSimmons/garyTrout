@@ -66,6 +66,10 @@
 
 	var _Delete2 = _interopRequireDefault(_Delete);
 
+	var _App = __webpack_require__(49);
+
+	var _App2 = _interopRequireDefault(_App);
+
 	var _vueRouter = __webpack_require__(24);
 
 	var _vueRouter2 = _interopRequireDefault(_vueRouter);
@@ -87,78 +91,32 @@
 
 	_map2.default.create();
 
-	console.log('change');
-
-	//TODO fix this dirty dirty global
-	var coords = [];
-
-	var App = _vue2.default.extend({
-	  data: function data() {
-	    return {
-	      trout: {
-	        x: 0,
-	        y: 0,
-	        id: "",
-	        angler: "",
-	        dateCaught: "",
-	        timeCaught: "",
-	        lure: "",
-	        comment: ""
-	      }
-	    };
-	  },
-	  methods: {
-	    getTroutData: function getTroutData(evt) {
-	      var _this = this;
-
-	      if (evt.srcElement.localName === 'circle') {
-	        var id = evt.srcElement.classList[1];
-	        _xhr2.default.get('/data/' + id, function (err, data) {
-	          _this.trout = JSON.parse(data.body);
-	          console.log(_this.trout);
-	        });
-	      }
-	    },
-	    turnOffAddListener: function turnOffAddListener() {
-	      console.log('turn off listener');
-	      d3.select('#rotoma').on('click', null);
-	    },
-	    handleClick: function handleClick() {
-	      var that = this;
-	      d3.select('#rotoma').on('click', function () {
-	        coords = d3.mouse(this);
-	        that.setTroutData(coords);
-	      });
-	    },
-	    setTroutData: function setTroutData(xy) {
-	      this.trout.x = xy[0];
-	      this.trout.y = xy[1];
-	      this.drawMarker(this.trout);
-	    },
-	    drawMarker: _map2.default.drawMarker
-	  }
-	});
-
 	var router = new _vueRouter2.default();
 	router.map({
-	  '/delete': {
-	    component: _Delete2.default
-	  },
-	  '/add': {
-	    component: _Add2.default
-	  },
-	  '/home': {
-	    component: _Home2.default
-	  }
+	    '/delete': {
+	        component: _Delete2.default
+	    },
+	    '/add': {
+	        component: _Add2.default
+	    },
+	    '/home': {
+	        component: _Home2.default
+	    }
 	});
 
-	router.start(App, 'body');
+	router.start(_App2.default, 'body');
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	var _xhr = __webpack_require__(6);
+
+	var _xhr2 = _interopRequireDefault(_xhr);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = {
 	  //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
@@ -189,6 +147,20 @@
 	  },
 	  clearMap: function clearMap() {
 	    var map = d3.select('#rotoma').selectAll('circle').remove();
+	  },
+	  drawAllTrout: function drawAllTrout() {
+	    var _this = this;
+
+	    _xhr2.default.get('/data', function (err, data) {
+	      if (err) {
+	        console.error(err);
+	      } else {
+	        var allTrout = JSON.parse(data.body);
+	        allTrout.forEach(function (trout) {
+	          return _this.drawMarker(trout);
+	        });
+	      }
+	    });
 	  }
 	};
 
@@ -10167,7 +10139,7 @@
 	// <template>
 	// 	<div class="home-wrapper">
 	// 	<h1>View</h1>
-	// 		<h2>{{ $parent.trout | json }}</h2>
+	// 		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
 	// 	</div>
 	// </template>
 	//
@@ -10180,27 +10152,11 @@
 		name: 'Home',
 		data: function data() {
 			return {
-				trout: {
-					name: 'trouter',
-					sizer: '2.2kg'
-				}
+				trout: {}
 			};
 		},
 		methods: {
-			drawAllTrout: function drawAllTrout() {
-				var _this = this;
-
-				_xhr2.default.get('http://localhost:3001/data', function (err, data) {
-					if (err) {
-						console.error(err);
-					} else {
-						var allTrout = JSON.parse(data.body);
-						allTrout.forEach(function (trout) {
-							return _this.drawMarker(trout);
-						});
-					}
-				});
-			},
+			drawAllTrout: _map2.default.drawAllTrout,
 			clearMap: _map2.default.clearMap,
 			drawMarker: _map2.default.drawMarker
 		}
@@ -10633,7 +10589,7 @@
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2>{{ $parent.trout | json }}</h2>\n</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n</div>\n";
 
 /***/ },
 /* 15 */
@@ -10724,7 +10680,8 @@
 	// </script>
 	// <template>
 	// 	<div class="add-wrapper">
-	// 		<div class="info-box">
+	// 	<p class='location-warning' v-if="!$parent.coordsSet">Click on the map to add the location of your trout</p>
+	// 		<div class="info-box" v-if="$parent.coordsSet">
 	// 			<label for="angler">Angler:</label>
 	// 			<input name="angler" type="text" v-model="angler">
 	// 			<label for="lure">Lure:</label>
@@ -10735,14 +10692,7 @@
 	// 			<input name="date" type="text" value={{dateCaught}}>
 	// 			<label for="comment">Comment</label>
 	// 			<textarea name="comment" v-model="comment"></textarea>
-	// 			<div class="btn submit" v-on:click="submit">Submit</div>
-	// 		</div>
-	// 		<div class="trout-info">
-	// 			<p>{{ angler }}</p>
-	// 			<p>{{ lure }}</p>
-	// 			<p>{{ dateCaught}}</p>
-	// 			<p>{{ timeCaught}}</p>
-	// 			<p>{{ comment }}</p>
+	// 			<div class="btn submit" v-on:click="submit" v-link="{path: '/home'}">Submit</div>
 	// 		</div>
 	// 	</div>
 	// </template>
@@ -10775,7 +10725,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n\t<div class=\"info-box\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"lure\">Lure:</label>\n\t\t<input type=\"text\" v-model=\"lure\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n\t<div class=\"trout-info\">\n\t\t<p>{{ angler }}</p>\n\t\t<p>{{ lure }}</p>\n\t\t<p>{{ dateCaught}}</p>\n\t\t<p>{{ timeCaught}}</p>\n\t\t<p>{{ comment }}</p>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"lure\">Lure:</label>\n\t\t<input type=\"text\" v-model=\"lure\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/home'}\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 21 */
@@ -10823,8 +10773,23 @@
 
 	var _xhr2 = _interopRequireDefault(_xhr);
 
+	var _map = __webpack_require__(1);
+
+	var _map2 = _interopRequireDefault(_map);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// <template>
+	// 	<div class="home-wrapper">
+	// 	<h1>Delete</h1>
+	// 		<p>Click on a trout marker to edit or delete</p>
+	// 		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
+	// 		<div class="btn">Edit</div>
+	// 		<div class="btn" v-on:click="delete" v-link="{path: '/home'}">Delete</div>
+	// 	</div>
+	// </template>
+	//
+	// <script>
 	exports.default = {
 		ready: function ready() {
 			this.clearMap();
@@ -10836,35 +10801,14 @@
 				var _this = this;
 
 				console.log('delete this trout');
-				_xhr2.default.post('http://localhost:3001/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
+				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
 					_this.clearMap();
 					_this.drawAllTrout();
 				});
 			},
-			clearMap: function clearMap() {
-				var map = d3.select('#rotoma').selectAll('circle').remove();
-			},
-			drawAllTrout: function drawAllTrout() {
-				var _this2 = this;
-
-				_xhr2.default.get('http://localhost:3001/data', function (err, data) {
-					if (err) {
-						console.error(err);
-					} else {
-						var allTrout = JSON.parse(data.body);
-						allTrout.forEach(function (trout) {
-							return _this2.drawMarker(trout);
-						});
-					}
-				});
-			},
-			drawMarker: function drawMarker(trout) {
-				var map = d3.select('#rotoma');
-
-				map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 40);
-
-				map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 5);
-			}
+			clearMap: _map2.default.clearMap,
+			drawAllTrout: _map2.default.drawAllTrout,
+			drawMarker: _map2.default.drawMarker
 		},
 		data: function data() {
 			return {
@@ -10873,23 +10817,12 @@
 		}
 	};
 	// </script>
-	// <template>
-	// 	<div class="home-wrapper">
-	// 	<h1>Delete</h1>
-	// 		<p>Click on a trout marker to edit or delete</p>
-	// 		<h2>{{ $parent.trout | json }}</h2>
-	// 		<div class="btn">Edit</div>
-	// 		<div class="btn" v-on:click="delete">Delete</div>
-	// 	</div>
-	// </template>
-	//
-	// <script>
 
 /***/ },
 /* 23 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>Delete</h1>\n\t<p>Click on a trout marker to edit or delete</p>\n\t<h2>{{ $parent.trout | json }}</h2>\n\t<div class=\"btn\">Edit</div>\n\t<div class=\"btn\" v-on:click=\"delete\">Delete</div>\n</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n<h1>Delete</h1>\n\t<p>Click on a trout marker to edit or delete</p>\n\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n\t<div class=\"btn\">Edit</div>\n\t<div class=\"btn\" v-on:click=\"delete\" v-link=\"{path: '/home'}\">Delete</div>\n</div>\n";
 
 /***/ },
 /* 24 */
@@ -15168,6 +15101,107 @@
 
 	module.exports = _.resource = Resource;
 
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(50)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/App.vue: named exports in *.vue files are ignored.")}
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/home/sam/workspaces/garyTrout/src/components/App.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _xhr = __webpack_require__(6);
+
+	var _xhr2 = _interopRequireDefault(_xhr);
+
+	var _map = __webpack_require__(1);
+
+	var _map2 = _interopRequireDefault(_map);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// <script>
+	exports.default = {
+	  data: function data() {
+	    return {
+	      trout: {
+	        x: 0,
+	        y: 0,
+	        id: "",
+	        angler: "",
+	        dateCaught: "",
+	        timeCaught: "",
+	        lure: "",
+	        comment: ""
+	      },
+	      coordsSet: false
+	    };
+	  },
+	  methods: {
+	    getTroutData: function getTroutData(evt) {
+	      var _this = this;
+
+	      if (evt.srcElement.localName === 'circle') {
+	        var id = evt.srcElement.classList[1];
+	        _xhr2.default.get('/data/' + id, function (err, data) {
+	          _this.trout = JSON.parse(data.body);
+	        });
+	      }
+	    },
+	    turnOffAddListener: function turnOffAddListener() {
+	      console.log('turn off listener');
+	      d3.select('#rotoma').on('click', null);
+	    },
+	    handleClick: function handleClick() {
+	      console.log('listner is on');
+	      var that = this;
+	      d3.select('#rotoma').on('click', function () {
+	        var coords = d3.mouse(this);
+	        that.trout.x = coords[0];
+	        that.trout.y = coords[1];
+	        that.drawMarker(that.trout);
+	        that.turnOffAddListener();
+	        that.coordsSet = true;
+	      });
+	    },
+	    setTroutData: function setTroutData(xy) {
+	      this.trout.x = xy[0];
+	      this.trout.y = xy[1];
+	      this.drawMarker(this.trout);
+	    },
+	    drawMarker: _map2.default.drawMarker
+	  }
+	};
+	// </script>
 
 /***/ }
 /******/ ]);

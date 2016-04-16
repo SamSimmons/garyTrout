@@ -1,3 +1,5 @@
+import xhr from 'xhr'
+
 module.exports = {
   //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
   create: function () {
@@ -44,5 +46,14 @@ module.exports = {
   clearMap: function () {
     var map = d3.select('#rotoma')
       .selectAll('circle').remove()
-  }
+  },
+  drawAllTrout: function () {
+          xhr.get('/data', (err, data) => {
+            if (err) { console.error(err)}
+            else {
+              var allTrout = JSON.parse(data.body)
+              allTrout.forEach( trout => this.drawMarker(trout))
+            }
+          })
+        }
 }

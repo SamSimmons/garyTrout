@@ -1,7 +1,7 @@
 <template>
 	<div class="home-wrapper">
 	<h1>View</h1>
-		<h2>{{ $parent.trout | json }}</h2>
+		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
 	</div>
 </template>
 
@@ -17,22 +17,11 @@
 		name: 'Home',
 		data: function() {
 			return {
-				trout: {
-					name: 'trouter',
-					sizer: '2.2kg'
-				}
+				trout: {}
 			}		
 		},
 		methods: {
-			drawAllTrout: function () {
-				xhr.get('http://localhost:3001/data', (err, data) => {
-				  if (err) { console.error(err)}
-				  else {
-				    var allTrout = JSON.parse(data.body)
-				    allTrout.forEach( trout => this.drawMarker(trout))
-				  }
-				})
-			},
+			drawAllTrout: map.drawAllTrout,
 			clearMap: map.clearMap,
 			drawMarker: map.drawMarker
 		}
