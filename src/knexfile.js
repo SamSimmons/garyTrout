@@ -6,7 +6,7 @@ module.exports = {
     },
     useNullAsDefault: true
   },
-
+  production: process.env.DATABASE_URL,
   // the directory your migration files are located in
   directory: __dirname + '/migrations',
 
