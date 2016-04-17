@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
   console.log('create table')
 
   return knex.schema.createTableIfNotExists('fish', function(table) {
-      table.bigserial('id')
+      table.string('id')
       table.integer('x')
       table.integer('y')
       table.string('angler')

@@ -10656,6 +10656,7 @@
 		},
 		methods: {
 			setup: function setup() {
+				this.$parent.trout.id = Date.now().toString();
 				this.$parent.trout.dateCaught = this.dateCaught;
 				this.$parent.trout.timeCaught = this.timeCaught;
 			},
@@ -10877,6 +10878,7 @@
 	      trout: {
 	        x: 0,
 	        y: 0,
+	        id: "",
 	        angler: "",
 	        dateCaught: "",
 	        timeCaught: "",
