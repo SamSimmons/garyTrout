@@ -34,7 +34,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "start": "nodemon hapi.js"
+    "start": "node hapi.js"
   },
   "repository": {
     "type": "git",
