@@ -29,6 +29,7 @@ module.exports = {
       })
   },
   drawMarker: function(trout) {
+    console.log('drawing trout ---' + trout)
     var map = d3.select('#rotoma')
 
     map.append("circle")
