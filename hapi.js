@@ -4,7 +4,7 @@ var Path = require('path')
 var _ = require('lodash')
 var Inert = require('inert')
 var knexConfig = require('./src/knexfile.js')
-var knex = require('knex')(knexConfig.production);
+var knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
 
 const Hapi = require('hapi');
 
