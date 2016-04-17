@@ -10,6 +10,7 @@ export default {
         y: 0,
         id: "",
         angler: "",
+        weight: "",
         dateCaught: "",
         timeCaught: "",
         lure: "",

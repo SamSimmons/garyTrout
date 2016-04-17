@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
       table.integer('x')
       table.integer('y')
       table.string('angler')
+      table.string('weight')
       table.string('dateCaught')
       table.string('timeCaught')
       table.string('lure')

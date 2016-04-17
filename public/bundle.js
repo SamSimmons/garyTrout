@@ -10648,6 +10648,7 @@
 		data: function data() {
 			return {
 				angler: "name",
+				weight: '',
 				lure: "default",
 				dateCaught: "",
 				timeCaught: "",
@@ -10666,6 +10667,7 @@
 				this.$parent.trout.angler = this.angler;
 				this.$parent.trout.lure = this.lure;
 				this.$parent.trout.comment = this.comment;
+				this.$parent.trout.weight = this.weight;
 				_xhr2.default.post('/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
 					if (err) {
 						console.error(err);
@@ -10689,6 +10691,8 @@
 	// 			<input name="angler" type="text" v-model="angler">
 	// 			<label for="lure">Lure:</label>
 	// 			<input type="text" v-model="lure">
+	// 			<label for="weight">Weight(kg):</label>
+	// 			<input type="number" v-model="weight">
 	// 			<label for="timeCaught">Time</label>
 	// 			<input name="timeCaught" type="text" value={{timeCaught}}>
 	// 			<label for="date">Date</label>
@@ -10728,7 +10732,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"lure\">Lure:</label>\n\t\t<input type=\"text\" v-model=\"lure\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/home'}\">Submit</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"lure\">Lure:</label>\n\t\t<input type=\"text\" v-model=\"lure\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/home'}\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 21 */
@@ -10883,6 +10887,7 @@
 	        y: 0,
 	        id: "",
 	        angler: "",
+	        weight: "",
 	        dateCaught: "",
 	        timeCaught: "",
 	        lure: "",

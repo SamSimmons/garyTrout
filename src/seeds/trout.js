@@ -10,6 +10,7 @@ exports.seed = function(knex, Promise) {
         x: 105,
         y: 105,
         angler: 'Terry Terry',
+        weight: '',
         dateCaught: '4/5/2015',
         timeCaught: '6:32',
         lure: "feather",

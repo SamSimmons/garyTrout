@@ -6,6 +6,8 @@
 			<input name="angler" type="text" v-model="angler">
 			<label for="lure">Lure:</label>
 			<input type="text" v-model="lure">
+			<label for="weight">Weight(kg):</label>
+			<input type="number" v-model="weight">
 			<label for="timeCaught">Time</label>
 			<input name="timeCaught" type="text" value={{timeCaught}}>
 			<label for="date">Date</label>
@@ -29,6 +31,7 @@
 		data: function() {
 			return {
 				angler: "name",
+				weight: '',
 				lure: "default",
 				dateCaught: "",
 				timeCaught: "",
@@ -45,6 +48,7 @@
 				this.$parent.trout.angler = this.angler
 				this.$parent.trout.lure = this.lure
 				this.$parent.trout.comment = this.comment
+				this.$parent.trout.weight = this.weight
 				xhr.post('/add',{json: JSON.stringify(this.$parent.trout)}, (err, data) => {
 				  if(err) {
 				    console.error(err)
