@@ -29,13 +29,12 @@ module.exports = {
       })
   },
   drawMarker: function(trout) {
-    console.log('drawing trout ---' + typeof trout)
     var map = d3.select('#rotoma')
 
     map.append("circle")
       .attr('class', 'marker-out ' + trout.id)
-        .attr("cx", trout.x)
-          .attr("cy", trout.y)
+        .attr("cx", parseInt(trout.x))
+          .attr("cy", parseInt(trout.y))
             .attr("r", 40)
 
     map.append("circle")
