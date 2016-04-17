@@ -10806,10 +10806,10 @@
 				var _this = this;
 
 				console.log('delete this trout');
+				this.$parent.coordsSet = false;
 				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
 					_this.clearMap();
 					_this.drawAllTrout();
-					_this.$parent.coordsSet = false;
 				});
 			},
 			clearMap: _map2.default.clearMap,
