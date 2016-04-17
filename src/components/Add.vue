@@ -49,6 +49,7 @@
 				  if(err) {
 				    console.error(err)
 				  }
+				  this.$parent.coordsSet = false
 				})
 			},
 			autofill: function () {

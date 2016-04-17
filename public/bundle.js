@@ -10661,6 +10661,8 @@
 				this.$parent.trout.timeCaught = this.timeCaught;
 			},
 			submit: function submit() {
+				var _this = this;
+
 				this.$parent.trout.angler = this.angler;
 				this.$parent.trout.lure = this.lure;
 				this.$parent.trout.comment = this.comment;
@@ -10668,6 +10670,7 @@
 					if (err) {
 						console.error(err);
 					}
+					_this.$parent.coordsSet = false;
 				});
 			},
 			autofill: function autofill() {
