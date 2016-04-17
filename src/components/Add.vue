@@ -45,7 +45,7 @@
 				this.$parent.trout.angler = this.angler
 				this.$parent.trout.lure = this.lure
 				this.$parent.trout.comment = this.comment
-				xhr.post('http://localhost:3001/add',{json: JSON.stringify(this.$parent.trout)}, (err, data) => {
+				xhr.post('/add',{json: JSON.stringify(this.$parent.trout)}, (err, data) => {
 				  if(err) {
 				    console.error(err)
 				  }

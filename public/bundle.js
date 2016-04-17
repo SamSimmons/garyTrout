@@ -139,6 +139,7 @@
 	    });
 	  },
 	  drawMarker: function drawMarker(trout) {
+	    console.log('drawing trout ---' + trout);
 	    var map = d3.select('#rotoma');
 
 	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 40);
@@ -10664,7 +10665,7 @@
 				this.$parent.trout.angler = this.angler;
 				this.$parent.trout.lure = this.lure;
 				this.$parent.trout.comment = this.comment;
-				_xhr2.default.post('http://localhost:3001/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
+				_xhr2.default.post('/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
 					if (err) {
 						console.error(err);
 					}
