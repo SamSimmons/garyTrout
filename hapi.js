@@ -3,12 +3,8 @@ var fs = require('fs')
 var Path = require('path')
 var _ = require('lodash')
 var Inert = require('inert')
-var knex = require('knex')({
-  dialect: 'sqlite3',
-  connection: {
-    filename: './src/dev.sqlite3'
-  }
-});
+var knexConfig = require('./src/knexfile.js')
+var knex = require('knex')(knexConfig.development);
 
 const Hapi = require('hapi');
 
