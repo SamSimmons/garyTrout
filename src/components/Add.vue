@@ -19,11 +19,14 @@
 
 <script>
 	import xhr from 'xhr'
+	import map from '../map'
 
 	export default {
 		ready: function () {
 			this.autofill()
 			this.setup()
+			this.clearMap()
+			this.drawAllTrout()
 		},
 		name: 'Add',
 		data: function() {
@@ -61,7 +64,10 @@
 				var d = new Date()
 				this.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
 				this.timeCaught = d.getHours() + ":" + d.getMinutes()
-			}
+			},
+			drawMarker: map.drawMarker,
+			clearMap: map.clearMap,
+			drawAllTrout: map.drawAllTrout
 		}
 	}
 </script>
