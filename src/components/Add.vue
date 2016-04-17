@@ -37,7 +37,6 @@
 		},
 		methods: {
 			setup: function () {
-				this.$parent.trout.id = Date.now()
 				this.$parent.trout.dateCaught = this.dateCaught
 				this.$parent.trout.timeCaught = this.timeCaught
 			},
