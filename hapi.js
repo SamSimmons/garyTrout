@@ -34,6 +34,9 @@ server.route({
 			.then((data) => {
 				reply(idToDelete + ' Deleted')
 			})
+			.catch((err) => {
+				console.error(err)
+			})
 	}
 });
 
@@ -53,9 +56,13 @@ server.route({
 	method: 'GET',
 	path: '/data',
 	handler: function (req, reply) {
-		getAll('fish').then((data) => {
+		getAll('fish')
+			.then((data) => {
 			reply(data)
 		})
+			.catch((err) => {
+				console.error(err)
+			})
 	}
 });
 
@@ -67,6 +74,9 @@ server.route({
 		findOne('fish', troutID)
 			.then((data) => {
 				reply(data[0])
+			})
+			.catch((err) => {
+				console.error(err)
 			})
 	}
 })

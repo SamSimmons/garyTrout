@@ -10662,17 +10662,17 @@
 				this.$parent.trout.timeCaught = this.timeCaught;
 			},
 			submit: function submit() {
-				var _this = this;
-
 				this.$parent.trout.angler = this.angler;
 				this.$parent.trout.lure = this.lure;
 				this.$parent.trout.comment = this.comment;
 				this.$parent.trout.weight = this.weight;
+				this.$parent.trout.dateCaught = this.dateCaught;
+				this.$parent.trout.timeCaught = this.timeCaught;
+				this.$parent.coordsSet = false;
 				_xhr2.default.post('/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
 					if (err) {
 						console.error(err);
 					}
-					_this.$parent.coordsSet = false;
 				});
 			},
 			autofill: function autofill() {
@@ -10809,6 +10809,7 @@
 				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
 					_this.clearMap();
 					_this.drawAllTrout();
+					_this.$parent.coordsSet = false;
 				});
 			},
 			clearMap: _map2.default.clearMap,

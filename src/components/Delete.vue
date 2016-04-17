@@ -24,6 +24,7 @@
 				xhr.post('/delete', {json: JSON.stringify(this.$parent.trout.id) }, () => {
 				  this.clearMap()
 				  this.drawAllTrout()
+				  this.$parent.coordsSet = false
 				})
 			},
 			clearMap: map.clearMap,

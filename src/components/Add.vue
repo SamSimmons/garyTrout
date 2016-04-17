@@ -47,11 +47,14 @@
 				this.$parent.trout.lure = this.lure
 				this.$parent.trout.comment = this.comment
 				this.$parent.trout.weight = this.weight
+				this.$parent.trout.dateCaught = this.dateCaught
+				this.$parent.trout.timeCaught = this.timeCaught
+				this.$parent.coordsSet = false
 				xhr.post('/add',{json: JSON.stringify(this.$parent.trout)}, (err, data) => {
 				  if(err) {
 				    console.error(err)
 				  }
-				  this.$parent.coordsSet = false
+				  
 				})
 			},
 			autofill: function () {
