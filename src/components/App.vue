@@ -8,7 +8,6 @@ export default {
       trout: {
         x: 0,
         y: 0,
-        id: "",
         angler: "",
         dateCaught: "",
         timeCaught: "",
