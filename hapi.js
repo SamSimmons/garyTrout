@@ -19,7 +19,7 @@ var server = new Hapi.Server({
 });
 
 server.connection({
-	port: +process.env.PORT, '0.0.0.0',
+	port: process.env.PORT,
 	routes: { cors: true } 
 });
 
