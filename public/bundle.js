@@ -10677,7 +10677,7 @@
 			},
 			autofill: function autofill() {
 				var d = new Date();
-				this.dateCaught = d.getDay() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+				this.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
 				this.timeCaught = d.getHours() + ":" + d.getMinutes();
 			}
 		}
