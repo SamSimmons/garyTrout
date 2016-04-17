@@ -6,8 +6,9 @@ exports.seed = function(knex, Promise) {
     // Inserts seed entries
     
     knex('fish').insert({
-        x: 5,
-        y: 5,
+        id: 1,
+        x: 105,
+        y: 105,
         angler: 'Terry Terry',
         dateCaught: '4/5/2015',
         timeCaught: '6:32',
