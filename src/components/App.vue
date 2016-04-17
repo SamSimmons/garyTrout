@@ -13,7 +13,6 @@ export default {
         weight: "",
         dateCaught: "",
         timeCaught: "",
-        lure: "",
         comment: "",
       },
       coordsSet: false

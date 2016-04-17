@@ -4,8 +4,6 @@
 		<div class="info-box" v-if="$parent.coordsSet">
 			<label for="angler">Angler:</label>
 			<input name="angler" type="text" v-model="angler">
-			<label for="lure">Lure:</label>
-			<input type="text" v-model="lure">
 			<label for="weight">Weight(kg):</label>
 			<input type="number" v-model="weight">
 			<label for="timeCaught">Time</label>
