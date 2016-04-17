@@ -141,7 +141,7 @@
 	  drawMarker: function drawMarker(trout) {
 	    var map = d3.select('#rotoma');
 
-	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", parseInt(trout.x)).attr("cy", parseInt(trout.y)).attr("r", 40);
+	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 40);
 
 	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 5);
 	  },
@@ -10559,17 +10559,18 @@
 	// <template>
 	// 	<div class="home-wrapper">
 	// 	<h1>View</h1>
-	// 		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
+	// 		<h2>{{ $parent.trout | json }}</h2>
 	// 	</div>
 	// </template>
 	//
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			this.clearMap();
-			this.drawAllTrout();
+			console.log('DEBUG control is Home');
+			console.log(this.$parent.trout);
+			// this.clearMap()
+			// this.drawAllTrout()
 		},
-		name: 'Home',
 		data: function data() {
 			return {
 				trout: {}
@@ -10589,7 +10590,7 @@
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2>{{ $parent.trout | json }}</h2>\n</div>\n";
 
 /***/ },
 /* 15 */
@@ -10665,6 +10666,7 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
+			console.log('DEBUG control is Add');
 			this.autofill();
 			this.setup();
 			this.clearMap();
@@ -10806,6 +10808,7 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
+			console.log('DEBUG control is Delete');
 			this.clearMap();
 			this.drawAllTrout();
 		},
@@ -10889,6 +10892,7 @@
 	// <script>
 	exports.default = {
 	  ready: function ready() {
+	    console.log('DEBUG control is App');
 	    this.clearMap();
 	    this.drawAllTrout();
 	  },
@@ -10913,6 +10917,7 @@
 
 	      if (evt.srcElement.localName === 'circle') {
 	        var id = evt.srcElement.classList[1];
+	        console.log('id looking for is: ' + id);
 	        _xhr2.default.get('/data/' + id, function (err, data) {
 	          _this.trout = JSON.parse(data.body);
 	        });

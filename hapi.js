@@ -70,7 +70,7 @@ server.route({
 	method:'GET',
 	path: '/data/{id}',
 	handler: function(req, reply) {
-		var troutID = parseInt(req.params.id)
+		var troutID = req.params.id
 		findOne('fish', troutID)
 			.then((data) => {
 				reply(data[0])

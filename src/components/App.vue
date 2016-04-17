@@ -38,7 +38,7 @@ export default {
       d3.select('#rotoma').on('click', null)
     },
     handleClick: function () {
-	console.log('listner is on')
+    	console.log('listner is on')
       var that = this
       d3.select('#rotoma').on('click', function () {
         var coords = d3.mouse(this)
