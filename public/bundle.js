@@ -10879,6 +10879,10 @@
 
 	// <script>
 	exports.default = {
+	  ready: function ready() {
+	    this.clearMap();
+	    this.drawAllTrout();
+	  },
 	  data: function data() {
 	    return {
 	      trout: {
@@ -10926,7 +10930,9 @@
 	      this.trout.y = xy[1];
 	      this.drawMarker(this.trout);
 	    },
-	    drawMarker: _map2.default.drawMarker
+	    drawMarker: _map2.default.drawMarker,
+	    clearMap: _map2.default.clearMap,
+	    drawAllTrout: _map2.default.drawAllTrout
 	  }
 	};
 	// </script>

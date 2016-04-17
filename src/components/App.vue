@@ -3,6 +3,10 @@ import xhr from 'xhr'
 import map from '../map'
 
 export default {
+  ready: function () {
+    this.clearMap()
+    this.drawAllTrout()
+  },
   data: function () {
     return {
       trout: {
@@ -48,7 +52,9 @@ export default {
       this.trout.y = xy[1]
       this.drawMarker(this.trout)
     },
-    drawMarker: map.drawMarker
+    drawMarker: map.drawMarker,
+    clearMap: map.clearMap,
+    drawAllTrout: map.drawAllTrout
   }
 }
 </script>
