@@ -4,6 +4,7 @@ import map from '../map'
 
 export default {
   ready: function () {
+    console.log('DEBUG control is App')
     this.clearMap()
     this.drawAllTrout()
   },
@@ -23,9 +24,10 @@ export default {
     }
   },
   methods: {
-    getTroutData: function (evt) {      
+    getTroutData: function (evt) {
       if (evt.srcElement.localName === 'circle') {
         var id = evt.srcElement.classList[1]
+        console.log('id looking for is: '+ id)
         xhr.get('/data/' + id, (err, data) => {
           this.trout = JSON.parse(data.body)
         })

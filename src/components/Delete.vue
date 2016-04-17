@@ -14,6 +14,7 @@
 
 	export default {
 		ready: function () {
+			console.log('DEBUG control is Delete')
 			this.clearMap()
 			this.drawAllTrout()
 		},

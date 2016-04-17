@@ -33,8 +33,8 @@ module.exports = {
 
     map.append("circle")
       .attr('class', 'marker-out ' + trout.id)
-        .attr("cx", parseInt(trout.x))
-          .attr("cy", parseInt(trout.y))
+        .attr("cx", trout.x)
+          .attr("cy", trout.y)
             .attr("r", 40)
 
     map.append("circle")
