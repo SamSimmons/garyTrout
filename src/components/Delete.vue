@@ -14,16 +14,16 @@
 
 	export default {
 		ready: function () {
-			this.clearMap()
-			this.drawAllTrout()
+			// this.clearMap()
+			// this.drawAllTrout()
 		},
 		name: 'Delete',
 		methods: {
 			delete: function () {
 				this.$parent.coordsSet = false
 				xhr.post('/delete', {json: JSON.stringify(this.$parent.trout.id) }, () => {
-				  this.clearMap()
-				  this.drawAllTrout()
+				  // this.clearMap()
+				  // this.drawAllTrout()
 				})
 			},
 			clearMap: map.clearMap,

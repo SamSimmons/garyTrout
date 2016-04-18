@@ -1,6 +1,6 @@
 import map from './map'
 import Vue from 'vue'
-import Home from './components/Home.vue'
+import ViewInfo from './components/ViewInfo.vue'
 import Add from './components/Add.vue'
 import Delete from './components/Delete.vue'
 import App from './components/App.vue'
@@ -23,8 +23,8 @@ router.map({
     '/add': {
         component: Add
     },
-    '/home': {
-        component: Home
+    '/view': {
+        component: ViewInfo
     }
 })
 

@@ -11,8 +11,9 @@
 
 	export default {
 		ready: function () {
-			this.clearMap()
-			this.drawAllTrout()
+			this.$parent.getAllTroutData()
+			// this.clearMap()
+			// this.drawAllTrout()
 		},
 		data: function() {
 			return {
@@ -20,7 +21,9 @@
 			}		
 		},
 		methods: {
-			drawAllTrout: map.drawAllTrout,
+			drawAllTrout: function () {
+      			this.$parent.troutCollection.forEach(this.drawMarker)
+    		},
 			clearMap: map.clearMap,
 			drawMarker: map.drawMarker
 		}

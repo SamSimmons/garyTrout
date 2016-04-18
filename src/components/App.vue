@@ -1,11 +1,17 @@
 <script>
 import xhr from 'xhr'
 import map from '../map'
+import _ from 'lodash'
 
 export default {
   ready: function () {
-    this.clearMap()
-    this.drawAllTrout()
+    xhr.get('/data', (err, data) => {
+      if (err) { console.error(err)}
+      else {
+        this.troutCollection = JSON.parse(data.body)
+        this.troutCollection.forEach(this.drawMarker)
+      }
+    })
   },
   data: function () {
     return {
@@ -19,17 +25,25 @@ export default {
         timeCaught: "",
         comment: "",
       },
-      coordsSet: false
+      coordsSet: false,
+      troutCollection: []
     }
   },
   methods: {
-    getTroutData: function (evt) {
-      if (evt.srcElement.localName === 'circle') {
-        var id = evt.srcElement.classList[1]
-        xhr.get('/data/' + id, (err, data) => {
-          this.trout = JSON.parse(data.body)
-        })
-      }
+    getTroutInfo: function (evt) {
+        if (evt.srcElement.localName === 'circle') {
+          var id = evt.srcElement.classList[1]
+          this.trout = _.find(this.troutCollection, ['id', id])
+        }
+    },
+    getAllTroutData: function () {
+      xhr.get('/data', (err, data) => {
+        if (err) { console.error(err)}
+        else {
+          this.troutCollection = JSON.parse(data.body)
+          this.drawAllTrout()
+        }
+      })
     },
     turnOffAddListener: function () {
       d3.select('#rotoma').on('click', null)
@@ -52,7 +66,9 @@ export default {
     },
     drawMarker: map.drawMarker,
     clearMap: map.clearMap,
-    drawAllTrout: map.drawAllTrout
+    drawAllTrout: function () {
+      this.troutCollection.forEach(this.drawMarker)
+    }
   }
 }
 </script>

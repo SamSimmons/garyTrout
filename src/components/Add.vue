@@ -25,8 +25,8 @@
 		ready: function () {
 			this.autofill()
 			this.setup()
-			this.clearMap()
-			this.drawAllTrout()
+			// this.clearMap()
+			// this.drawAllTrout()
 		},
 		name: 'Add',
 		data: function() {
