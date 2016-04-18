@@ -23,7 +23,6 @@
 
 	export default {
 		ready: function () {
-			console.log('DEBUG control is Add')
 			this.autofill()
 			this.setup()
 			this.clearMap()

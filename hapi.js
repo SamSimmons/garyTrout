@@ -63,7 +63,6 @@ server.route({
 	handler: function (req, reply) {
 		getAll('fish')
 			.then((data) => {
-			console.log('sending back: ', data)
 			reply(data)
 		})
 			.catch((err) => {
