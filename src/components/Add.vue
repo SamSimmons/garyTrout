@@ -12,7 +12,7 @@
 			<input name="date" type="text" value={{dateCaught}}>
 			<label for="comment">Comment</label>
 			<textarea name="comment" v-model="comment"></textarea>
-			<div class="btn submit" v-on:click="submit" v-link="{path: '/home'}">Submit</div>
+			<div class="btn submit" v-on:click="submit">Submit</div>
 		</div>
 	</div>
 </template>
@@ -25,8 +25,7 @@
 		ready: function () {
 			this.autofill()
 			this.setup()
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.setupDThree()
 		},
 		name: 'Add',
 		data: function() {
@@ -40,6 +39,17 @@
 			}		
 		},
 		methods: {
+			setupDThree: function () {
+				var that = this
+				d3.select('#rotoma').on('click', function() {
+					var coords = d3.mouse(this)
+				    that.$parent.trout.x = coords[0]
+				    that.$parent.trout.y = coords[1]
+				    that.drawMarker(that.$parent.trout)
+				    that.$parent.coordsSet = true
+				    d3.select('#rotoma').on('click', null)
+				})
+			},
 			setup: function () {
 				this.$parent.trout.id = Date.now().toString()
 				this.$parent.trout.dateCaught = this.dateCaught
@@ -53,17 +63,26 @@
 				this.$parent.trout.dateCaught = this.dateCaught
 				this.$parent.trout.timeCaught = this.timeCaught
 				this.$parent.coordsSet = false
-				xhr.post('/add',{json: JSON.stringify(this.$parent.trout)}, (err, data) => {
-				  if(err) {
-				    console.error(err)
-				  }
-				  
-				})
+				this.updateDatabase()
+				this.setupDThree()
 			},
 			autofill: function () {
 				var d = new Date()
 				this.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
 				this.timeCaught = d.getHours() + ":" + d.getMinutes()
+			},
+			updateDatabase: function () {
+				xhr.post('/add',{json: JSON.stringify(this.$parent.trout)},(err, res) => {
+				  if(err) {
+				    console.error(err)
+				  }
+				  this.$parent.troutCollection = res.body
+				  // that.$parent.troutCollection = res.body
+				})
+			},
+			repaint: function () {
+				this.clearMap()
+				this.drawAllTrout()
 			},
 			drawMarker: map.drawMarker,
 			clearMap: map.clearMap,

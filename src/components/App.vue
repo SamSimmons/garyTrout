@@ -37,27 +37,14 @@ export default {
         }
     },
     getAllTroutData: function () {
+      var that = this
       xhr.get('/data', (err, data) => {
         if (err) { console.error(err)}
-        else {
-          this.troutCollection = JSON.parse(data.body)
-          this.drawAllTrout()
-        }
+        this.troutCollection = JSON.parse(data.body)
       })
     },
     turnOffAddListener: function () {
       d3.select('#rotoma').on('click', null)
-    },
-    handleClick: function () {
-      var that = this
-      d3.select('#rotoma').on('click', function () {
-        var coords = d3.mouse(this)
-        that.trout.x = coords[0]
-        that.trout.y = coords[1]
-        that.drawMarker(that.trout)
-        that.turnOffAddListener()
-        that.coordsSet = true
-      })
     },
     setTroutData: function(xy) {
       this.trout.x = xy[0]
@@ -67,6 +54,7 @@ export default {
     drawMarker: map.drawMarker,
     clearMap: map.clearMap,
     drawAllTrout: function () {
+      console.log('drawing...')
       this.troutCollection.forEach(this.drawMarker)
     }
   }

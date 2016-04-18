@@ -12,8 +12,8 @@
 	export default {
 		ready: function () {
 			this.$parent.getAllTroutData()
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.clearMap()
+			this.drawAllTrout()
 		},
 		data: function() {
 			return {
