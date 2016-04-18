@@ -10566,7 +10566,7 @@
 	// 			<input name="date" type="text" value={{dateCaught}}>
 	// 			<label for="comment">Comment</label>
 	// 			<textarea name="comment" v-model="comment"></textarea>
-	// 			<div class="btn submit" v-on:click="submit" v-link="{path: '/home'}">Submit</div>
+	// 			<div class="btn submit" v-on:click="submit">Submit</div>
 	// 		</div>
 	// 	</div>
 	// </template>
@@ -10576,8 +10576,7 @@
 		ready: function ready() {
 			this.autofill();
 			this.setup();
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.setupDThree();
 		},
 		name: 'Add',
 		data: function data() {
@@ -10591,6 +10590,17 @@
 			};
 		},
 		methods: {
+			setupDThree: function setupDThree() {
+				var that = this;
+				d3.select('#rotoma').on('click', function () {
+					var coords = d3.mouse(this);
+					that.$parent.trout.x = coords[0];
+					that.$parent.trout.y = coords[1];
+					that.drawMarker(that.$parent.trout);
+					that.$parent.coordsSet = true;
+					d3.select('#rotoma').on('click', null);
+				});
+			},
 			setup: function setup() {
 				this.$parent.trout.id = Date.now().toString();
 				this.$parent.trout.dateCaught = this.dateCaught;
@@ -10604,16 +10614,28 @@
 				this.$parent.trout.dateCaught = this.dateCaught;
 				this.$parent.trout.timeCaught = this.timeCaught;
 				this.$parent.coordsSet = false;
-				_xhr2.default.post('/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
-					if (err) {
-						console.error(err);
-					}
-				});
+				this.updateDatabase();
+				this.setupDThree();
 			},
 			autofill: function autofill() {
 				var d = new Date();
 				this.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
 				this.timeCaught = d.getHours() + ":" + d.getMinutes();
+			},
+			updateDatabase: function updateDatabase() {
+				var _this = this;
+
+				_xhr2.default.post('/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, res) {
+					if (err) {
+						console.error(err);
+					}
+					_this.$parent.troutCollection = res.body;
+					// that.$parent.troutCollection = res.body
+				});
+			},
+			repaint: function repaint() {
+				this.clearMap();
+				this.drawAllTrout();
 			},
 			drawMarker: _map2.default.drawMarker,
 			clearMap: _map2.default.clearMap,
@@ -10648,7 +10670,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/home'}\">Submit</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 21 */
@@ -10706,29 +10728,39 @@
 	// 	<div class="home-wrapper">
 	// 	<h1>Delete</h1>
 	// 		<p>Click on a trout marker to edit or delete</p>
-	// 		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
+	// 		<h2 v-if="$parent.trout">{{ $parent.trout | json }}</h2>
 	// <!-- 		<div class="btn">Edit</div> -->
-	// 		<div class="btn" v-on:click="delete" v-link="{path: '/home'}">Delete</div>
+	// 		<div class="btn" v-on:click="delete">Delete</div>
 	// 	</div>
 	// </template>
 	//
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.$parent.getAllTroutData();
+			this.clearMap();
+			this.drawAllTrout();
 		},
 		name: 'Delete',
 		methods: {
 			delete: function _delete() {
+				var _this = this;
+
+				console.log('delete');
 				this.$parent.coordsSet = false;
-				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
-					// this.clearMap()
-					// this.drawAllTrout()
+				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function (err, res) {
+					_this.$parent.troutCollection = res.body;
+					_this.repaint();
 				});
 			},
+			repaint: function repaint() {
+				this.clearMap();
+				this.drawAllTrout();
+			},
 			clearMap: _map2.default.clearMap,
-			drawAllTrout: _map2.default.drawAllTrout,
+			drawAllTrout: function drawAllTrout() {
+				this.$parent.troutCollection.forEach(this.drawMarker);
+			},
 			drawMarker: _map2.default.drawMarker
 		},
 		data: function data() {
@@ -10743,7 +10775,7 @@
 /* 23 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\t<div class=\"home-wrapper\">\n\t<h1>Delete</h1>\n\t\t<p>Click on a trout marker to edit or delete</p>\n\t\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n<!-- \t\t<div class=\"btn\">Edit</div> -->\n\t\t<div class=\"btn\" v-on:click=\"delete\" v-link=\"{path: '/home'}\">Delete</div>\n\t</div>\n";
+	module.exports = "\n\t<div class=\"home-wrapper\">\n\t<h1>Delete</h1>\n\t\t<p>Click on a trout marker to edit or delete</p>\n\t\t<h2 v-if=\"$parent.trout\">{{ $parent.trout | json }}</h2>\n<!-- \t\t<div class=\"btn\">Edit</div> -->\n\t\t<div class=\"btn\" v-on:click=\"delete\">Delete</div>\n\t</div>\n";
 
 /***/ },
 /* 24 */
@@ -10835,28 +10867,16 @@
 	    getAllTroutData: function getAllTroutData() {
 	      var _this2 = this;
 
+	      var that = this;
 	      _xhr2.default.get('/data', function (err, data) {
 	        if (err) {
 	          console.error(err);
-	        } else {
-	          _this2.troutCollection = JSON.parse(data.body);
-	          _this2.drawAllTrout();
 	        }
+	        _this2.troutCollection = JSON.parse(data.body);
 	      });
 	    },
 	    turnOffAddListener: function turnOffAddListener() {
 	      d3.select('#rotoma').on('click', null);
-	    },
-	    handleClick: function handleClick() {
-	      var that = this;
-	      d3.select('#rotoma').on('click', function () {
-	        var coords = d3.mouse(this);
-	        that.trout.x = coords[0];
-	        that.trout.y = coords[1];
-	        that.drawMarker(that.trout);
-	        that.turnOffAddListener();
-	        that.coordsSet = true;
-	      });
 	    },
 	    setTroutData: function setTroutData(xy) {
 	      this.trout.x = xy[0];
@@ -10866,6 +10886,7 @@
 	    drawMarker: _map2.default.drawMarker,
 	    clearMap: _map2.default.clearMap,
 	    drawAllTrout: function drawAllTrout() {
+	      console.log('drawing...');
 	      this.troutCollection.forEach(this.drawMarker);
 	    }
 	  }
@@ -15210,8 +15231,8 @@
 	exports.default = {
 		ready: function ready() {
 			this.$parent.getAllTroutData();
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.clearMap();
+			this.drawAllTrout();
 		},
 		data: function data() {
 			return {
