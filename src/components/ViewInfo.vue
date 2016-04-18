@@ -8,7 +8,9 @@
 <script>
 	import xhr from 'xhr'
 	import map from '../map'
-
+//----------------------------------------------------------------------------
+// currently a stub component, will be built out more when the styling is done, and there is more information to display on each trout
+//--------------------------------------------------------------------------------
 	export default {
 		ready: function () {
 			this.$parent.getAllTroutData()

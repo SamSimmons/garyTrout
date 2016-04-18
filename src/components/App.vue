@@ -54,7 +54,6 @@ export default {
     drawMarker: map.drawMarker,
     clearMap: map.clearMap,
     drawAllTrout: function () {
-      console.log('drawing...')
       this.troutCollection.forEach(this.drawMarker)
     }
   }

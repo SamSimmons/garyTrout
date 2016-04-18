@@ -38,7 +38,7 @@ server.route({
 			.catch((err) => {
 				console.error(err)
 			})
-			.finally(closeDB)
+			//.finally(closeDB)
 	}
 });
 
@@ -56,7 +56,7 @@ server.route({
 			.catch((err) => {
 				console.error(err)
 			})
-			.finally(closeDB)
+			//.finally(closeDB)
 	}
 })
 
@@ -71,7 +71,7 @@ server.route({
 			.catch((err) => {
 				console.error(err)
 			})
-			.finally(closeDB)
+			//.finally(closeDB)
 	}
 });
 
@@ -87,7 +87,7 @@ server.route({
 			.catch((err) => {
 				console.error(err)
 			})
-			.finally(closeDB)
+			//.finally(closeDB)
 	}
 })
 
