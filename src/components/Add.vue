@@ -34,10 +34,10 @@
 			return {
 				angler: "name",
 				weight: '',
-				lure: "default",
+				lure: "",
 				dateCaught: "",
 				timeCaught: "",
-				comment: "default"
+				comment: ""
 			}		
 		},
 		methods: {
