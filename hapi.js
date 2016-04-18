@@ -31,12 +31,14 @@ server.route({
 	handler: function (req, reply) {
 		var idToDelete = JSON.parse(req.payload)
 		deleteOne('fish', idToDelete)
+			.then(getAll)
 			.then((data) => {
-				reply(idToDelete + ' Deleted')
+				reply(data)
 			})
 			.catch((err) => {
 				console.error(err)
 			})
+			//.finally(closeDB)
 	}
 });
 
@@ -47,13 +49,14 @@ server.route({
 		var newTrout = JSON.parse(req.payload)
 
 		addTo('fish', newTrout)
-			.then(
-			reply(newTrout)
-		)
+			.then(getAll)
+			.then((data) => {
+				reply(data)
+			})
 			.catch((err) => {
 				console.error(err)
 			})
-
+			//.finally(closeDB)
 	}
 })
 
@@ -61,13 +64,14 @@ server.route({
 	method: 'GET',
 	path: '/data',
 	handler: function (req, reply) {
-		getAll('fish')
+		getAll()
 			.then((data) => {
-			reply(data)
+				reply(data)
 		})
 			.catch((err) => {
 				console.error(err)
 			})
+			//.finally(closeDB)
 	}
 });
 
@@ -83,6 +87,7 @@ server.route({
 			.catch((err) => {
 				console.error(err)
 			})
+			//.finally(closeDB)
 	}
 })
 
@@ -110,8 +115,8 @@ function addTo (table, obj) {
   return knex(table).insert(obj)
 }
 
-function getAll (table){
-	return knex.select().table(table)
+function getAll (){
+	return knex.select().table('fish')
 }
 
 function findOne (table, id) {
@@ -120,4 +125,8 @@ function findOne (table, id) {
 
 function deleteOne (table, id) {
 	return knex(table).where('id', id).del()
+}
+
+function closeDB () {
+  knex.destroy()
 }

@@ -2,9 +2,9 @@
 	<div class="home-wrapper">
 	<h1>Delete</h1>
 		<p>Click on a trout marker to edit or delete</p>
-		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
+		<h2 v-if="$parent.trout">{{ $parent.trout | json }}</h2>
 <!-- 		<div class="btn">Edit</div> -->
-		<div class="btn" v-on:click="delete" v-link="{path: '/home'}">Delete</div>
+		<div class="btn" v-on:click="delete">Delete</div>
 	</div>
 </template>
 
@@ -14,20 +14,26 @@
 
 	export default {
 		ready: function () {
+			this.$parent.getAllTroutData()
 			this.clearMap()
 			this.drawAllTrout()
 		},
 		name: 'Delete',
 		methods: {
 			delete: function () {
+				console.log('delete')
 				this.$parent.coordsSet = false
-				xhr.post('/delete', {json: JSON.stringify(this.$parent.trout.id) }, () => {
-				  this.clearMap()
-				  this.drawAllTrout()
+				xhr.post('/delete', {json: JSON.stringify(this.$parent.trout.id)},(err, res) => {
+					this.$parent.troutCollection = res.body
+					this.repaint()
 				})
 			},
+			repaint: function () {
+				this.clearMap()
+				this.drawAllTrout()
+			},
 			clearMap: map.clearMap,
-			drawAllTrout: map.drawAllTrout,
+			drawAllTrout: function () {this.$parent.troutCollection.forEach(this.drawMarker)},
 			drawMarker: map.drawMarker
 		},
 		data: function() {

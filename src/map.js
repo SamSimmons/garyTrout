@@ -47,13 +47,7 @@ module.exports = {
     var map = d3.select('#rotoma')
       .selectAll('circle').remove()
   },
-  drawAllTrout: function () {
-          xhr.get('/data', (err, data) => {
-            if (err) { console.error(err)}
-            else {
-              var allTrout = JSON.parse(data.body)
-              allTrout.forEach( trout => this.drawMarker(trout))
-            }
-          })
-        }
+  drawAllTrout: function (arr) {
+      arr.forEach(drawMarker)
+  }
 }
