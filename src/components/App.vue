@@ -3,6 +3,11 @@ import xhr from 'xhr'
 import map from '../map'
 
 export default {
+  ready: function () {
+    console.log('DEBUG control is App')
+    this.clearMap()
+    this.drawAllTrout()
+  },
   data: function () {
     return {
       trout: {
@@ -10,18 +15,19 @@ export default {
         y: 0,
         id: "",
         angler: "",
+        weight: "",
         dateCaught: "",
         timeCaught: "",
-        lure: "",
         comment: "",
       },
       coordsSet: false
     }
   },
   methods: {
-    getTroutData: function (evt) {      
+    getTroutData: function (evt) {
       if (evt.srcElement.localName === 'circle') {
         var id = evt.srcElement.classList[1]
+        console.log('id looking for is: '+ id)
         xhr.get('/data/' + id, (err, data) => {
           this.trout = JSON.parse(data.body)
         })
@@ -32,7 +38,7 @@ export default {
       d3.select('#rotoma').on('click', null)
     },
     handleClick: function () {
-	console.log('listner is on')
+    	console.log('listner is on')
       var that = this
       d3.select('#rotoma').on('click', function () {
         var coords = d3.mouse(this)
@@ -48,7 +54,9 @@ export default {
       this.trout.y = xy[1]
       this.drawMarker(this.trout)
     },
-    drawMarker: map.drawMarker
+    drawMarker: map.drawMarker,
+    clearMap: map.clearMap,
+    drawAllTrout: map.drawAllTrout
   }
 }
 </script>

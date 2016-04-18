@@ -14,6 +14,7 @@
 
 	export default {
 		ready: function () {
+			console.log('DEBUG control is Delete')
 			this.clearMap()
 			this.drawAllTrout()
 		},
@@ -21,6 +22,7 @@
 		methods: {
 			delete: function () {
 				console.log('delete this trout')
+				this.$parent.coordsSet = false
 				xhr.post('/delete', {json: JSON.stringify(this.$parent.trout.id) }, () => {
 				  this.clearMap()
 				  this.drawAllTrout()

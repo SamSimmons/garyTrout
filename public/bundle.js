@@ -10559,17 +10559,18 @@
 	// <template>
 	// 	<div class="home-wrapper">
 	// 	<h1>View</h1>
-	// 		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
+	// 		<h2>{{ $parent.trout | json }}</h2>
 	// 	</div>
 	// </template>
 	//
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			this.clearMap();
-			this.drawAllTrout();
+			console.log('DEBUG control is Home');
+			console.log(this.$parent.trout);
+			// this.clearMap()
+			// this.drawAllTrout()
 		},
-		name: 'Home',
 		data: function data() {
 			return {
 				trout: {}
@@ -10589,7 +10590,7 @@
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2>{{ $parent.trout | json }}</h2>\n</div>\n";
 
 /***/ },
 /* 15 */
@@ -10637,55 +10638,20 @@
 
 	var _xhr2 = _interopRequireDefault(_xhr);
 
+	var _map = __webpack_require__(1);
+
+	var _map2 = _interopRequireDefault(_map);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = {
-		ready: function ready() {
-			this.autofill();
-			this.setup();
-		},
-		name: 'Add',
-		data: function data() {
-			return {
-				angler: "name",
-				lure: "default",
-				dateCaught: "",
-				timeCaught: "",
-				comment: "default"
-			};
-		},
-		methods: {
-			setup: function setup() {
-				this.$parent.trout.id = Date.now();
-				this.$parent.trout.dateCaught = this.dateCaught;
-				this.$parent.trout.timeCaught = this.timeCaught;
-			},
-			submit: function submit() {
-				this.$parent.trout.angler = this.angler;
-				this.$parent.trout.lure = this.lure;
-				this.$parent.trout.comment = this.comment;
-				_xhr2.default.post('http://localhost:3001/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
-					if (err) {
-						console.error(err);
-					}
-				});
-			},
-			autofill: function autofill() {
-				var d = new Date();
-				this.dateCaught = d.getDay() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-				this.timeCaught = d.getHours() + ":" + d.getMinutes();
-			}
-		}
-	};
-	// </script>
 	// <template>
 	// 	<div class="add-wrapper">
 	// 	<p class='location-warning' v-if="!$parent.coordsSet">Click on the map to add the location of your trout</p>
 	// 		<div class="info-box" v-if="$parent.coordsSet">
 	// 			<label for="angler">Angler:</label>
 	// 			<input name="angler" type="text" v-model="angler">
-	// 			<label for="lure">Lure:</label>
-	// 			<input type="text" v-model="lure">
+	// 			<label for="weight">Weight(kg):</label>
+	// 			<input type="number" v-model="weight">
 	// 			<label for="timeCaught">Time</label>
 	// 			<input name="timeCaught" type="text" value={{timeCaught}}>
 	// 			<label for="date">Date</label>
@@ -10698,6 +10664,56 @@
 	// </template>
 	//
 	// <script>
+	exports.default = {
+		ready: function ready() {
+			console.log('DEBUG control is Add');
+			this.autofill();
+			this.setup();
+			this.clearMap();
+			this.drawAllTrout();
+		},
+		name: 'Add',
+		data: function data() {
+			return {
+				angler: "name",
+				weight: '',
+				lure: "default",
+				dateCaught: "",
+				timeCaught: "",
+				comment: "default"
+			};
+		},
+		methods: {
+			setup: function setup() {
+				this.$parent.trout.id = Date.now().toString();
+				this.$parent.trout.dateCaught = this.dateCaught;
+				this.$parent.trout.timeCaught = this.timeCaught;
+			},
+			submit: function submit() {
+				this.$parent.trout.angler = this.angler;
+				this.$parent.trout.lure = this.lure;
+				this.$parent.trout.comment = this.comment;
+				this.$parent.trout.weight = this.weight;
+				this.$parent.trout.dateCaught = this.dateCaught;
+				this.$parent.trout.timeCaught = this.timeCaught;
+				this.$parent.coordsSet = false;
+				_xhr2.default.post('/add', { json: (0, _stringify2.default)(this.$parent.trout) }, function (err, data) {
+					if (err) {
+						console.error(err);
+					}
+				});
+			},
+			autofill: function autofill() {
+				var d = new Date();
+				this.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+				this.timeCaught = d.getHours() + ":" + d.getMinutes();
+			},
+			drawMarker: _map2.default.drawMarker,
+			clearMap: _map2.default.clearMap,
+			drawAllTrout: _map2.default.drawAllTrout
+		}
+	};
+	// </script>
 
 /***/ },
 /* 17 */
@@ -10725,7 +10741,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"lure\">Lure:</label>\n\t\t<input type=\"text\" v-model=\"lure\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/home'}\">Submit</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/home'}\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 21 */
@@ -10792,6 +10808,7 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
+			console.log('DEBUG control is Delete');
 			this.clearMap();
 			this.drawAllTrout();
 		},
@@ -10801,6 +10818,7 @@
 				var _this = this;
 
 				console.log('delete this trout');
+				this.$parent.coordsSet = false;
 				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
 					_this.clearMap();
 					_this.drawAllTrout();
@@ -10873,6 +10891,11 @@
 
 	// <script>
 	exports.default = {
+	  ready: function ready() {
+	    console.log('DEBUG control is App');
+	    this.clearMap();
+	    this.drawAllTrout();
+	  },
 	  data: function data() {
 	    return {
 	      trout: {
@@ -10880,9 +10903,9 @@
 	        y: 0,
 	        id: "",
 	        angler: "",
+	        weight: "",
 	        dateCaught: "",
 	        timeCaught: "",
-	        lure: "",
 	        comment: ""
 	      },
 	      coordsSet: false
@@ -10894,6 +10917,7 @@
 
 	      if (evt.srcElement.localName === 'circle') {
 	        var id = evt.srcElement.classList[1];
+	        console.log('id looking for is: ' + id);
 	        _xhr2.default.get('/data/' + id, function (err, data) {
 	          _this.trout = JSON.parse(data.body);
 	        });
@@ -10920,7 +10944,9 @@
 	      this.trout.y = xy[1];
 	      this.drawMarker(this.trout);
 	    },
-	    drawMarker: _map2.default.drawMarker
+	    drawMarker: _map2.default.drawMarker,
+	    clearMap: _map2.default.clearMap,
+	    drawAllTrout: _map2.default.drawAllTrout
 	  }
 	};
 	// </script>

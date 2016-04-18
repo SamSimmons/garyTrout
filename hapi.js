@@ -29,10 +29,13 @@ server.route({
 	method: 'POST',
 	path: '/delete',
 	handler: function (req, reply) {
-		var idToDelete = parseInt(JSON.parse(req.payload))
+		var idToDelete = JSON.parse(req.payload)
 		deleteOne('fish', idToDelete)
 			.then((data) => {
 				reply(idToDelete + ' Deleted')
+			})
+			.catch((err) => {
+				console.error(err)
 			})
 	}
 });
@@ -43,9 +46,14 @@ server.route({
 	handler: function (req, reply) {
 		var newTrout = JSON.parse(req.payload)
 
-		addTo('fish', newTrout).then(
+		addTo('fish', newTrout)
+			.then(
 			reply(newTrout)
 		)
+			.catch((err) => {
+				console.error(err)
+			})
+
 	}
 })
 
@@ -53,9 +61,14 @@ server.route({
 	method: 'GET',
 	path: '/data',
 	handler: function (req, reply) {
-		getAll('fish').then((data) => {
+		getAll('fish')
+			.then((data) => {
+			console.log('sending back: ', data)
 			reply(data)
 		})
+			.catch((err) => {
+				console.error(err)
+			})
 	}
 });
 
@@ -63,10 +76,13 @@ server.route({
 	method:'GET',
 	path: '/data/{id}',
 	handler: function(req, reply) {
-		var troutID = parseInt(req.params.id)
+		var troutID = req.params.id
 		findOne('fish', troutID)
 			.then((data) => {
 				reply(data[0])
+			})
+			.catch((err) => {
+				console.error(err)
 			})
 	}
 })

@@ -3,10 +3,11 @@ exports.up = function(knex, Promise) {
   console.log('create table')
 
   return knex.schema.createTableIfNotExists('fish', function(table) {
-      table.increments('id')
-      table.string('x')
-      table.string('y')
+      table.string('id')
+      table.integer('x')
+      table.integer('y')
       table.string('angler')
+      table.string('weight')
       table.string('dateCaught')
       table.string('timeCaught')
       table.string('lure')
