@@ -35,13 +35,13 @@ module.exports = {
       .attr('class', 'marker-out ' + trout.id)
         .attr("cx", trout.x)
           .attr("cy", trout.y)
-            .attr("r", 40)
+            .attr("r", 30)
 
     map.append("circle")
       .attr('class', 'marker ' + trout.id)
         .attr("cx", trout.x)
           .attr("cy", trout.y)
-            .attr("r", 5);
+            .attr("r", 3);
   },
   clearMap: function () {
     var map = d3.select('#rotoma')

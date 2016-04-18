@@ -11,10 +11,8 @@
 
 	export default {
 		ready: function () {
-			console.log('DEBUG control is Home')
-			console.log(this.$parent.trout)
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.clearMap()
+			this.drawAllTrout()
 		},
 		data: function() {
 			return {

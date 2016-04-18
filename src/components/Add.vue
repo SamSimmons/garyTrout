@@ -23,7 +23,6 @@
 
 	export default {
 		ready: function () {
-			console.log('DEBUG control is Add')
 			this.autofill()
 			this.setup()
 			this.clearMap()
@@ -34,10 +33,10 @@
 			return {
 				angler: "name",
 				weight: '',
-				lure: "default",
+				lure: "",
 				dateCaught: "",
 				timeCaught: "",
-				comment: "default"
+				comment: ""
 			}		
 		},
 		methods: {

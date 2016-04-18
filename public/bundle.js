@@ -141,9 +141,9 @@
 	  drawMarker: function drawMarker(trout) {
 	    var map = d3.select('#rotoma');
 
-	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 40);
+	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 30);
 
-	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 5);
+	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 3);
 	  },
 	  clearMap: function clearMap() {
 	    var map = d3.select('#rotoma').selectAll('circle').remove();
@@ -10566,10 +10566,8 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			console.log('DEBUG control is Home');
-			console.log(this.$parent.trout);
-			// this.clearMap()
-			// this.drawAllTrout()
+			this.clearMap();
+			this.drawAllTrout();
 		},
 		data: function data() {
 			return {
@@ -10666,7 +10664,6 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			console.log('DEBUG control is Add');
 			this.autofill();
 			this.setup();
 			this.clearMap();
@@ -10677,10 +10674,10 @@
 			return {
 				angler: "name",
 				weight: '',
-				lure: "default",
+				lure: "",
 				dateCaught: "",
 				timeCaught: "",
-				comment: "default"
+				comment: ""
 			};
 		},
 		methods: {
@@ -10800,7 +10797,7 @@
 	// 	<h1>Delete</h1>
 	// 		<p>Click on a trout marker to edit or delete</p>
 	// 		<h2 v-if="$parent.trout.x > 0">{{ $parent.trout | json }}</h2>
-	// 		<div class="btn">Edit</div>
+	// <!-- 		<div class="btn">Edit</div> -->
 	// 		<div class="btn" v-on:click="delete" v-link="{path: '/home'}">Delete</div>
 	// 	</div>
 	// </template>
@@ -10808,7 +10805,6 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			console.log('DEBUG control is Delete');
 			this.clearMap();
 			this.drawAllTrout();
 		},
@@ -10817,7 +10813,6 @@
 			delete: function _delete() {
 				var _this = this;
 
-				console.log('delete this trout');
 				this.$parent.coordsSet = false;
 				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function () {
 					_this.clearMap();
@@ -10840,7 +10835,7 @@
 /* 23 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>Delete</h1>\n\t<p>Click on a trout marker to edit or delete</p>\n\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n\t<div class=\"btn\">Edit</div>\n\t<div class=\"btn\" v-on:click=\"delete\" v-link=\"{path: '/home'}\">Delete</div>\n</div>\n";
+	module.exports = "\n\t<div class=\"home-wrapper\">\n\t<h1>Delete</h1>\n\t\t<p>Click on a trout marker to edit or delete</p>\n\t\t<h2 v-if=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</h2>\n<!-- \t\t<div class=\"btn\">Edit</div> -->\n\t\t<div class=\"btn\" v-on:click=\"delete\" v-link=\"{path: '/home'}\">Delete</div>\n\t</div>\n";
 
 /***/ },
 /* 24 */
@@ -10892,7 +10887,6 @@
 	// <script>
 	exports.default = {
 	  ready: function ready() {
-	    console.log('DEBUG control is App');
 	    this.clearMap();
 	    this.drawAllTrout();
 	  },
@@ -10917,18 +10911,15 @@
 
 	      if (evt.srcElement.localName === 'circle') {
 	        var id = evt.srcElement.classList[1];
-	        console.log('id looking for is: ' + id);
 	        _xhr2.default.get('/data/' + id, function (err, data) {
 	          _this.trout = JSON.parse(data.body);
 	        });
 	      }
 	    },
 	    turnOffAddListener: function turnOffAddListener() {
-	      console.log('turn off listener');
 	      d3.select('#rotoma').on('click', null);
 	    },
 	    handleClick: function handleClick() {
-	      console.log('listner is on');
 	      var that = this;
 	      d3.select('#rotoma').on('click', function () {
 	        var coords = d3.mouse(this);

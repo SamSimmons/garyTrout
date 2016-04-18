@@ -4,7 +4,6 @@ import map from '../map'
 
 export default {
   ready: function () {
-    console.log('DEBUG control is App')
     this.clearMap()
     this.drawAllTrout()
   },
@@ -27,18 +26,15 @@ export default {
     getTroutData: function (evt) {
       if (evt.srcElement.localName === 'circle') {
         var id = evt.srcElement.classList[1]
-        console.log('id looking for is: '+ id)
         xhr.get('/data/' + id, (err, data) => {
           this.trout = JSON.parse(data.body)
         })
       }
     },
     turnOffAddListener: function () {
-      console.log('turn off listener')
       d3.select('#rotoma').on('click', null)
     },
     handleClick: function () {
-    	console.log('listner is on')
       var that = this
       d3.select('#rotoma').on('click', function () {
         var coords = d3.mouse(this)
