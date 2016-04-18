@@ -10655,7 +10655,7 @@
 	// 			<input name="date" type="text" value={{trout.dateCaught}}>
 	// 			<label for="comment">Comment</label>
 	// 			<textarea name="comment" v-model="trout.comment"></textarea>
-	// 			<div class="btn submit" v-on:click="submit" v-link="{path: '/view'}">Submit</div>
+	// 			<div class="btn submit" v-on:click="submit">Submit</div>
 	// 		</div>
 	// 	</div>
 	// </template>
@@ -10696,6 +10696,12 @@
 				});
 			},
 			setup: function setup() {
+				//resets the current trout to default values, autofills the time and date
+				this.x = 0;
+				this.y = 0;
+				this.angler = "";
+				this.weight = "";
+				this.comment = "";
 				this.trout.id = Date.now().toString();
 				var d = new Date();
 				this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
@@ -10704,6 +10710,7 @@
 			submit: function submit() {
 				this.$parent.coordsSet = false;
 				this.updateDatabase();
+				this.setup();
 				this.setupDThree();
 			},
 			updateDatabase: function updateDatabase() {
@@ -10753,7 +10760,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\" v-link=\"{path: '/view'}\">Submit</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 21 */
@@ -10950,7 +10957,6 @@
 	    getAllTroutData: function getAllTroutData() {
 	      var _this2 = this;
 
-	      var that = this;
 	      _xhr2.default.get('/data', function (err, data) {
 	        if (err) {
 	          console.error(err);
@@ -10960,11 +10966,6 @@
 	    },
 	    turnOffAddListener: function turnOffAddListener() {
 	      d3.select('#rotoma').on('click', null);
-	    },
-	    setTroutData: function setTroutData(xy) {
-	      this.trout.x = xy[0];
-	      this.trout.y = xy[1];
-	      this.drawMarker(this.trout);
 	    },
 	    drawMarker: _map2.default.drawMarker,
 	    clearMap: _map2.default.clearMap,

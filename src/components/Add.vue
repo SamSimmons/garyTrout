@@ -12,7 +12,7 @@
 			<input name="date" type="text" value={{trout.dateCaught}}>
 			<label for="comment">Comment</label>
 			<textarea name="comment" v-model="trout.comment"></textarea>
-			<div class="btn submit" v-on:click="submit" v-link="{path: '/view'}">Submit</div>
+			<div class="btn submit" v-on:click="submit">Submit</div>
 		</div>
 	</div>
 </template>
@@ -60,6 +60,12 @@
 				})
 			},
 			setup: function () {
+				//resets the current trout to default values, autofills the time and date
+				this.x = 0
+				this.y = 0
+				this.angler = ""
+				this.weight = ""
+				this.comment = ""
 				this.trout.id = Date.now().toString()
 				var d = new Date()
 				this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
@@ -68,6 +74,7 @@
 			submit: function () {
 				this.$parent.coordsSet = false
 				this.updateDatabase()
+				this.setup()
 				this.setupDThree()
 			},
 			updateDatabase: function () {
