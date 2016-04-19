@@ -9,11 +9,11 @@ svg {
 }
 
 .marker {
-	fill: rgba(255, 159, 171, 1);
+	fill: rgba(125, 205, 121, 1);
 }
 
 .marker-out {
-	fill: rgba(255, 159, 171, 0.2);
+	fill: rgba(125, 205, 121, 0.2);
 }
 
 /*#vis {
