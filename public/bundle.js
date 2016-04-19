@@ -141,9 +141,9 @@
 	  drawMarker: function drawMarker(trout) {
 	    var map = d3.select('#rotoma');
 
-	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 30);
+	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 25);
 
-	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 3);
+	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 2);
 	  },
 	  clearMap: function clearMap() {
 	    var map = d3.select('#rotoma').selectAll('circle').remove();
@@ -10650,9 +10650,9 @@
 	// 			<label for="weight">Weight(kg):</label>
 	// 			<input type="number" v-model="trout.weight">
 	// 			<label for="timeCaught">Time</label>
-	// 			<input name="timeCaught" type="text" value={{trout.timeCaught}}>
+	// 			<input name="timeCaught" type="text" v-model="trout.timeCaught" value={{trout.timeCaught}}>
 	// 			<label for="date">Date</label>
-	// 			<input name="date" type="text" value={{trout.dateCaught}}>
+	// 			<input name="date" type="text" v-model="trout.dateCaught" value={{trout.dateCaught}}>
 	// 			<label for="comment">Comment</label>
 	// 			<textarea name="comment" v-model="trout.comment"></textarea>
 	// 			<div class="btn submit" v-on:click="submit">Submit</div>
@@ -10697,19 +10697,21 @@
 			},
 			setup: function setup() {
 				//resets the current trout to default values, autofills the time and date
-				this.x = 0;
-				this.y = 0;
-				this.angler = "";
-				this.weight = "";
-				this.comment = "";
+				// var d = new Date()
+				// this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
+				// this.trout.timeCaught = d.getHours() + ":" + d.getMinutes()
+				this.trout.timeCaught = "";
+				this.trout.dateCaught = "";
+				this.trout.x = 0;
+				this.trout.y = 0;
+				this.trout.angler = "";
+				this.trout.weight = "";
+				this.trout.comment = "";
 				this.trout.id = Date.now().toString();
-				var d = new Date();
-				this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-				this.trout.timeCaught = d.getHours() + ":" + d.getMinutes();
 			},
 			submit: function submit() {
-				this.$parent.coordsSet = false;
 				this.updateDatabase();
+				this.$parent.coordsSet = false;
 				this.setup();
 				this.setupDThree();
 			},
@@ -10760,7 +10762,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" v-model=\"trout.timeCaught\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" v-model=\"trout.dateCaught\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 21 */
@@ -10800,6 +10802,10 @@
 		value: true
 	});
 
+	var _defineProperty2 = __webpack_require__(53);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 	var _stringify = __webpack_require__(17);
 
 	var _stringify2 = _interopRequireDefault(_stringify);
@@ -10816,20 +10822,36 @@
 
 	// <template>
 	// 	<div class="home-wrapper">
-	// 	<h1>Delete</h1>
 	// 		<p>Click on a trout marker to edit or delete</p>
-	// 		<h2 v-if="$parent.trout">{{ $parent.trout | json }}</h2>
-	// <!-- 		<div class="btn">Edit</div> -->
+	// 		<div class="info-box">
+	// 			<label for="angler">Angler:</label>
+	// 			<input name="angler" type="text" v-model="$parent.trout.angler">
+	// 			<label for="weight">Weight(kg):</label>
+	// 			<input type="number" v-model="trout.weight">
+	// 			<label for="timeCaught">Time</label>
+	// 			<input name="timeCaught" type="text" v-model="trout.timeCaught" value={{trout.timeCaught}}>
+	// 			<label for="date">Date</label>
+	// 			<input name="date" type="text" v-model="trout.dateCaught" value={{trout.dateCaught}}>
+	// 			<label for="comment">Comment</label>
+	// 			<textarea name="comment" v-model="trout.comment"></textarea>
+	// 		</div>
+	// 		<div class="btn">Edit</div>
 	// 		<div class="btn" v-on:click="delete">Delete</div>
 	// 	</div>
 	// </template>
 	//
 	// <script>
-	exports.default = {
+	exports.default = (0, _defineProperty3.default)({
 		ready: function ready() {
 			this.$parent.getAllTroutData();
+			this.trout = this.$parent.trout;
 			this.clearMap();
 			this.drawAllTrout();
+		},
+		data: function data() {
+			return {
+				trout: {}
+			};
 		},
 		name: 'Delete',
 		methods: {
@@ -10843,6 +10865,12 @@
 					_this.repaint();
 				});
 			},
+			getTroutInfo: function getTroutInfo(evt) {
+				if (evt.srcElement.localName === 'circle') {
+					var id = evt.srcElement.classList[1];
+					this.trout = _.find(this.troutCollection, ['id', id]);
+				}
+			},
 			repaint: function repaint() {
 				this.clearMap();
 				this.drawAllTrout();
@@ -10852,20 +10880,19 @@
 				this.$parent.troutCollection.forEach(this.drawMarker);
 			},
 			drawMarker: _map2.default.drawMarker
-		},
-		data: function data() {
-			return {
-				trout: {}
-			};
 		}
-	};
+	}, 'data', function data() {
+		return {
+			trout: {}
+		};
+	});
 	// </script>
 
 /***/ },
 /* 23 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\t<div class=\"home-wrapper\">\n\t<h1>Delete</h1>\n\t\t<p>Click on a trout marker to edit or delete</p>\n\t\t<h2 v-if=\"$parent.trout\">{{ $parent.trout | json }}</h2>\n<!-- \t\t<div class=\"btn\">Edit</div> -->\n\t\t<div class=\"btn\" v-on:click=\"delete\">Delete</div>\n\t</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n\t<p>Click on a trout marker to edit or delete</p>\n\t<div class=\"info-box\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"$parent.trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" v-model=\"trout.timeCaught\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" v-model=\"trout.dateCaught\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t</div>\n\t<div class=\"btn\">Edit</div>\n\t<div class=\"btn\" v-on:click=\"delete\">Delete</div>\n</div>\n";
 
 /***/ },
 /* 24 */
@@ -31228,6 +31255,68 @@
 
 	module.exports = _.resource = Resource;
 
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(54);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(55), __esModule: true };
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(56);
+	module.exports = function defineProperty(it, key, desc){
+	  return $.setDesc(it, key, desc);
+	};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports) {
+
+	var $Object = Object;
+	module.exports = {
+	  create:     $Object.create,
+	  getProto:   $Object.getPrototypeOf,
+	  isEnum:     {}.propertyIsEnumerable,
+	  getDesc:    $Object.getOwnPropertyDescriptor,
+	  setDesc:    $Object.defineProperty,
+	  setDescs:   $Object.defineProperties,
+	  getKeys:    $Object.keys,
+	  getNames:   $Object.getOwnPropertyNames,
+	  getSymbols: $Object.getOwnPropertySymbols,
+	  each:       [].forEach
+	};
 
 /***/ }
 /******/ ]);

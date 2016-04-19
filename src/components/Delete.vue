@@ -1,9 +1,19 @@
 <template>
 	<div class="home-wrapper">
-	<h1>Delete</h1>
 		<p>Click on a trout marker to edit or delete</p>
-		<h2 v-if="$parent.trout">{{ $parent.trout | json }}</h2>
-<!-- 		<div class="btn">Edit</div> -->
+		<div class="info-box">
+			<label for="angler">Angler:</label>
+			<input name="angler" type="text" v-model="$parent.trout.angler">
+			<label for="weight">Weight(kg):</label>
+			<input type="number" v-model="trout.weight">
+			<label for="timeCaught">Time</label>
+			<input name="timeCaught" type="text" v-model="trout.timeCaught" value={{trout.timeCaught}}>
+			<label for="date">Date</label>
+			<input name="date" type="text" v-model="trout.dateCaught" value={{trout.dateCaught}}>
+			<label for="comment">Comment</label>
+			<textarea name="comment" v-model="trout.comment"></textarea>
+		</div>
+		<div class="btn">Edit</div>
 		<div class="btn" v-on:click="delete">Delete</div>
 	</div>
 </template>
@@ -15,8 +25,14 @@
 	export default {
 		ready: function () {
 			this.$parent.getAllTroutData()
+			this.trout = this.$parent.trout
 			this.clearMap()
 			this.drawAllTrout()
+		},
+		data: function() {
+			return {
+				trout: {}
+			}		
 		},
 		name: 'Delete',
 		methods: {
@@ -27,6 +43,12 @@
 					this.$parent.troutCollection = res.body
 					this.repaint()
 				})
+			},
+			getTroutInfo: function (evt) {
+			  if (evt.srcElement.localName === 'circle') {
+			    var id = evt.srcElement.classList[1]
+			    this.trout = _.find(this.troutCollection, ['id', id])
+			  }
 			},
 			repaint: function () {
 				this.clearMap()
