@@ -1,6 +1,6 @@
 path {
-  stroke: teal;
-  stroke-width: 2px;
+  stroke: rgba(0,0,0,.5);
+  stroke-width: 1px;
   fill: steelblue;
 }
 
@@ -9,11 +9,11 @@ svg {
 }
 
 .marker {
-	fill: rgba(125, 205, 121, 1);
+	fill: rgba(255, 155, 101, 1);
 }
 
 .marker-out {
-	fill: rgba(125, 205, 121, 0.2);
+	fill: rgba(255, 155, 101, 0.2);
 }
 
 /*#vis {
@@ -44,6 +44,18 @@ body {
 .btn:hover {
 	color: #AA5839;
 	border: 1px solid #AA5839;
+}
+
+.inner-btn {
+	display: inline-block;
+	padding: 15px;
+	color: #FFCEA4;
+	cursor: pointer;
+	border: 1px solid #FFCEA4;
+	border-radius: 5px;
+	margin: 5px;
+	font-size: 1em;
+
 }
 
 .title {

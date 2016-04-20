@@ -75,6 +75,15 @@ server.route({
 	}
 });
 
+// server.route({
+// 	method:'GET',
+// 	path: '/collection/{year}',
+// 	handler: function(req, reply) {
+// 		console.log(req.params.year)
+// 		reply('linked')
+// 	}
+// })
+
 server.route({
 	method:'GET',
 	path: '/data/{id}',
@@ -90,6 +99,8 @@ server.route({
 			//.finally(closeDB)
 	}
 })
+
+
 
 server.route({
     method: 'GET',
@@ -117,6 +128,10 @@ function addTo (table, obj) {
 
 function getAll (){
 	return knex.select().table('fish')
+}
+
+function getCollection(param) {
+	return knex('fish').where(year)
 }
 
 function findOne (table, id) {

@@ -16,6 +16,7 @@
 			this.$parent.getAllTroutData()
 			this.clearMap()
 			this.drawAllTrout()
+			map.turnOnZoom()
 		},
 		data: function() {
 			return {
