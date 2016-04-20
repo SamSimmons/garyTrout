@@ -12,7 +12,7 @@ path {
 }
 
 svg {
-	background-color: #fff;
+	background-color: #9f9f9f;
 }
 
 .marker {
@@ -24,8 +24,7 @@ svg {
 }
 
 #vis {
-	border: 10px solid #05f8ff;
-	background-color: #fff;
+	background-color: #9f9f9f;
 }
 
 /*.frame {
@@ -34,7 +33,7 @@ svg {
 */
 body {
 	margin: 0;
-	background-color: #9f9f9f;
+	background-color: #FFFF62;
 	font-family: 'Poppins';
 }
 
@@ -46,6 +45,7 @@ body {
 
 .navbar {
 	display:flex;
+	height: 100vh;
 	justify-content: flex-end;
 	background-color: #05f8ff;
 	overflow: hidden;
@@ -60,53 +60,18 @@ body {
 }
 
 .logo {
+	margin-top: auto;
 	background: url("logo.png") no-repeat;
 	background-position: right;
 	height: 25vh;
 	padding-bottom: 5vh;
 	width: 35vw;
 	border-bottom: 30px #790cf4 solid;
-/*	border-right: 40px solid transparent;*/
 	border-left: 30px solid transparent;
 }
-
-.btn {
-	padding: 15px;
-	color: #FFCEA4;
-	cursor: pointer;
-	border: 1px solid #FFCEA4;
-	border-radius: 5px;
-	margin: 5px;
-	font-size: 1.25em;
-}
-
-.btn:hover {
-	color: #AA5839;
-	border: 1px solid #AA5839;
-}
-
-.inner-btn {
-	display: inline-block;
-	padding: 15px;
-	color: #FFCEA4;
-	cursor: pointer;
-	border: 1px solid #FFCEA4;
-	border-radius: 5px;
-	margin: 5px;
-	font-size: 1em;
-
-}
-
-.title {
-	justify-self: flex-start;
-	margin-right: auto;
-	font-size: 1.5em;
-	font-weight: bold;
-	border: 2px solid #FFCEA4;
-}
-
 .app-wrapper {
 	display: flex;
+	justify-content: space-between;
 }
 
 .add-wrapper {
@@ -114,12 +79,58 @@ body {
 	justify-content: space-around;
 }
 
-/*.half {
-	width: 50%;
-}*/
-
 .info-box {
 	display: flex;
 	flex-direction: column;
 	max-width: 45%;
 }
+
+.controls {
+	background-color: #FFFF62;
+	max-width: 50%;
+	min-width: 35%;
+}
+
+.btn {
+	font-family: "Poppins";
+	text-align: center;
+	vertical-align: middle;
+	padding: 5px;
+	color: #790cf4;
+	cursor: pointer;
+	border: 2px solid #790cf4;
+	border-radius: 5px;
+	margin: 15px;
+	font-size: 1.15em;
+}
+
+.btn:hover {
+
+}
+
+.active {
+	color: #fff;
+	background-color: #05f8ff;
+}
+
+.inner-btn {
+	display: inline-block;
+	padding: 10px;
+	color: #790cf4;
+	cursor: pointer;
+	border: 1px solid #790cf4;
+	border-radius: 5px;
+	margin: 5px;
+	font-size: 1em;
+}
+
+h2 {
+	color: #232323;
+	margin: 0;
+}
+/*colors
+blue #
+purple #790cf4
+grey #9f9f9f
+dark #232323
+*/

@@ -1,19 +1,13 @@
 <template>
 	<div class="home-wrapper">
-		<p>Click on a trout marker to edit or delete</p>
+		<p>Click on a trout marker to review and delete</p>
 		<div class="info-box">
-			<label for="angler">Angler:</label>
-			<input name="angler" type="text" v-model="$parent.trout.angler">
-			<label for="weight">Weight(kg):</label>
-			<input type="number" v-model="trout.weight">
-			<label for="timeCaught">Time</label>
-			<input name="timeCaught" type="text" v-model="trout.timeCaught" value={{trout.timeCaught}}>
-			<label for="date">Date</label>
-			<input name="date" type="text" v-model="trout.dateCaught" value={{trout.dateCaught}}>
-			<label for="comment">Comment</label>
-			<textarea name="comment" v-model="trout.comment"></textarea>
+			<p v-show="$parent.trout.x > 0">Caught by: {{ $parent.trout.angler }}</p>
+			<p v-show="$parent.trout.dateCaught">Date: {{ $parent.trout.dateCaught }}</p>
+			<p v-show="$parent.trout.timeCaught">Time: {{ $parent.trout.timeCaught }}</p>
+			<p v-show="$parent.trout.weight > 0">Weight: {{ $parent.trout.weight }}KG</p>
+			<p v-show="$parent.trout.comment">{{ $parent.trout.comment }}</p>
 		</div>
-		<div class="btn">Edit</div>
 		<div class="btn" v-on:click="delete">Delete</div>
 	</div>
 </template>
@@ -28,6 +22,7 @@
 			this.trout = this.$parent.trout
 			this.clearMap()
 			this.drawAllTrout()
+			map.turnOnZoom()
 		},
 		data: function() {
 			return {
@@ -37,7 +32,6 @@
 		name: 'Delete',
 		methods: {
 			delete: function () {
-				console.log('delete')
 				this.$parent.coordsSet = false
 				xhr.post('/delete', {json: JSON.stringify(this.$parent.trout.id)},(err, res) => {
 					this.$parent.troutCollection = res.body

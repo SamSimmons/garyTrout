@@ -1,7 +1,12 @@
 <template>
 	<div class="home-wrapper">
-	<h1>View</h1>
-		<p v-show="$parent.trout.x > 0">{{ $parent.trout | json }}</p>
+	<h1>Your Selected Trout</h1>
+	<div class="info-box">
+		<p v-show="$parent.trout.x > 0">Caught by: {{ $parent.trout.angler }}</p>
+		<p v-show="$parent.trout.dateCaught">Date: {{ $parent.trout.dateCaught }}</p>
+		<p v-show="$parent.trout.timeCaught">Time: {{ $parent.trout.timeCaught }}</p>
+		<p v-show="$parent.trout.weight > 0">Weight: {{ $parent.trout.weight }}KG</p>
+		<p v-show="$parent.trout.comment">{{ $parent.trout.comment }}</p>
 	</div>
 </template>
 
@@ -13,7 +18,7 @@
 //--------------------------------------------------------------------------------
 	export default {
 		ready: function () {
-			this.$parent.getAllTroutData()
+			this.collection = this.$parent.troutCollection
 			this.clearMap()
 			this.drawAllTrout()
 			map.turnOnZoom()

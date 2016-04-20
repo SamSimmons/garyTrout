@@ -63,12 +63,12 @@
 				})
 			},
 			setup: function () {
-				//resets the current trout to default values, autofills the time and date
-				// var d = new Date()
-				// this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
-				// this.trout.timeCaught = d.getHours() + ":" + d.getMinutes()
-				this.trout.timeCaught = ""
-				this.trout.dateCaught = ""
+				// resets the current trout to default values, autofills the time and date
+				var d = new Date()
+				this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
+				this.trout.timeCaught = d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2)
+				// this.trout.timeCaught = ""
+				// this.trout.dateCaught = ""
 				this.trout.x = 0
 				this.trout.y = 0
 				this.trout.angler = ""

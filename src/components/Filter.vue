@@ -1,6 +1,6 @@
 <template>
-  <div v-show="filtered.length > 0">{{ filtered | json }}</div>
-  <p v-show="$parent.trout.x > 0">{{ $parent.trout | json }}</p>
+  <p v-show="this.filtered.length > 0">{{ filtered | json }}</p>
+  <h2>Years:</h2>
 	<div class="inner-btn" @click="filterForYear">2005</div>
 	<div class="inner-btn" @click="filterForYear">2006</div>
 	<div class="inner-btn" @click="filterForYear">2007</div>
@@ -12,15 +12,27 @@
 	<div class="inner-btn" @click="filterForYear">2013</div>
 	<div class="inner-btn" @click="filterForYear">2014</div>
 	<div class="inner-btn" @click="filterForYear">2015</div>
+  <div class="inner-btn" @click="filterForYear">2016</div>
+  <br>
+  <h2>Time:</h2>
 	<div class="inner-btn" @click="filterForTime">Morning</div>
 	<div class="inner-btn" @click="filterForTime">Night</div>
   
-
+  <h2>Angler:</h2>
   <input name="angler" type="text" v-model="angler">
   <div class="inner-btn" @click="filterByName">Submit Name</div>
-
+  <br>
+  <div class="btn" @click="showAll">All</div>
   <div class="btn" @click="reset">Reset</div>
 	<div class="btn" @click="clearMap">Clear Map</div>
+
+  <div class="filter-info-box">
+    <p v-show="$parent.trout.x > 0">Caught by: {{ $parent.trout.angler }}</p>
+    <p v-show="$parent.trout.dateCaught">Date: {{ $parent.trout.dateCaught }}</p>
+    <p v-show="$parent.trout.timeCaught">Time: {{ $parent.trout.timeCaught }}</p>
+    <p v-show="$parent.trout.weight > 0">Weight: {{ $parent.trout.weight }}KG</p>
+    <p v-show="$parent.trout.comment">{{ $parent.trout.comment }}</p>
+  </div>
 
 </template>
 
@@ -32,7 +44,7 @@
 		ready: function () {
       this.$parent.trout.x = null
       this.collection = this.$parent.troutCollection
-      // this.$parent.getAllTroutData()
+      this.reset()
       this.clearMap()
       map.turnOnZoom()
 		},
@@ -47,7 +59,7 @@
 		methods: {
 			filterForYear: function (evt) {
 				var param = evt.target.innerHTML
-        this.collection.push(evt.target.innerHTML)
+        this.filtered.push(param)
 				this.collection = this.collection.filter(trout => {
 					if (trout.dateCaught)
             return trout.dateCaught.includes(param)
@@ -83,6 +95,11 @@
       reset: function () {
         this.filtered = []
         this.collection = this.$parent.troutCollection
+      },
+      showAll: function () {
+        this.collection = this.$parent.troutCollection
+        this.clearMap()
+        this.drawFilteredTrout()
       },
 			clearMap: map.clearMap,
 			drawMarker: map.drawMarker,

@@ -19,10 +19,10 @@
 			<div id="vis" v-on:click="getTroutInfo"></div>
 		</div>
 		<div id="app" class="controls">
-			<div v-link="{path: '/view'}" class="btn" v-on:click="turnOffAddListener">View a trout</div>
-			<div v-link="{path: '/add'}" class="btn add-single" >Add a trout</div>
-			<div v-link="{path: '/delete'}" class="btn delete-mode" v-on:click="turnOffAddListener">Edit / Delete</div>
-			<div v-link="{path: '/filter'}" class="btn" v-on:click="turnOffAddListener">Filter</div>
+			<div v-link="{path: '/view', activeClass: 'active'}" class="btn" v-on:click="turnOffAddListener">View a trout</div>
+			<div v-link="{path: '/add', activeClass: 'active'}" class="btn add-single" >Add a trout</div>
+			<div v-link="{path: '/delete', activeClass: 'active'}" class="btn delete-mode" v-on:click="turnOffAddListener">Edit / Delete</div>
+			<div v-link="{path: '/filter', activeClass: 'active'}" class="btn" v-on:click="turnOffAddListener">Filter</div>
 			<router-view></router-view>
 		</div>		
 	</div>
