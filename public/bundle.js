@@ -128,7 +128,7 @@
 	module.exports = {
 	  //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
 	  create: function create() {
-	    var width = 600,
+	    var width = 590,
 	        height = 600;
 
 	    //appends the map to the page
@@ -10148,7 +10148,7 @@
 	// <template>
 	// 	<div class="home-wrapper">
 	// 	<h1>View</h1>
-	// 		<h2>{{ $parent.trout | json }}</h2>
+	// 		<p v-show="$parent.trout.x > 0">{{ $parent.trout | json }}</p>
 	// 	</div>
 	// </template>
 	//
@@ -10601,7 +10601,7 @@
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2>{{ $parent.trout | json }}</h2>\n</div>\n";
+	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<p v-show=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</p>\n</div>\n";
 
 /***/ },
 /* 15 */
@@ -31404,6 +31404,10 @@
 	// 	<div class="inner-btn" @click="filterForTime">Morning</div>
 	// 	<div class="inner-btn" @click="filterForTime">Night</div>
 	//
+	//
+	//   <input name="angler" type="text" v-model="angler">
+	//   <div class="inner-btn" @click="filterByName">Submit Name</div>
+	//
 	//   <div class="btn" @click="reset">Reset</div>
 	// 	<div class="btn" @click="clearMap">Clear Map</div>
 	//
@@ -31412,11 +31416,15 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
+			this.$parent.trout.x = null;
+			this.collection = this.$parent.troutCollection;
+			// this.$parent.getAllTroutData()
 			this.clearMap();
-			this.reset();
+			_map2.default.turnOnZoom();
 		},
 		data: function data() {
 			return {
+				angler: "",
 				collection: [],
 				filtered: [],
 				unfiltered: []
@@ -31425,8 +31433,9 @@
 		methods: {
 			filterForYear: function filterForYear(evt) {
 				var param = evt.target.innerHTML;
-				this.collection = this.$parent.troutCollection.filter(function (trout) {
-					return trout.dateCaught.includes(param);
+				this.collection.push(evt.target.innerHTML);
+				this.collection = this.collection.filter(function (trout) {
+					if (trout.dateCaught) return trout.dateCaught.includes(param);
 				});
 				this.clearMap();
 				this.drawFilteredTrout();
@@ -31436,19 +31445,28 @@
 				if (param === "Morning") {
 					this.filtered.push(param);
 					this.collection = this.collection.filter(function (trout) {
-						console.log('comparing', trout.timeCaught.slice(0, 2), 12);
-						return parseInt(trout.timeCaught.slice(0, 2)) < 12;
+						if (trout.timeCaught) return parseInt(trout.timeCaught.slice(0, 2)) < 12;
 					});
 				} else if (param === "Night") {
 					this.filtered.push(param);
 					this.collection = this.collection.filter(function (trout) {
-						return parseInt(trout.timeCaught.slice(0, 2)) > 12;
+						if (trout.timeCaught) return parseInt(trout.timeCaught.slice(0, 2)) > 12;
 					});
 				}
-				console.log('repaint');
 				this.clearMap();
 				this.drawFilteredTrout();
 			},
+			filterByName: function filterByName() {
+				var _this = this;
+
+				this.filtered.push(this.angler);
+				this.collection = this.collection.filter(function (trout) {
+					return trout.angler === _this.angler;
+				});
+				this.clearMap();
+				this.drawFilteredTrout();
+			},
+
 			reset: function reset() {
 				this.filtered = [];
 				this.collection = this.$parent.troutCollection;
@@ -31466,7 +31484,7 @@
 /* 59 */
 /***/ function(module, exports) {
 
-	module.exports = "\n  <div v-show=\"filtered.length > 0\">{{ filtered | json }}</div>\n  <p v-show=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</p>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2005</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2006</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2007</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2008</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2009</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2010</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2011</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2012</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2013</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2014</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2015</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Morning</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Night</div>\n\n  <div class=\"btn\" @click=\"reset\">Reset</div>\n\t<div class=\"btn\" @click=\"clearMap\">Clear Map</div>\n\n";
+	module.exports = "\n  <div v-show=\"filtered.length > 0\">{{ filtered | json }}</div>\n  <p v-show=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</p>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2005</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2006</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2007</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2008</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2009</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2010</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2011</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2012</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2013</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2014</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2015</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Morning</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Night</div>\n  \n\n  <input name=\"angler\" type=\"text\" v-model=\"angler\">\n  <div class=\"inner-btn\" @click=\"filterByName\">Submit Name</div>\n\n  <div class=\"btn\" @click=\"reset\">Reset</div>\n\t<div class=\"btn\" @click=\"clearMap\">Clear Map</div>\n\n";
 
 /***/ }
 /******/ ]);

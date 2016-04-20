@@ -3,7 +3,7 @@ import xhr from 'xhr'
 module.exports = {
   //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
   create: function () {
-    var width = 600,
+    var width = 590,
         height = 600;
 
     //appends the map to the page

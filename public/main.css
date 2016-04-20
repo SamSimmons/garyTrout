@@ -1,3 +1,10 @@
+/*colors
+blue #05f8ff
+purple #790cf4
+grey #9f9f9f
+dark #232323
+*/
+
 path {
   stroke: rgba(0,0,0,.5);
   stroke-width: 1px;
@@ -5,30 +12,62 @@ path {
 }
 
 svg {
-	background-color: bisque;
+	background-color: #fff;
 }
 
 .marker {
-	fill: rgba(255, 155, 101, 1);
+	fill: rgba(255, 155, 255, 1);
 }
 
 .marker-out {
-	fill: rgba(255, 155, 101, 0.2);
+	fill: rgba(255, 155, 255, 0.2);
 }
 
-/*#vis {
-	width: 65vw;
-	background-color: seagreen;
-	border-radius: 5px;
-}*/
+#vis {
+	border: 10px solid #05f8ff;
+	background-color: #fff;
+}
 
+/*.frame {
+	border: 3px solid #959595;
+}
+*/
 body {
-	background-color: #407E81;
+	margin: 0;
+	background-color: #9f9f9f;
+	font-family: 'Poppins';
+}
+
+.grey-triangle {
+	position: absolute;
+	border-bottom: 100px solid transparent;	
+	border-left: 350px solid #9f9f9f;
 }
 
 .navbar {
 	display:flex;
 	justify-content: flex-end;
+	background-color: #05f8ff;
+	overflow: hidden;
+}
+
+.triangle{
+	margin-left: auto;
+	width: 0; 
+	height: 0; 
+	border-bottom: 100px solid transparent;	
+	border-right: 600px solid #05f8ff;
+}
+
+.logo {
+	background: url("logo.png") no-repeat;
+	background-position: right;
+	height: 25vh;
+	padding-bottom: 5vh;
+	width: 35vw;
+	border-bottom: 30px #790cf4 solid;
+/*	border-right: 40px solid transparent;*/
+	border-left: 30px solid transparent;
 }
 
 .btn {
@@ -75,16 +114,12 @@ body {
 	justify-content: space-around;
 }
 
-.half {
+/*.half {
 	width: 50%;
-}
+}*/
 
 .info-box {
 	display: flex;
 	flex-direction: column;
 	max-width: 45%;
-}
-
-svg .new {
-	fill: olivedrab;
 }

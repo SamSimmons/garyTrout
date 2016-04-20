@@ -14,6 +14,10 @@
 	<div class="inner-btn" @click="filterForYear">2015</div>
 	<div class="inner-btn" @click="filterForTime">Morning</div>
 	<div class="inner-btn" @click="filterForTime">Night</div>
+  
+
+  <input name="angler" type="text" v-model="angler">
+  <div class="inner-btn" @click="filterByName">Submit Name</div>
 
   <div class="btn" @click="reset">Reset</div>
 	<div class="btn" @click="clearMap">Clear Map</div>
@@ -26,11 +30,15 @@
 
 	export default {
 		ready: function () {
-			this.clearMap()
-      this.reset()
+      this.$parent.trout.x = null
+      this.collection = this.$parent.troutCollection
+      // this.$parent.getAllTroutData()
+      this.clearMap()
+      map.turnOnZoom()
 		},
 		data: function() {
 			return {
+        angler: "",
 				collection: [],
 				filtered: [],
 				unfiltered: []
@@ -39,8 +47,10 @@
 		methods: {
 			filterForYear: function (evt) {
 				var param = evt.target.innerHTML
-				this.collection = this.$parent.troutCollection.filter(trout => {
-					return trout.dateCaught.includes(param)
+        this.collection.push(evt.target.innerHTML)
+				this.collection = this.collection.filter(trout => {
+					if (trout.dateCaught)
+            return trout.dateCaught.includes(param)
 				})
         this.clearMap()
 				this.drawFilteredTrout()
@@ -50,18 +60,26 @@
 				if (param === "Morning") {
           this.filtered.push(param)
 					this.collection = this.collection.filter(trout => {
-            console.log('comparing', (trout.timeCaught.slice(0,2)), 12)
-            return parseInt(trout.timeCaught.slice(0,2)) < 12
+            if (trout.timeCaught)
+              return parseInt(trout.timeCaught.slice(0,2)) < 12
           })
 				}
         else if (param === "Night") {
           this.filtered.push(param)
-          this.collection = this.collection.filter(trout => parseInt(trout.timeCaught.slice(0,2)) > 12)
+          this.collection = this.collection.filter(trout => {
+            if (trout.timeCaught)
+              return parseInt(trout.timeCaught.slice(0,2)) > 12})
         }
-        console.log('repaint')
         this.clearMap()
         this.drawFilteredTrout()
 			},
+      filterByName: function () {
+        this.filtered.push(this.angler)
+        this.collection = this.collection.filter(trout => trout.angler === this.angler)
+        this.clearMap()
+        this.drawFilteredTrout()
+      }
+      ,
       reset: function () {
         this.filtered = []
         this.collection = this.$parent.troutCollection

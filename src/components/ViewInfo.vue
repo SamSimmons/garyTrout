@@ -1,7 +1,7 @@
 <template>
 	<div class="home-wrapper">
 	<h1>View</h1>
-		<h2>{{ $parent.trout | json }}</h2>
+		<p v-show="$parent.trout.x > 0">{{ $parent.trout | json }}</p>
 	</div>
 </template>
 

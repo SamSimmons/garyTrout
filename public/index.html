@@ -4,16 +4,21 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 	<title>TROUT-TROUT</title>
+	<link href='https://fonts.googleapis.com/css?family=Source+Serif+Pro|Poppins:400,700' rel='stylesheet' type='text/css'>
 	<link rel="styleshee" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
+	<div class="grey-triangle"></div>
 	<nav class="navbar">
-		<div class="btn title">TROUT-TROUT</div>
+		<div class="logo"></div>
 	</nav>
+	<div class="triangle"></div>
 	<div class='app-wrapper'>
-		<div id="vis" class="half" v-on:click="getTroutInfo"></div>
-		<div id="app" class="half">
+		<div class="frame">
+			<div id="vis" v-on:click="getTroutInfo"></div>
+		</div>
+		<div id="app" class="controls">
 			<div v-link="{path: '/view'}" class="btn" v-on:click="turnOffAddListener">View a trout</div>
 			<div v-link="{path: '/add'}" class="btn add-single" >Add a trout</div>
 			<div v-link="{path: '/delete'}" class="btn delete-mode" v-on:click="turnOffAddListener">Edit / Delete</div>
