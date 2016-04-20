@@ -132,11 +132,7 @@
 	        height = 600;
 
 	    //appends the map to the page
-	    var map = d3.select("#vis").append("svg").attr('id', 'rotoma').attr("width", width).attr("height", height)
-	    // .call(d3.behavior.zoom().on("zoom", function () {
-	    //   map.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
-	    // }))
-	    .append("g").attr("class", "grouping");
+	    var map = d3.select("#vis").append("svg").attr('id', 'rotoma').attr("width", width).attr("height", height).append("g").attr("class", "grouping");
 
 	    d3.json("lake.json", function (err, lake) {
 	      if (err) return console.error(error);
@@ -157,7 +153,6 @@
 	    }));
 	  },
 	  turnOffZoom: function turnOffZoom() {
-	    console.log('no zoom for you');
 	    d3.select('#rotoma').call(d3.behavior.zoom(), null);
 	  },
 	  drawMarker: function drawMarker(trout) {
@@ -31349,7 +31344,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"!!babel-loader!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./Filter.vue\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+	__vue_script__ = __webpack_require__(58)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
@@ -31373,11 +31368,105 @@
 	})()}
 
 /***/ },
-/* 58 */,
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _xhr = __webpack_require__(6);
+
+	var _xhr2 = _interopRequireDefault(_xhr);
+
+	var _map = __webpack_require__(1);
+
+	var _map2 = _interopRequireDefault(_map);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// <template>
+	//   <div v-show="filtered.length > 0">{{ filtered | json }}</div>
+	//   <p v-show="$parent.trout.x > 0">{{ $parent.trout | json }}</p>
+	// 	<div class="inner-btn" @click="filterForYear">2005</div>
+	// 	<div class="inner-btn" @click="filterForYear">2006</div>
+	// 	<div class="inner-btn" @click="filterForYear">2007</div>
+	// 	<div class="inner-btn" @click="filterForYear">2008</div>
+	// 	<div class="inner-btn" @click="filterForYear">2009</div>
+	// 	<div class="inner-btn" @click="filterForYear">2010</div>
+	// 	<div class="inner-btn" @click="filterForYear">2011</div>
+	// 	<div class="inner-btn" @click="filterForYear">2012</div>
+	// 	<div class="inner-btn" @click="filterForYear">2013</div>
+	// 	<div class="inner-btn" @click="filterForYear">2014</div>
+	// 	<div class="inner-btn" @click="filterForYear">2015</div>
+	// 	<div class="inner-btn" @click="filterForTime">Morning</div>
+	// 	<div class="inner-btn" @click="filterForTime">Night</div>
+	//
+	//   <div class="btn" @click="reset">Reset</div>
+	// 	<div class="btn" @click="clearMap">Clear Map</div>
+	//
+	// </template>
+	//
+	// <script>
+	exports.default = {
+		ready: function ready() {
+			this.clearMap();
+			this.reset();
+		},
+		data: function data() {
+			return {
+				collection: [],
+				filtered: [],
+				unfiltered: []
+			};
+		},
+		methods: {
+			filterForYear: function filterForYear(evt) {
+				var param = evt.target.innerHTML;
+				this.collection = this.$parent.troutCollection.filter(function (trout) {
+					return trout.dateCaught.includes(param);
+				});
+				this.clearMap();
+				this.drawFilteredTrout();
+			},
+			filterForTime: function filterForTime(evt) {
+				var param = evt.target.innerHTML;
+				if (param === "Morning") {
+					this.filtered.push(param);
+					this.collection = this.collection.filter(function (trout) {
+						console.log('comparing', trout.timeCaught.slice(0, 2), 12);
+						return parseInt(trout.timeCaught.slice(0, 2)) < 12;
+					});
+				} else if (param === "Night") {
+					this.filtered.push(param);
+					this.collection = this.collection.filter(function (trout) {
+						return parseInt(trout.timeCaught.slice(0, 2)) > 12;
+					});
+				}
+				console.log('repaint');
+				this.clearMap();
+				this.drawFilteredTrout();
+			},
+			reset: function reset() {
+				this.filtered = [];
+				this.collection = this.$parent.troutCollection;
+			},
+			clearMap: _map2.default.clearMap,
+			drawMarker: _map2.default.drawMarker,
+			drawFilteredTrout: function drawFilteredTrout() {
+				this.collection.forEach(this.drawMarker);
+			}
+		}
+	};
+	// </script>
+
+/***/ },
 /* 59 */
 /***/ function(module, exports) {
 
-	module.exports = "\n  <div class=\"inner-btn\" @click=\"filterForYear\">2005</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2006</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2007</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2008</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2009</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2010</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2011</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2012</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2013</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2014</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2015</div>\n  <div class=\"inner-btn\" @click=\"filterForTime\">Morning</div>\n  <div class=\"inner-btn\" @click=\"filterForTime\">Night</div>\n\n\n\t<div class=\"btn\" @click=\"clearMap\">Clear Map</div>\n\n";
+	module.exports = "\n  <div v-show=\"filtered.length > 0\">{{ filtered | json }}</div>\n  <p v-show=\"$parent.trout.x > 0\">{{ $parent.trout | json }}</p>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2005</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2006</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2007</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2008</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2009</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2010</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2011</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2012</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2013</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2014</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2015</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Morning</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Night</div>\n\n  <div class=\"btn\" @click=\"reset\">Reset</div>\n\t<div class=\"btn\" @click=\"clearMap\">Clear Map</div>\n\n";
 
 /***/ }
 /******/ ]);

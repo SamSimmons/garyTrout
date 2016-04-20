@@ -11,9 +11,6 @@ module.exports = {
       .attr('id', 'rotoma')
       .attr("width", width)
       .attr("height", height)
-      // .call(d3.behavior.zoom().on("zoom", function () {
-      //   map.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
-      // }))
         .append("g")
           .attr("class", "grouping")
 
@@ -42,8 +39,7 @@ module.exports = {
     }))
   },
   turnOffZoom: function () {
-    console.log('no zoom for you')
-        d3.select('#rotoma').call(d3.behavior.zoom(), null)
+    d3.select('#rotoma').call(d3.behavior.zoom(), null)
   },
   drawMarker: function(trout) {
     var map = d3.select('.grouping')
