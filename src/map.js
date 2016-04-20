@@ -33,11 +33,17 @@ module.exports = {
           .attr("d", d3.geo.path().projection(projection))
       })
   },
+  destroy: function() {
+    d3.select('#rotoma').remove()
+  },
   turnOnZoom: function () {
-    console.log('zoom on')
     d3.select('#rotoma').call(d3.behavior.zoom().on("zoom", function () {
       d3.select('#rotoma g').attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
     }))
+  },
+  turnOffZoom: function () {
+    console.log('no zoom for you')
+        d3.select('#rotoma').call(d3.behavior.zoom(), null)
   },
   drawMarker: function(trout) {
     var map = d3.select('.grouping')
@@ -55,9 +61,8 @@ module.exports = {
       .attr("r", 2);
   },
   clearMap: function () {
-    console.log('clearing')
     var map = d3.select('#rotoma')
-      .selectAll('circle').style()
+      .selectAll('circle').remove()
   },
   drawAllTrout: function (arr) {
       arr.forEach(drawMarker)

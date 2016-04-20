@@ -23,12 +23,15 @@
 
 	//This component is in charge of adding new trout to the DB
 	//TODO add left 0 padding to the time, it looks funny without the zeros
-	//
+	//TODO add, needs to redraw the map completely, otherwise it will mess with the coords
 
 	export default {
 		ready: function () {
+			map.destroy()
+			map.create()
 			this.setup()
 			this.setupDThree()
+			map.turnOffZoom()
 		},
 		name: 'Add',
 		data: function() {

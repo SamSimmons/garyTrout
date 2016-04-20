@@ -148,11 +148,17 @@
 	      d3.select('.grouping').append("path").datum(lake).attr("d", d3.geo.path().projection(projection));
 	    });
 	  },
+	  destroy: function destroy() {
+	    d3.select('#rotoma').remove();
+	  },
 	  turnOnZoom: function turnOnZoom() {
-	    console.log('zoom on');
 	    d3.select('#rotoma').call(d3.behavior.zoom().on("zoom", function () {
 	      d3.select('#rotoma g').attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
 	    }));
+	  },
+	  turnOffZoom: function turnOffZoom() {
+	    console.log('no zoom for you');
+	    d3.select('#rotoma').call(d3.behavior.zoom(), null);
 	  },
 	  drawMarker: function drawMarker(trout) {
 	    var map = d3.select('.grouping');
@@ -162,8 +168,7 @@
 	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 2);
 	  },
 	  clearMap: function clearMap() {
-	    console.log('clearing');
-	    var map = d3.select('#rotoma').selectAll('circle').style();
+	    var map = d3.select('#rotoma').selectAll('circle').remove();
 	  },
 	  drawAllTrout: function drawAllTrout(arr) {
 	    arr.forEach(drawMarker);
@@ -10657,7 +10662,7 @@
 
 	//This component is in charge of adding new trout to the DB
 	//TODO add left 0 padding to the time, it looks funny without the zeros
-	//
+	//TODO add, needs to redraw the map completely, otherwise it will mess with the coords
 
 	// <template>
 	// 	<div class="add-wrapper">
@@ -10681,8 +10686,11 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
+			_map2.default.destroy();
+			_map2.default.create();
 			this.setup();
 			this.setupDThree();
+			_map2.default.turnOffZoom();
 		},
 		name: 'Add',
 		data: function data() {
@@ -31341,7 +31349,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(58)
+	__vue_script__ = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"!!babel-loader!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./Filter.vue\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
@@ -31365,64 +31373,11 @@
 	})()}
 
 /***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _xhr = __webpack_require__(6);
-
-	var _xhr2 = _interopRequireDefault(_xhr);
-
-	var _map = __webpack_require__(1);
-
-	var _map2 = _interopRequireDefault(_map);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// <template>
-	// 	<div class="inner-btn" @click="filterFor">2008</div>
-	//
-	// </template>
-	//
-	// <script>
-	exports.default = {
-		ready: function ready() {
-			this.clearMap();
-		},
-		data: function data() {
-			return {
-				collection: []
-			};
-		},
-		methods: {
-			filterFor: function filterFor(evt) {
-				var param = evt.target.innerHTML;
-				this.collection = this.$parent.troutCollection.filter(function (trout) {
-					return trout.dateCaught.includes(param);
-				});
-				this.drawAllTrout;
-			},
-			clearMap: _map2.default.clearMap,
-			drawMarker: _map2.default.drawMarker,
-			drawAllTrout: function drawAllTrout() {
-				this.collection.forEach(this.drawMarker);
-			}
-		}
-	};
-	// </script>
-	//
-	//
-
-/***/ },
+/* 58 */,
 /* 59 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"inner-btn\" @click=\"filterFor\">2008</div>\n\n";
+	module.exports = "\n  <div class=\"inner-btn\" @click=\"filterForYear\">2005</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2006</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2007</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2008</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2009</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2010</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2011</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2012</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2013</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2014</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2015</div>\n  <div class=\"inner-btn\" @click=\"filterForTime\">Morning</div>\n  <div class=\"inner-btn\" @click=\"filterForTime\">Night</div>\n\n\n\t<div class=\"btn\" @click=\"clearMap\">Clear Map</div>\n\n";
 
 /***/ }
 /******/ ]);
