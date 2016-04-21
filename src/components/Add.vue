@@ -7,9 +7,9 @@
 			<label for="weight">Weight(kg):</label>
 			<input type="number" v-model="trout.weight">
 			<label for="timeCaught">Time</label>
-			<input name="timeCaught" type="text" value={{trout.timeCaught}}>
+			<input name="timeCaught" type="text" v-model="trout.timeCaught" value={{trout.timeCaught}}>
 			<label for="date">Date</label>
-			<input name="date" type="text" value={{trout.dateCaught}}>
+			<input name="date" type="text" v-model="trout.dateCaught" value={{trout.dateCaught}}>
 			<label for="comment">Comment</label>
 			<textarea name="comment" v-model="trout.comment"></textarea>
 			<div class="btn submit" v-on:click="submit">Submit</div>
@@ -23,12 +23,15 @@
 
 	//This component is in charge of adding new trout to the DB
 	//TODO add left 0 padding to the time, it looks funny without the zeros
-	//
+	//TODO add, needs to redraw the map completely, otherwise it will mess with the coords
 
 	export default {
 		ready: function () {
+			map.destroy()
+			map.create()
 			this.setup()
 			this.setupDThree()
+			map.turnOffZoom()
 		},
 		name: 'Add',
 		data: function() {
@@ -60,20 +63,22 @@
 				})
 			},
 			setup: function () {
-				//resets the current trout to default values, autofills the time and date
-				this.x = 0
-				this.y = 0
-				this.angler = ""
-				this.weight = ""
-				this.comment = ""
-				this.trout.id = Date.now().toString()
+				// resets the current trout to default values, autofills the time and date
 				var d = new Date()
 				this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()
-				this.trout.timeCaught = d.getHours() + ":" + d.getMinutes()
+				this.trout.timeCaught = d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2)
+				// this.trout.timeCaught = ""
+				// this.trout.dateCaught = ""
+				this.trout.x = 0
+				this.trout.y = 0
+				this.trout.angler = ""
+				this.trout.weight = ""
+				this.trout.comment = ""
+				this.trout.id = Date.now().toString()
 			},
 			submit: function () {
-				this.$parent.coordsSet = false
 				this.updateDatabase()
+				this.$parent.coordsSet = false
 				this.setup()
 				this.setupDThree()
 			},

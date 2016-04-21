@@ -58,23 +58,27 @@
 
 	var _ViewInfo2 = _interopRequireDefault(_ViewInfo);
 
-	var _Add = __webpack_require__(15);
+	var _Filter = __webpack_require__(15);
+
+	var _Filter2 = _interopRequireDefault(_Filter);
+
+	var _Add = __webpack_require__(18);
 
 	var _Add2 = _interopRequireDefault(_Add);
 
-	var _Delete = __webpack_require__(21);
+	var _Delete = __webpack_require__(24);
 
 	var _Delete2 = _interopRequireDefault(_Delete);
 
-	var _App = __webpack_require__(24);
+	var _App = __webpack_require__(31);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _vueRouter = __webpack_require__(28);
+	var _vueRouter = __webpack_require__(35);
 
 	var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-	var _vueResource = __webpack_require__(29);
+	var _vueResource = __webpack_require__(36);
 
 	var _vueResource2 = _interopRequireDefault(_vueResource);
 
@@ -101,6 +105,9 @@
 	    },
 	    '/view': {
 	        component: _ViewInfo2.default
+	    },
+	    '/filter': {
+	        component: _Filter2.default
 	    }
 	});
 
@@ -121,12 +128,11 @@
 	module.exports = {
 	  //need to work out a way to set the scale based on device width and then use the scale to set the size of the markers etc
 	  create: function create() {
-	    var scale = 0;
-	    var width = 600,
-	        height = 600,
-	        scale0 = (width - 1) / 2 / Math.PI;
+	    var width = 590,
+	        height = 600;
+
 	    //appends the map to the page
-	    var map = d3.select("#vis").append("svg").attr('id', 'rotoma').attr("width", width).attr("height", height);
+	    var map = d3.select("#vis").append("svg").attr('id', 'rotoma').attr("width", width).attr("height", height).append("g").attr("class", "grouping");
 
 	    d3.json("lake.json", function (err, lake) {
 	      if (err) return console.error(error);
@@ -135,15 +141,26 @@
 
 	      var projection = d3.geo.mercator().center(d3.geo.centroid(lake)).translate(offset).scale(500000);
 
-	      map.append("path").datum(lake).attr("d", d3.geo.path().projection(projection));
+	      d3.select('.grouping').append("path").datum(lake).attr("d", d3.geo.path().projection(projection));
 	    });
 	  },
+	  destroy: function destroy() {
+	    d3.select('#rotoma').remove();
+	  },
+	  turnOnZoom: function turnOnZoom() {
+	    d3.select('#rotoma').call(d3.behavior.zoom().on("zoom", function () {
+	      d3.select('#rotoma g').attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+	    }));
+	  },
+	  turnOffZoom: function turnOffZoom() {
+	    d3.select('#rotoma').call(d3.behavior.zoom(), null);
+	  },
 	  drawMarker: function drawMarker(trout) {
-	    var map = d3.select('#rotoma');
+	    var map = d3.select('.grouping');
 
-	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 30);
+	    map.append("circle").attr('class', 'marker-out ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 15);
 
-	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 3);
+	    map.append("circle").attr('class', 'marker ' + trout.id).attr("cx", trout.x).attr("cy", trout.y).attr("r", 2);
 	  },
 	  clearMap: function clearMap() {
 	    var map = d3.select('#rotoma').selectAll('circle').remove();
@@ -10550,17 +10567,23 @@
 	//--------------------------------------------------------------------------------
 	// <template>
 	// 	<div class="home-wrapper">
-	// 	<h1>View</h1>
-	// 		<h2>{{ $parent.trout | json }}</h2>
+	// 	<h1>Your Selected Trout</h1>
+	// 	<div class="info-box">
+	// 		<p v-show="$parent.trout.x > 0">Caught by: {{ $parent.trout.angler }}</p>
+	// 		<p v-show="$parent.trout.dateCaught">Date: {{ $parent.trout.dateCaught }}</p>
+	// 		<p v-show="$parent.trout.timeCaught">Time: {{ $parent.trout.timeCaught }}</p>
+	// 		<p v-show="$parent.trout.weight > 0">Weight: {{ $parent.trout.weight }}KG</p>
+	// 		<p v-show="$parent.trout.comment">{{ $parent.trout.comment }}</p>
 	// 	</div>
 	// </template>
 	//
 	// <script>
 	exports.default = {
 		ready: function ready() {
-			this.$parent.getAllTroutData();
+			this.collection = this.$parent.troutCollection;
 			this.clearMap();
 			this.drawAllTrout();
+			_map2.default.turnOnZoom();
 		},
 		data: function data() {
 			return {
@@ -10583,7 +10606,7 @@
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"home-wrapper\">\n<h1>View</h1>\n\t<h2>{{ $parent.trout | json }}</h2>\n</div>\n";
+	module.exports = "\n\t<div class=\"home-wrapper\">\n\t<h1>Your Selected Trout</h1>\n\t<div class=\"info-box\">\n\t\t<p v-show=\"$parent.trout.x > 0\">Caught by: {{ $parent.trout.angler }}</p>\n\t\t<p v-show=\"$parent.trout.dateCaught\">Date: {{ $parent.trout.dateCaught }}</p>\n\t\t<p v-show=\"$parent.trout.timeCaught\">Time: {{ $parent.trout.timeCaught }}</p>\n\t\t<p v-show=\"$parent.trout.weight > 0\">Weight: {{ $parent.trout.weight }}KG</p>\n\t\t<p v-show=\"$parent.trout.comment\">{{ $parent.trout.comment }}</p>\n\t</div>\n</template>";
 
 /***/ },
 /* 15 */
@@ -10594,8 +10617,172 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/Filter.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(17)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/home/sam/workspaces/garyTrout/src/components/Filter.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _xhr = __webpack_require__(2);
+
+	var _xhr2 = _interopRequireDefault(_xhr);
+
+	var _map = __webpack_require__(1);
+
+	var _map2 = _interopRequireDefault(_map);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// <template>
+	//   <p v-show="this.filtered.length > 0">{{ filtered | json }}</p>
+	//   <h2>Years:</h2>
+	// 	<div class="inner-btn" @click="filterForYear">2005</div>
+	// 	<div class="inner-btn" @click="filterForYear">2006</div>
+	// 	<div class="inner-btn" @click="filterForYear">2007</div>
+	// 	<div class="inner-btn" @click="filterForYear">2008</div>
+	// 	<div class="inner-btn" @click="filterForYear">2009</div>
+	// 	<div class="inner-btn" @click="filterForYear">2010</div>
+	// 	<div class="inner-btn" @click="filterForYear">2011</div>
+	// 	<div class="inner-btn" @click="filterForYear">2012</div>
+	// 	<div class="inner-btn" @click="filterForYear">2013</div>
+	// 	<div class="inner-btn" @click="filterForYear">2014</div>
+	// 	<div class="inner-btn" @click="filterForYear">2015</div>
+	//   <div class="inner-btn" @click="filterForYear">2016</div>
+	//   <br>
+	//   <h2>Time:</h2>
+	// 	<div class="inner-btn" @click="filterForTime">Morning</div>
+	// 	<div class="inner-btn" @click="filterForTime">Night</div>
+	//
+	//   <h2>Angler:</h2>
+	//   <input name="angler" type="text" v-model="angler">
+	//   <div class="inner-btn" @click="filterByName">Submit Name</div>
+	//   <br>
+	//   <div class="btn" @click="showAll">All</div>
+	//   <div class="btn" @click="reset">Reset</div>
+	// 	<div class="btn" @click="clearMap">Clear Map</div>
+	//
+	//   <div class="filter-info-box">
+	//     <p v-show="$parent.trout.x > 0">Caught by: {{ $parent.trout.angler }}</p>
+	//     <p v-show="$parent.trout.dateCaught">Date: {{ $parent.trout.dateCaught }}</p>
+	//     <p v-show="$parent.trout.timeCaught">Time: {{ $parent.trout.timeCaught }}</p>
+	//     <p v-show="$parent.trout.weight > 0">Weight: {{ $parent.trout.weight }}KG</p>
+	//     <p v-show="$parent.trout.comment">{{ $parent.trout.comment }}</p>
+	//   </div>
+	//
+	// </template>
+	//
+	// <script>
+	exports.default = {
+	  ready: function ready() {
+	    this.$parent.trout.x = null;
+	    this.collection = this.$parent.troutCollection;
+	    this.reset();
+	    this.clearMap();
+	    _map2.default.turnOnZoom();
+	  },
+	  data: function data() {
+	    return {
+	      angler: "",
+	      collection: [],
+	      filtered: [],
+	      unfiltered: []
+	    };
+	  },
+	  methods: {
+	    filterForYear: function filterForYear(evt) {
+	      var param = evt.target.innerHTML;
+	      this.filtered.push(param);
+	      this.collection = this.collection.filter(function (trout) {
+	        if (trout.dateCaught) return trout.dateCaught.includes(param);
+	      });
+	      this.clearMap();
+	      this.drawFilteredTrout();
+	    },
+	    filterForTime: function filterForTime(evt) {
+	      var param = evt.target.innerHTML;
+	      if (param === "Morning") {
+	        this.filtered.push(param);
+	        this.collection = this.collection.filter(function (trout) {
+	          if (trout.timeCaught) return parseInt(trout.timeCaught.slice(0, 2)) < 12;
+	        });
+	      } else if (param === "Night") {
+	        this.filtered.push(param);
+	        this.collection = this.collection.filter(function (trout) {
+	          if (trout.timeCaught) return parseInt(trout.timeCaught.slice(0, 2)) > 12;
+	        });
+	      }
+	      this.clearMap();
+	      this.drawFilteredTrout();
+	    },
+	    filterByName: function filterByName() {
+	      var _this = this;
+
+	      this.filtered.push(this.angler);
+	      this.collection = this.collection.filter(function (trout) {
+	        return trout.angler === _this.angler;
+	      });
+	      this.clearMap();
+	      this.drawFilteredTrout();
+	    },
+
+	    reset: function reset() {
+	      this.filtered = [];
+	      this.collection = this.$parent.troutCollection;
+	    },
+	    showAll: function showAll() {
+	      this.collection = this.$parent.troutCollection;
+	      this.clearMap();
+	      this.drawFilteredTrout();
+	    },
+	    clearMap: _map2.default.clearMap,
+	    drawMarker: _map2.default.drawMarker,
+	    drawFilteredTrout: function drawFilteredTrout() {
+	      this.collection.forEach(this.drawMarker);
+	    }
+	  }
+	};
+	// </script>
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	module.exports = "\n  <p v-show=\"this.filtered.length > 0\">{{ filtered | json }}</p>\n  <h2>Years:</h2>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2005</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2006</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2007</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2008</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2009</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2010</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2011</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2012</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2013</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2014</div>\n\t<div class=\"inner-btn\" @click=\"filterForYear\">2015</div>\n  <div class=\"inner-btn\" @click=\"filterForYear\">2016</div>\n  <br>\n  <h2>Time:</h2>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Morning</div>\n\t<div class=\"inner-btn\" @click=\"filterForTime\">Night</div>\n  \n  <h2>Angler:</h2>\n  <input name=\"angler\" type=\"text\" v-model=\"angler\">\n  <div class=\"inner-btn\" @click=\"filterByName\">Submit Name</div>\n  <br>\n  <div class=\"btn\" @click=\"showAll\">All</div>\n  <div class=\"btn\" @click=\"reset\">Reset</div>\n\t<div class=\"btn\" @click=\"clearMap\">Clear Map</div>\n\n  <div class=\"filter-info-box\">\n    <p v-show=\"$parent.trout.x > 0\">Caught by: {{ $parent.trout.angler }}</p>\n    <p v-show=\"$parent.trout.dateCaught\">Date: {{ $parent.trout.dateCaught }}</p>\n    <p v-show=\"$parent.trout.timeCaught\">Time: {{ $parent.trout.timeCaught }}</p>\n    <p v-show=\"$parent.trout.weight > 0\">Weight: {{ $parent.trout.weight }}KG</p>\n    <p v-show=\"$parent.trout.comment\">{{ $parent.trout.comment }}</p>\n  </div>\n\n";
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(19)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src/components/Add.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(20)
+	__vue_template__ = __webpack_require__(23)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -10614,7 +10801,7 @@
 	})()}
 
 /***/ },
-/* 16 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10623,7 +10810,7 @@
 		value: true
 	});
 
-	var _stringify = __webpack_require__(17);
+	var _stringify = __webpack_require__(20);
 
 	var _stringify2 = _interopRequireDefault(_stringify);
 
@@ -10639,7 +10826,7 @@
 
 	//This component is in charge of adding new trout to the DB
 	//TODO add left 0 padding to the time, it looks funny without the zeros
-	//
+	//TODO add, needs to redraw the map completely, otherwise it will mess with the coords
 
 	// <template>
 	// 	<div class="add-wrapper">
@@ -10650,9 +10837,9 @@
 	// 			<label for="weight">Weight(kg):</label>
 	// 			<input type="number" v-model="trout.weight">
 	// 			<label for="timeCaught">Time</label>
-	// 			<input name="timeCaught" type="text" value={{trout.timeCaught}}>
+	// 			<input name="timeCaught" type="text" v-model="trout.timeCaught" value={{trout.timeCaught}}>
 	// 			<label for="date">Date</label>
-	// 			<input name="date" type="text" value={{trout.dateCaught}}>
+	// 			<input name="date" type="text" v-model="trout.dateCaught" value={{trout.dateCaught}}>
 	// 			<label for="comment">Comment</label>
 	// 			<textarea name="comment" v-model="trout.comment"></textarea>
 	// 			<div class="btn submit" v-on:click="submit">Submit</div>
@@ -10663,8 +10850,11 @@
 	// <script>
 	exports.default = {
 		ready: function ready() {
+			_map2.default.destroy();
+			_map2.default.create();
 			this.setup();
 			this.setupDThree();
+			_map2.default.turnOffZoom();
 		},
 		name: 'Add',
 		data: function data() {
@@ -10696,20 +10886,22 @@
 				});
 			},
 			setup: function setup() {
-				//resets the current trout to default values, autofills the time and date
-				this.x = 0;
-				this.y = 0;
-				this.angler = "";
-				this.weight = "";
-				this.comment = "";
-				this.trout.id = Date.now().toString();
+				// resets the current trout to default values, autofills the time and date
 				var d = new Date();
 				this.trout.dateCaught = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-				this.trout.timeCaught = d.getHours() + ":" + d.getMinutes();
+				this.trout.timeCaught = d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2);
+				// this.trout.timeCaught = ""
+				// this.trout.dateCaught = ""
+				this.trout.x = 0;
+				this.trout.y = 0;
+				this.trout.angler = "";
+				this.trout.weight = "";
+				this.trout.comment = "";
+				this.trout.id = Date.now().toString();
 			},
 			submit: function submit() {
-				this.$parent.coordsSet = false;
 				this.updateDatabase();
+				this.$parent.coordsSet = false;
 				this.setup();
 				this.setupDThree();
 			},
@@ -10735,44 +10927,44 @@
 	// </script>
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(18), __esModule: true };
+	module.exports = { "default": __webpack_require__(21), __esModule: true };
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var core = __webpack_require__(19);
+	var core = __webpack_require__(22);
 	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
 	  return (core.JSON && core.JSON.stringify || JSON.stringify).apply(JSON, arguments);
 	};
 
 /***/ },
-/* 19 */
+/* 22 */
 /***/ function(module, exports) {
 
 	var core = module.exports = {version: '1.2.6'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 20 */
+/* 23 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<div class=\"add-wrapper\">\n<p class='location-warning' v-if=\"!$parent.coordsSet\">Click on the map to add the location of your trout</p>\n\t<div class=\"info-box\" v-if=\"$parent.coordsSet\">\n\t\t<label for=\"angler\">Angler:</label>\n\t\t<input name=\"angler\" type=\"text\" v-model=\"trout.angler\">\n\t\t<label for=\"weight\">Weight(kg):</label>\n\t\t<input type=\"number\" v-model=\"trout.weight\">\n\t\t<label for=\"timeCaught\">Time</label>\n\t\t<input name=\"timeCaught\" type=\"text\" v-model=\"trout.timeCaught\" value={{trout.timeCaught}}>\n\t\t<label for=\"date\">Date</label>\n\t\t<input name=\"date\" type=\"text\" v-model=\"trout.dateCaught\" value={{trout.dateCaught}}>\n\t\t<label for=\"comment\">Comment</label>\n\t\t<textarea name=\"comment\" v-model=\"trout.comment\"></textarea>\n\t\t<div class=\"btn submit\" v-on:click=\"submit\">Submit</div>\n\t</div>\n</div>\n";
 
 /***/ },
-/* 21 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(22)
+	__vue_script__ = __webpack_require__(25)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src/components/Delete.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(23)
+	__vue_template__ = __webpack_require__(30)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -10791,7 +10983,7 @@
 	})()}
 
 /***/ },
-/* 22 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10800,7 +10992,11 @@
 		value: true
 	});
 
-	var _stringify = __webpack_require__(17);
+	var _defineProperty2 = __webpack_require__(26);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	var _stringify = __webpack_require__(20);
 
 	var _stringify2 = _interopRequireDefault(_stringify);
 
@@ -10816,32 +11012,48 @@
 
 	// <template>
 	// 	<div class="home-wrapper">
-	// 	<h1>Delete</h1>
-	// 		<p>Click on a trout marker to edit or delete</p>
-	// 		<h2 v-if="$parent.trout">{{ $parent.trout | json }}</h2>
-	// <!-- 		<div class="btn">Edit</div> -->
+	// 		<p>Click on a trout marker to review and delete</p>
+	// 		<div class="info-box">
+	// 			<p v-show="$parent.trout.x > 0">Caught by: {{ $parent.trout.angler }}</p>
+	// 			<p v-show="$parent.trout.dateCaught">Date: {{ $parent.trout.dateCaught }}</p>
+	// 			<p v-show="$parent.trout.timeCaught">Time: {{ $parent.trout.timeCaught }}</p>
+	// 			<p v-show="$parent.trout.weight > 0">Weight: {{ $parent.trout.weight }}KG</p>
+	// 			<p v-show="$parent.trout.comment">{{ $parent.trout.comment }}</p>
+	// 		</div>
 	// 		<div class="btn" v-on:click="delete">Delete</div>
 	// 	</div>
 	// </template>
 	//
 	// <script>
-	exports.default = {
+	exports.default = (0, _defineProperty3.default)({
 		ready: function ready() {
 			this.$parent.getAllTroutData();
+			this.trout = this.$parent.trout;
 			this.clearMap();
 			this.drawAllTrout();
+			_map2.default.turnOnZoom();
+		},
+		data: function data() {
+			return {
+				trout: {}
+			};
 		},
 		name: 'Delete',
 		methods: {
 			delete: function _delete() {
 				var _this = this;
 
-				console.log('delete');
 				this.$parent.coordsSet = false;
 				_xhr2.default.post('/delete', { json: (0, _stringify2.default)(this.$parent.trout.id) }, function (err, res) {
 					_this.$parent.troutCollection = res.body;
 					_this.repaint();
 				});
+			},
+			getTroutInfo: function getTroutInfo(evt) {
+				if (evt.srcElement.localName === 'circle') {
+					var id = evt.srcElement.classList[1];
+					this.trout = _.find(this.troutCollection, ['id', id]);
+				}
 			},
 			repaint: function repaint() {
 				this.clearMap();
@@ -10852,27 +11064,88 @@
 				this.$parent.troutCollection.forEach(this.drawMarker);
 			},
 			drawMarker: _map2.default.drawMarker
-		},
-		data: function data() {
-			return {
-				trout: {}
-			};
 		}
-	};
+	}, 'data', function data() {
+		return {
+			trout: {}
+		};
+	});
 	// </script>
 
 /***/ },
-/* 23 */
-/***/ function(module, exports) {
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n\t<div class=\"home-wrapper\">\n\t<h1>Delete</h1>\n\t\t<p>Click on a trout marker to edit or delete</p>\n\t\t<h2 v-if=\"$parent.trout\">{{ $parent.trout | json }}</h2>\n<!-- \t\t<div class=\"btn\">Edit</div> -->\n\t\t<div class=\"btn\" v-on:click=\"delete\">Delete</div>\n\t</div>\n";
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(27);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
 
 /***/ },
-/* 24 */
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(28), __esModule: true };
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(29);
+	module.exports = function defineProperty(it, key, desc){
+	  return $.setDesc(it, key, desc);
+	};
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	var $Object = Object;
+	module.exports = {
+	  create:     $Object.create,
+	  getProto:   $Object.getPrototypeOf,
+	  isEnum:     {}.propertyIsEnumerable,
+	  getDesc:    $Object.getOwnPropertyDescriptor,
+	  setDesc:    $Object.defineProperty,
+	  setDescs:   $Object.defineProperties,
+	  getKeys:    $Object.keys,
+	  getNames:   $Object.getOwnPropertyNames,
+	  getSymbols: $Object.getOwnPropertySymbols,
+	  each:       [].forEach
+	};
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div class=\"home-wrapper\">\n\t<p>Click on a trout marker to review and delete</p>\n\t<div class=\"info-box\">\n\t\t<p v-show=\"$parent.trout.x > 0\">Caught by: {{ $parent.trout.angler }}</p>\n\t\t<p v-show=\"$parent.trout.dateCaught\">Date: {{ $parent.trout.dateCaught }}</p>\n\t\t<p v-show=\"$parent.trout.timeCaught\">Time: {{ $parent.trout.timeCaught }}</p>\n\t\t<p v-show=\"$parent.trout.weight > 0\">Weight: {{ $parent.trout.weight }}KG</p>\n\t\t<p v-show=\"$parent.trout.comment\">{{ $parent.trout.comment }}</p>\n\t</div>\n\t<div class=\"btn\" v-on:click=\"delete\">Delete</div>\n</div>\n";
+
+/***/ },
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(25)
+	__vue_script__ = __webpack_require__(32)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
@@ -10895,7 +11168,7 @@
 	})()}
 
 /***/ },
-/* 25 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10912,7 +11185,7 @@
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _lodash = __webpack_require__(26);
+	var _lodash = __webpack_require__(33);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -10978,7 +11251,7 @@
 	// <script>
 
 /***/ },
-/* 26 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -26933,10 +27206,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)(module), (function() { return this; }())))
 
 /***/ },
-/* 27 */
+/* 34 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -26952,7 +27225,7 @@
 
 
 /***/ },
-/* 28 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -29606,7 +29879,7 @@
 	}));
 
 /***/ },
-/* 29 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29615,16 +29888,16 @@
 
 	function install(Vue) {
 
-	    var _ = __webpack_require__(30);
+	    var _ = __webpack_require__(37);
 
 	    _.config = Vue.config;
 	    _.warning = Vue.util.warn;
 	    _.nextTick = Vue.util.nextTick;
 
-	    Vue.url = __webpack_require__(31);
-	    Vue.http = __webpack_require__(37);
-	    Vue.resource = __webpack_require__(52);
-	    Vue.Promise = __webpack_require__(39);
+	    Vue.url = __webpack_require__(38);
+	    Vue.http = __webpack_require__(44);
+	    Vue.resource = __webpack_require__(59);
+	    Vue.Promise = __webpack_require__(46);
 
 	    Object.defineProperties(Vue.prototype, {
 
@@ -29665,7 +29938,7 @@
 
 
 /***/ },
-/* 30 */
+/* 37 */
 /***/ function(module, exports) {
 
 	/**
@@ -29793,14 +30066,14 @@
 
 
 /***/ },
-/* 31 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for URL templating.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 	var ie = document.documentMode;
 	var el = document.createElement('a');
 
@@ -29836,10 +30109,10 @@
 	 */
 
 	Url.transforms = [
-	    __webpack_require__(32),
-	    __webpack_require__(34),
-	    __webpack_require__(35),
-	    __webpack_require__(36)
+	    __webpack_require__(39),
+	    __webpack_require__(41),
+	    __webpack_require__(42),
+	    __webpack_require__(43)
 	];
 
 	/**
@@ -29929,14 +30202,14 @@
 
 
 /***/ },
-/* 32 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * URL Template (RFC 6570) Transform.
 	 */
 
-	var UrlTemplate = __webpack_require__(33);
+	var UrlTemplate = __webpack_require__(40);
 
 	module.exports = function (options) {
 
@@ -29951,7 +30224,7 @@
 
 
 /***/ },
-/* 33 */
+/* 40 */
 /***/ function(module, exports) {
 
 	/**
@@ -30107,14 +30380,14 @@
 
 
 /***/ },
-/* 34 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Legacy Transform.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	module.exports = function (options, next) {
 
@@ -30159,14 +30432,14 @@
 
 
 /***/ },
-/* 35 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Query Parameter Transform.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	module.exports = function (options, next) {
 
@@ -30189,14 +30462,14 @@
 
 
 /***/ },
-/* 36 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Root Prefix Transform.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	module.exports = function (options, next) {
 
@@ -30211,17 +30484,17 @@
 
 
 /***/ },
-/* 37 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for sending network requests.
 	 */
 
-	var _ = __webpack_require__(30);
-	var Client = __webpack_require__(38);
-	var Promise = __webpack_require__(39);
-	var interceptor = __webpack_require__(42);
+	var _ = __webpack_require__(37);
+	var Client = __webpack_require__(45);
+	var Promise = __webpack_require__(46);
+	var interceptor = __webpack_require__(49);
 	var jsonType = {'Content-Type': 'application/json'};
 
 	function Http(url, options) {
@@ -30274,13 +30547,13 @@
 	};
 
 	Http.interceptors = [
-	    __webpack_require__(43),
-	    __webpack_require__(44),
-	    __webpack_require__(45),
-	    __webpack_require__(47),
-	    __webpack_require__(48),
-	    __webpack_require__(49),
-	    __webpack_require__(50)
+	    __webpack_require__(50),
+	    __webpack_require__(51),
+	    __webpack_require__(52),
+	    __webpack_require__(54),
+	    __webpack_require__(55),
+	    __webpack_require__(56),
+	    __webpack_require__(57)
 	];
 
 	Http.headers = {
@@ -30315,16 +30588,16 @@
 
 
 /***/ },
-/* 38 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Base client.
 	 */
 
-	var _ = __webpack_require__(30);
-	var Promise = __webpack_require__(39);
-	var xhrClient = __webpack_require__(41);
+	var _ = __webpack_require__(37);
+	var Promise = __webpack_require__(46);
+	var xhrClient = __webpack_require__(48);
 
 	module.exports = function (request) {
 
@@ -30386,15 +30659,15 @@
 
 
 /***/ },
-/* 39 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Promise adapter.
 	 */
 
-	var _ = __webpack_require__(30);
-	var PromiseObj = window.Promise || __webpack_require__(40);
+	var _ = __webpack_require__(37);
+	var PromiseObj = window.Promise || __webpack_require__(47);
 
 	function Promise(executor, context) {
 
@@ -30501,14 +30774,14 @@
 
 
 /***/ },
-/* 40 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	var RESOLVED = 0;
 	var REJECTED = 1;
@@ -30686,15 +30959,15 @@
 
 
 /***/ },
-/* 41 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * XMLHttp client.
 	 */
 
-	var _ = __webpack_require__(30);
-	var Promise = __webpack_require__(39);
+	var _ = __webpack_require__(37);
+	var Promise = __webpack_require__(46);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -30742,15 +31015,15 @@
 
 
 /***/ },
-/* 42 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Interceptor factory.
 	 */
 
-	var _ = __webpack_require__(30);
-	var Promise = __webpack_require__(39);
+	var _ = __webpack_require__(37);
+	var Promise = __webpack_require__(46);
 
 	module.exports = function (handler, vm) {
 
@@ -30793,14 +31066,14 @@
 
 
 /***/ },
-/* 43 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Before Interceptor.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	module.exports = {
 
@@ -30817,7 +31090,7 @@
 
 
 /***/ },
-/* 44 */
+/* 51 */
 /***/ function(module, exports) {
 
 	/**
@@ -30853,14 +31126,14 @@
 
 
 /***/ },
-/* 45 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * JSONP Interceptor.
 	 */
 
-	var jsonpClient = __webpack_require__(46);
+	var jsonpClient = __webpack_require__(53);
 
 	module.exports = {
 
@@ -30877,15 +31150,15 @@
 
 
 /***/ },
-/* 46 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * JSONP client.
 	 */
 
-	var _ = __webpack_require__(30);
-	var Promise = __webpack_require__(39);
+	var _ = __webpack_require__(37);
+	var Promise = __webpack_require__(46);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -30931,7 +31204,7 @@
 
 
 /***/ },
-/* 47 */
+/* 54 */
 /***/ function(module, exports) {
 
 	/**
@@ -30954,14 +31227,14 @@
 
 
 /***/ },
-/* 48 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Mime Interceptor.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	module.exports = {
 
@@ -30996,14 +31269,14 @@
 
 
 /***/ },
-/* 49 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Header Interceptor.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	module.exports = {
 
@@ -31028,15 +31301,15 @@
 
 
 /***/ },
-/* 50 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * CORS Interceptor.
 	 */
 
-	var _ = __webpack_require__(30);
-	var xdrClient = __webpack_require__(51);
+	var _ = __webpack_require__(37);
+	var xdrClient = __webpack_require__(58);
 	var xhrCors = 'withCredentials' in new XMLHttpRequest();
 	var originUrl = _.url.parse(location.href);
 
@@ -31071,15 +31344,15 @@
 
 
 /***/ },
-/* 51 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * XDomain client (Internet Explorer).
 	 */
 
-	var _ = __webpack_require__(30);
-	var Promise = __webpack_require__(39);
+	var _ = __webpack_require__(37);
+	var Promise = __webpack_require__(46);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -31114,14 +31387,14 @@
 
 
 /***/ },
-/* 52 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for interacting with RESTful services.
 	 */
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(37);
 
 	function Resource(url, params, actions, options) {
 

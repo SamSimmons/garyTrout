@@ -6,7 +6,7 @@ import _ from 'lodash'
 export default {
   ready: function () {
     xhr.get('/data', (err, data) => {
-      if (err) { console.error(err)}
+      if (err) { console.error(err) }
       else {
         this.troutCollection = JSON.parse(data.body)
         this.troutCollection.forEach(this.drawMarker)

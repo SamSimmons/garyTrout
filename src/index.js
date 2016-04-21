@@ -1,6 +1,7 @@
 import map from './map'
 import Vue from 'vue'
 import ViewInfo from './components/ViewInfo.vue'
+import Filter from './components/Filter.vue'
 import Add from './components/Add.vue'
 import Delete from './components/Delete.vue'
 import App from './components/App.vue'
@@ -25,6 +26,9 @@ router.map({
     },
     '/view': {
         component: ViewInfo
+    },
+    '/filter': {
+    	component: Filter
     }
 })
 
